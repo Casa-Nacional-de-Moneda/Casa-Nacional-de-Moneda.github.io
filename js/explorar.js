@@ -12,6 +12,13 @@ const pantallaInicio = document.getElementById('pantallaInicio');
 const btnIniciar = document.getElementById('btnIniciar');
 const mensajeError = document.getElementById('mensajeError');
 
+// Elementos de la barra de progreso del modelo 3D
+const barraCargaModelo = document.getElementById('barraCargaModelo');
+const porcentajeCargaModelo = document.getElementById('porcentajeCargaModelo');
+const textoCargaModelo = document.getElementById('textoCargaModelo');
+const estadoCargaModelo = document.getElementById('estadoCargaModelo');
+const contenedorBarraCarga = document.getElementById('contenedorBarraCarga');
+
 const modalInfo = document.getElementById('modalInfo');
 const contenidoInfo = document.getElementById('contenidoInfo');
 const btnCerrarInfo = document.getElementById('btnCerrarInfo');
@@ -835,10 +842,51 @@ modalInfo.addEventListener('click', event => {
 });
 
 // =====================================================
-// 15. CARGAR EL MODELO 3D
+// 15. CARGAR EL MODELO 3D Y MOSTRAR EL PROGRESO
 // =====================================================
 
 const loader = new GLTFLoader();
+
+// Actualiza visualmente el porcentaje real de descarga.
+function actualizarProgresoCarga(porcentaje) {
+
+    const valor = Math.max(0, Math.min(100, Math.round(porcentaje)));
+
+    barraCargaModelo.style.width = `${valor}%`;
+    barraCargaModelo.classList.remove('indeterminado');
+
+    porcentajeCargaModelo.textContent = `${valor}%`;
+    textoCargaModelo.textContent = 'Cargando modelo 3D...';
+
+    contenedorBarraCarga.setAttribute('aria-valuenow', valor);
+
+    estadoCargaModelo.textContent =
+        'Descargando los datos del modelo. Por favor, espera.';
+
+}
+
+// Se utiliza cuando el servidor no informa el tamaño total del archivo.
+// En ese caso se muestra una animación, sin inventar un porcentaje.
+function mostrarCargaIndeterminada() {
+
+    barraCargaModelo.classList.add('indeterminado');
+
+    porcentajeCargaModelo.textContent = '...';
+
+    textoCargaModelo.textContent = 'Cargando modelo 3D...';
+
+    contenedorBarraCarga.removeAttribute('aria-valuenow');
+
+    estadoCargaModelo.textContent =
+        'Preparando el modelo. Esto puede tardar unos momentos.';
+
+}
+
+// Estado inicial de la ventana.
+btnIniciar.disabled = true;
+btnIniciar.textContent = 'ESPERANDO MODELO...';
+
+mostrarCargaIndeterminada();
 
 loader.load(
 
@@ -885,6 +933,24 @@ loader.load(
 
         modeloListo = true;
 
+        // El modelo ya terminó de descargarse y prepararse.
+        barraCargaModelo.classList.remove('indeterminado');
+
+        barraCargaModelo.style.width = '100%';
+
+        porcentajeCargaModelo.textContent = '100%';
+
+        textoCargaModelo.textContent = '¡Modelo listo!';
+
+        contenedorBarraCarga.setAttribute('aria-valuenow', '100');
+
+        estadoCargaModelo.textContent =
+            'El recorrido virtual está preparado para comenzar.';
+
+        btnIniciar.disabled = false;
+
+        btnIniciar.textContent = 'INICIAR RECORRIDO';
+
         console.log('Modelo cargado correctamente.');
 
     },
@@ -897,7 +963,15 @@ loader.load(
                 progreso.loaded / progreso.total * 100
             );
 
+            actualizarProgresoCarga(porcentaje);
+
             console.log('Cargando modelo:', porcentaje + '%');
+
+        } else {
+
+            mostrarCargaIndeterminada();
+
+            console.log('Cargando modelo 3D...');
 
         }
 
@@ -907,8 +981,23 @@ loader.load(
 
         console.error('Error al cargar explorar.glb:', error);
 
+        barraCargaModelo.classList.remove('indeterminado');
+
+        barraCargaModelo.style.width = '0%';
+
+        porcentajeCargaModelo.textContent = 'Error';
+
+        textoCargaModelo.textContent = 'No se pudo cargar el modelo 3D';
+
+        estadoCargaModelo.textContent =
+            'Comprueba que explorar.glb esté en la carpeta principal.';
+
         mensajeError.textContent =
             'No se pudo cargar explorar.glb. Comprueba que esté en la carpeta principal.';
+
+        btnIniciar.disabled = true;
+
+        btnIniciar.textContent = 'MODELO NO DISPONIBLE';
 
     }
 

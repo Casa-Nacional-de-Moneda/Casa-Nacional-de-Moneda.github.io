@@ -165,6 +165,73 @@
             margin-top: 15px;
         }
 
+        /* PROGRESO DE CARGA DEL MODELO 3D */
+
+        .carga-modelo {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 24px;
+            text-align: left;
+        }
+
+        .carga-modelo-textos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 9px;
+            color: #eee;
+            font-size: 11px;
+        }
+
+        .carga-modelo-textos strong {
+            color: #D4AF37;
+            font-size: 13px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .barra-carga-fondo {
+            width: 100%;
+            height: 9px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.13);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 20px;
+        }
+
+        .barra-carga-progreso {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #9e7b20, #D4AF37, #f0d477);
+            border-radius: 20px;
+            transition: width 0.25s ease;
+        }
+
+        .barra-carga-progreso.indeterminado {
+            width: 35%;
+            animation: cargaIndeterminada 1.2s ease-in-out infinite;
+        }
+
+        @keyframes cargaIndeterminada {
+            0% { transform: translateX(-110%); }
+            100% { transform: translateX(310%); }
+        }
+
+        #estadoCargaModelo {
+            display: block;
+            margin-top: 9px;
+            color: #cfcfcf;
+            font-size: 10px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .btn-iniciar:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         /* MENSAJE SUPERIOR */
 
         .mensaje-centro {
@@ -559,8 +626,30 @@
                 cultural de este importante patrimonio.
             </p>
 
-            <button class="btn-iniciar" id="btnIniciar">
-                INICIAR RECORRIDO
+            <div class="carga-modelo" id="cargaModelo">
+                <div class="carga-modelo-textos">
+                    <span id="textoCargaModelo">Cargando modelo 3D...</span>
+                    <strong id="porcentajeCargaModelo">0%</strong>
+                </div>
+
+                <div
+                    class="barra-carga-fondo"
+                    role="progressbar"
+                    aria-label="Progreso de carga del modelo 3D"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    id="contenedorBarraCarga">
+                    <div class="barra-carga-progreso" id="barraCargaModelo"></div>
+                </div>
+
+                <small id="estadoCargaModelo">
+                    Por favor, espera mientras se prepara el recorrido.
+                </small>
+            </div>
+
+            <button class="btn-iniciar" id="btnIniciar" disabled>
+                ESPERANDO MODELO...
             </button>
 
             <div id="mensajeError"></div>
