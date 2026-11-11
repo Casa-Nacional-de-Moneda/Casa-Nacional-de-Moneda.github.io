@@ -1007,6 +1007,7 @@ loader.load(
 // 16. ZONA LIBRE DE COLISIONES DE LA PUERTA
 // =====================================================
 
+
 function estaEnZonaPuerta(posicion, dir) {
 
     if (!cajaModelo) return false;
@@ -1015,7 +1016,7 @@ function estaEnZonaPuerta(posicion, dir) {
         new THREE.Vector3()
     );
 
-    let movimientoHaciaDentro = false;
+    let movimientoPorPuerta = false;
     let dentroDelAncho = false;
     let dentroDeLaProfundidad = false;
 
@@ -1024,7 +1025,8 @@ function estaEnZonaPuerta(posicion, dir) {
         FACHADA_LADO === 'min'
     ) {
 
-        movimientoHaciaDentro = dir.z > 0.35;
+        // Permite entrar y salir por la puerta
+        movimientoPorPuerta = Math.abs(dir.z) > 0.35;
 
         dentroDelAncho =
             Math.abs(posicion.x - centro.x) < ANCHO_PUERTA / 2;
@@ -1038,7 +1040,7 @@ function estaEnZonaPuerta(posicion, dir) {
         FACHADA_LADO === 'max'
     ) {
 
-        movimientoHaciaDentro = dir.z < -0.35;
+        movimientoPorPuerta = Math.abs(dir.z) > 0.35;
 
         dentroDelAncho =
             Math.abs(posicion.x - centro.x) < ANCHO_PUERTA / 2;
@@ -1052,7 +1054,7 @@ function estaEnZonaPuerta(posicion, dir) {
         FACHADA_LADO === 'min'
     ) {
 
-        movimientoHaciaDentro = dir.x > 0.35;
+        movimientoPorPuerta = Math.abs(dir.x) > 0.35;
 
         dentroDelAncho =
             Math.abs(posicion.z - centro.z) < ANCHO_PUERTA / 2;
@@ -1063,7 +1065,7 @@ function estaEnZonaPuerta(posicion, dir) {
 
     } else {
 
-        movimientoHaciaDentro = dir.x < -0.35;
+        movimientoPorPuerta = Math.abs(dir.x) > 0.35;
 
         dentroDelAncho =
             Math.abs(posicion.z - centro.z) < ANCHO_PUERTA / 2;
@@ -1075,12 +1077,13 @@ function estaEnZonaPuerta(posicion, dir) {
     }
 
     return (
-        movimientoHaciaDentro &&
+        movimientoPorPuerta &&
         dentroDelAncho &&
         dentroDeLaProfundidad
     );
 
 }
+
 
 // =====================================================
 // 17. INICIAR Y CONTINUAR EL RECORRIDO
