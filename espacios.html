@@ -1,14 +1,16 @@
+
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <!-- VERSION NUEVA 09-09-2026 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Espacios | Casa Nacional de la Moneda</title>
+<link rel="icon" type="image/png" href="img/cara.png">
+    <!-- FUENTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Three.js -->
     <script type="importmap">
@@ -21,11 +23,6 @@
     </script>
 
     <style>
-
-        /* =========================================================
-           CONFIGURACIÓN GENERAL
-        ========================================================= */
-
         * {
             margin: 0;
             padding: 0;
@@ -38,15 +35,7 @@
 
         body {
             font-family: Georgia, "Times New Roman", serif;
-
-            background:
-                radial-gradient(
-                    circle at 50% 0%,
-                    rgba(181, 146, 73, 0.10),
-                    transparent 35%
-                ),
-                #071713;
-
+            background: radial-gradient(circle at 50% 0%, rgba(181, 146, 73, 0.10), transparent 35%), #071713;
             color: #f4ead4;
             overflow-x: hidden;
         }
@@ -55,29 +44,22 @@
             overflow: hidden;
         }
 
-
         /* =========================================================
-           BARRA DE NAVEGACIÓN
-           MISMO DISEÑO DE INFORMACION.HTML
+           MENU
         ========================================================= */
 
-        .top-bar {
+        nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 80px;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             padding: 0 50px;
-
             background: #4A5D5A;
-
             z-index: 1000;
-
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
@@ -85,7 +67,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            text-decoration: none;
         }
 
         .nav-logo img {
@@ -103,13 +84,19 @@
             letter-spacing: 1px;
         }
 
-        .nav {
+        .nav-menu {
             display: flex;
             list-style: none;
             gap: 40px;
+            margin: 0;
+            padding: 0;
         }
 
-        .nav a {
+        .nav-menu li {
+            list-style: none;
+        }
+
+        .nav-menu a {
             color: #fff;
             text-decoration: none;
             font-family: 'Montserrat', sans-serif;
@@ -120,58 +107,39 @@
             padding-bottom: 5px;
         }
 
-        .nav a:hover {
+        .nav-menu a:hover {
             color: #D4AF37;
         }
 
-        .nav a.active {
+        .nav-menu a.active {
             color: #D4AF37;
             border-bottom: 2px solid #D4AF37;
         }
 
-
-        /* =========================================================
-           HERO
-        ========================================================= */
+        /* HERO */
 
         .hero {
             min-height: 100vh;
-
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
             text-align: center;
-
             padding: 120px 8% 80px;
-
             position: relative;
             overflow: hidden;
         }
 
         .hero::before {
             content: "";
-
             position: absolute;
-
             width: 700px;
             height: 700px;
-
             border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(184, 148, 72, 0.13),
-                    transparent 65%
-                );
-
+            background: radial-gradient(circle, rgba(184, 148, 72, 0.13), transparent 65%);
             top: -300px;
             left: 50%;
-
             transform: translateX(-50%);
-
             pointer-events: none;
         }
 
@@ -188,9 +156,7 @@
             font-weight: normal;
             line-height: 0.9;
             color: #f1e5c9;
-
-            text-shadow:
-                0 0 30px rgba(207, 173, 93, 0.08);
+            text-shadow: 0 0 30px rgba(207, 173, 93, 0.08);
         }
 
         .hero h1 span {
@@ -221,9 +187,7 @@
         }
 
         @keyframes subirBajar {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: translateY(0);
                 opacity: 0.5;
             }
@@ -234,10 +198,7 @@
             }
         }
 
-
-        /* =========================================================
-           INTRODUCCIÓN
-        ========================================================= */
+        /* INTRODUCCIÓN */
 
         .intro {
             padding: 120px 10% 80px;
@@ -266,10 +227,7 @@
             font-size: 1rem;
         }
 
-
-        /* =========================================================
-           SECCIONES DE ESPACIOS
-        ========================================================= */
+        /* SECCIONES DE ESPACIOS */
 
         #espacios {
             width: 100%;
@@ -277,15 +235,10 @@
 
         .space-section {
             min-height: 100vh;
-
             display: grid;
-
             grid-template-columns: 42% 58%;
-
             align-items: center;
-
             padding: 100px 6%;
-
             position: relative;
             overflow: hidden;
         }
@@ -302,10 +255,7 @@
             order: 1;
         }
 
-
-        /* =========================================================
-           INFORMACIÓN
-        ========================================================= */
+        /* INFORMACIÓN */
 
         .space-info {
             padding: 50px;
@@ -346,121 +296,115 @@
             margin: 30px 0;
         }
 
+        /* FUENTES CONSULTADAS */
 
-        /* =========================================================
-           BOTÓN
-        ========================================================= */
+        .space-sources {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(212, 175, 55, 0.22);
+            position: relative;
+            z-index: 2;
+            max-width: 520px;
+        }
+
+        .space-sources strong {
+            display: block;
+            color: #D4AF37;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 9px;
+            text-transform: uppercase;
+        }
+
+        .space-sources a {
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+            color: rgba(245, 242, 233, 0.76);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            line-height: 1.7;
+            margin-bottom: 6px;
+            text-decoration: underline;
+            text-decoration-color: rgba(212, 175, 55, 0.45);
+            text-underline-offset: 3px;
+            overflow-wrap: anywhere;
+            transition: color 0.3s ease;
+        }
+
+        .space-sources a:hover {
+            color: #D4AF37;
+        }
+
+        /* BOTÓN */
 
         .explore-button {
             margin-top: 35px;
-
             display: inline-flex;
             align-items: center;
             gap: 13px;
-
             padding: 14px 24px;
-
             border: 1px solid rgba(201, 166, 88, 0.65);
-
             background: transparent;
-
             color: #d9c487;
-
             font-family: inherit;
-
             letter-spacing: 2px;
-
             font-size: 0.72rem;
-
             cursor: pointer;
-
-            transition:
-                background 0.3s ease,
-                color 0.3s ease,
-                transform 0.3s ease,
-                box-shadow 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .explore-button:hover {
             background: #c3a45d;
             color: #071713;
-
             transform: translateY(-3px);
-
-            box-shadow:
-                0 10px 30px rgba(191, 158, 82, 0.18);
+            box-shadow: 0 10px 30px rgba(191, 158, 82, 0.18);
         }
 
         .explore-button .arrow {
             font-size: 1rem;
         }
 
-
-        /* =========================================================
-           ZONA 3D
-           SIN MARCO
-        ========================================================= */
+        /* ZONA 3D */
 
         .space-visual {
             height: 620px;
-
             position: relative;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             overflow: visible;
         }
 
         .model-container {
             position: relative;
-
             width: 100%;
             height: 100%;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             overflow: visible;
         }
 
         .model-container::before {
             content: "";
-
             position: absolute;
-
             width: 70%;
             height: 55%;
-
             border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    ellipse,
-                    rgba(190, 157, 82, 0.16),
-                    rgba(10, 65, 48, 0.08),
-                    transparent 70%
-                );
-
+            background: radial-gradient(ellipse, rgba(190, 157, 82, 0.16), rgba(10, 65, 48, 0.08), transparent 70%);
             filter: blur(30px);
-
             pointer-events: none;
         }
 
         canvas.model-canvas {
             width: 100% !important;
             height: 100% !important;
-
             display: block;
-
             position: relative;
-
             z-index: 2;
-
             cursor: grab;
         }
 
@@ -468,25 +412,16 @@
             cursor: grabbing;
         }
 
-
-        /* =========================================================
-           CARGANDO
-        ========================================================= */
+        /* CARGANDO */
 
         .model-loading {
             position: absolute;
-
             left: 50%;
             top: 50%;
-
             transform: translate(-50%, -50%);
-
             text-align: center;
-
             z-index: 10;
-
             pointer-events: none;
-
             transition: opacity 0.35s ease;
         }
 
@@ -497,24 +432,17 @@
         .loader-circle {
             width: 45px;
             height: 45px;
-
             border-radius: 50%;
-
             border: 2px solid rgba(198, 164, 84, 0.18);
-
             border-top-color: #c5a65e;
-
             animation: girar 0.9s linear infinite;
-
             margin: 0 auto 15px;
         }
 
         @keyframes girar {
-
             to {
                 transform: rotate(360deg);
             }
-
         }
 
         .loading-text {
@@ -524,33 +452,20 @@
             text-transform: uppercase;
         }
 
-
-        /* =========================================================
-           ERROR
-        ========================================================= */
+        /* ERROR */
 
         .model-error {
             display: none;
-
             position: absolute;
-
             left: 50%;
             top: 50%;
-
             transform: translate(-50%, -50%);
-
             width: min(90%, 420px);
-
             text-align: center;
-
             padding: 25px;
-
             color: #d6b878;
-
             border: 1px solid rgba(194, 159, 81, 0.25);
-
             background: rgba(4, 19, 15, 0.45);
-
             z-index: 20;
         }
 
@@ -569,31 +484,17 @@
             line-height: 1.6;
         }
 
-
-        /* =========================================================
-           MODAL 3D
-        ========================================================= */
+        /* MODAL 3D */
 
         .modal {
             position: fixed;
             inset: 0;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(22, 61, 48, 0.45),
-                    rgba(1, 10, 8, 0.97)
-                );
-
+            background: radial-gradient(circle at center, rgba(22, 61, 48, 0.45), rgba(1, 10, 8, 0.97));
             backdrop-filter: blur(12px);
-
             z-index: 3000;
-
             display: none;
-
             align-items: center;
             justify-content: center;
-
             padding: 30px;
         }
 
@@ -604,59 +505,38 @@
         .modal-content {
             width: 100%;
             height: 100%;
-
             max-width: 1500px;
-
             position: relative;
-
             display: flex;
-
             flex-direction: column;
-
             align-items: center;
             justify-content: center;
         }
 
         .modal-title {
             position: absolute;
-
             top: 25px;
             left: 35px;
-
             z-index: 20;
-
             color: #e3ce98;
-
             letter-spacing: 3px;
-
             text-transform: uppercase;
-
             font-size: 0.9rem;
         }
 
         .modal-close {
             position: absolute;
-
             top: 18px;
             right: 25px;
-
             z-index: 30;
-
             width: 48px;
             height: 48px;
-
             border-radius: 50%;
-
             border: 1px solid rgba(201, 166, 88, 0.5);
-
             background: rgba(4, 20, 16, 0.5);
-
             color: #ddc889;
-
             font-size: 1.5rem;
-
             cursor: pointer;
-
             transition: 0.3s ease;
         }
 
@@ -669,21 +549,16 @@
         #modal-canvas-container {
             width: 100%;
             height: 100%;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             position: relative;
         }
 
         #modal-canvas-container canvas {
             width: 100% !important;
             height: 100% !important;
-
             display: block;
-
             cursor: grab;
         }
 
@@ -693,114 +568,89 @@
 
         .modal-help {
             position: absolute;
-
             bottom: 25px;
             left: 50%;
-
             transform: translateX(-50%);
-
             color: #92988d;
-
             font-size: 0.7rem;
-
             letter-spacing: 2px;
-
             text-transform: uppercase;
-
             text-align: center;
-
             z-index: 20;
         }
 
-
         /* =========================================================
-           FOOTER
-           MISMO DISEÑO DE INFORMACION.HTML
+           FOOTER - MISMO ESTILO DE LA IMAGEN DE REFERENCIA
         ========================================================= */
 
         footer {
-            text-align: center;
-
-            padding: 40px;
-
+            width: 100%;
+            min-height: 142px;
             margin-top: 40px;
+            padding: 30px 20px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 
             background: #4A5D5A;
+            border-top: 2px solid #D4AF37;
+            border-radius: 0;
 
-            border-radius: 12px;
-
-            color: #fff;
-
+            text-align: center;
             font-family: 'Montserrat', sans-serif;
         }
 
-        footer strong {
-            display: inline;
+        footer h3 {
+            margin: 0 0 8px;
+            color: #D4AF37;
 
-            color: #fff;
-
-            margin-bottom: 0;
-
-            letter-spacing: 0;
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
         }
 
         footer p {
             margin: 0;
-        }
+            color: #ffffff;
 
-        footer .footer-contact {
-            font-size: 16px;
-        }
-
-        footer .footer-contact strong {
-            color: #fff;
-        }
-
-        footer .footer-copy {
-            margin-top: 15px;
-
+            font-family: 'Montserrat', sans-serif;
             font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 2px;
         }
 
-
-        /* =========================================================
-           RESPONSIVE
-        ========================================================= */
+        /* RESPONSIVE */
 
         @media (max-width: 950px) {
-
-            .top-bar {
+            nav {
                 padding: 0 25px;
             }
 
-            .nav {
+            .nav-menu {
                 gap: 20px;
             }
 
-            .nav a {
+            .nav-menu a {
                 font-size: 0.78rem;
             }
 
             .space-section,
             .space-section:nth-child(even) {
-
                 grid-template-columns: 1fr;
-
                 min-height: auto;
-
                 padding: 80px 5%;
             }
 
             .space-section:nth-child(even) .space-info,
             .space-section:nth-child(even) .space-visual {
-
                 order: initial;
             }
 
             .space-info {
-
                 padding: 20px 0 10px;
-
                 text-align: center;
             }
 
@@ -812,29 +662,26 @@
                 margin: 25px auto;
             }
 
+            .space-sources {
+                margin-left: auto;
+                margin-right: auto;
+                text-align: left;
+            }
+
             .space-visual {
-
                 height: 500px;
-
                 margin-top: 20px;
             }
 
             .explore-button {
                 margin-top: 25px;
             }
-
         }
 
-
-
         @media (max-width: 768px) {
-
-            .top-bar {
-
+            nav {
                 flex-direction: column;
-
                 height: auto;
-
                 padding: 15px;
             }
 
@@ -842,39 +689,29 @@
                 margin-bottom: 10px;
             }
 
-            .nav {
-
+            .nav-menu {
                 gap: 15px;
-
                 flex-wrap: wrap;
-
                 justify-content: center;
             }
 
-            .nav a {
+            .nav-menu a {
                 font-size: 0.72rem;
             }
-
         }
 
-
-
         @media (max-width: 600px) {
-
             .nav-logo span {
                 font-size: 14px;
             }
 
             .nav-logo img {
-
                 width: 40px;
                 height: 40px;
             }
 
-            .nav {
-
+            .nav-menu {
                 display: flex;
-
                 gap: 12px;
             }
 
@@ -899,154 +736,78 @@
             }
 
             .modal-title {
-
                 left: 20px;
                 top: 20px;
-
                 font-size: 0.7rem;
             }
 
             .modal-help {
-
                 bottom: 15px;
-
                 font-size: 0.58rem;
             }
 
+            /* FOOTER EN CELULARES */
+
+            footer {
+                min-height: 125px;
+                padding: 25px 15px;
+            }
+
+            footer h3 {
+                font-size: 16px;
+                letter-spacing: 1px;
+            }
+
+            footer p {
+                font-size: 12px;
+                letter-spacing: 1.5px;
+            }
         }
-
     </style>
-
 </head>
-
-
 
 <body>
 
+    <!-- NAVBAR -->
+    <nav>
+        <div class="nav-logo">
+            <img src="img/cara.png" alt="Casa de la Moneda">
+            <span>CASA NACIONAL DE MONEDA</span>
+        </div>
 
-    <!-- =========================================================
-         BARRA DE NAVEGACIÓN
-    ========================================================= -->
+        <ul class="nav-menu">
+            <li><a href="index.html">INICIO</a></li>
+            <li><a href="historia.html">HISTORIA</a></li>
+            <li><a href="infraestructura.html">INFRAESTRUCTURA</a></li>
+            <li><a href="espacios.html" class="active">ESPACIOS</a></li>
+            <li><a href="monedas.html">MONEDAS</a></li>
+            <li><a href="explorar.html">RECORRIDO 3D</a></li>
+            <li><a href="informacion.html">INFORMACIÓN</a></li>
+        </ul>
+    </nav>
 
-    <header class="top-bar">
-
-        <a href="index.html" class="nav-logo">
-
-            <img
-                src="img/cara.png"
-                alt="Logo Casa de la Moneda"
-            >
-
-            <span>
-                CASA NACIONAL DE MONEDA
-            </span>
-
-        </a>
-
-
-
-        <nav class="nav">
-
-            <a href="index.html">
-                INICIO
-            </a>
-
-            <a href="historia.html">
-                HISTORIA
-            </a>
-
-            <a href="infraestructura.html">
-                INFRAESTRUCTURA
-            </a>
-
-            <a href="espacios.html" class="active">
-                ESPACIOS
-            </a>
-
-            <a href="monedas.html">
-                MONEDAS
-            </a>
-
-            <a href="informacion.html">
-                INFORMACIÓN
-            </a>
-
-        </nav>
-
-    </header>
-
-
-
-
-
-    <!-- =========================================================
-         HERO
-    ========================================================= -->
-
-
-
-
-
-    <!-- =========================================================
-         INTRODUCCIÓN
-    ========================================================= -->
-
+    <!-- INTRODUCCIÓN -->
     <section class="intro">
-
-        <div class="intro-line"></div>
-
-        <h2>
-            Un recorrido por la historia
-        </h2>
+        <h2>Un recorrido por la historia</h2>
 
         <p>
             Cada espacio conserva una parte de la historia de Potosí.
             Descubre sus características y observa las representaciones
             tridimensionales de algunos de sus elementos más importantes.
         </p>
-
     </section>
 
-
-
-
-
-    <!-- =========================================================
-         ESPACIOS
-    ========================================================= -->
-
+    <!-- ESPACIOS -->
     <main id="espacios"></main>
 
+    <!-- FOOTER -->
+    <footer class="espacios-footer">
+        <h3>Casa Nacional de la Moneda</h3>
+        <p>Potosí | Bolivia</p>
+    </footer>
 
-
-
-
-    <!-- =========================================================
-         FOOTER
-         MISMO DISEÑO DE INFORMACION.HTML
-    ========================================================= -->
-
-    <footer class="historia-footer">
-
-    <h3>
-        Casa Nacional de la Moneda de Potosí
-    </h3>
-
-    <p>Bolivia | Potosí
-    </p>
-
-</footer>
-
-
-
-
-
-    <!-- =========================================================
-         MODAL
-    ========================================================= -->
-
+    <!-- MODAL -->
     <div class="modal" id="modelModal">
-
         <div class="modal-content">
 
             <div class="modal-title" id="modalTitle">
@@ -1056,8 +817,7 @@
             <button
                 class="modal-close"
                 onclick="closeModal()"
-                aria-label="Cerrar"
-            >
+                aria-label="Cerrar">
                 ×
             </button>
 
@@ -1068,1829 +828,566 @@
             </div>
 
         </div>
-
     </div>
 
-
-
-
-
-    <!-- =========================================================
-         JAVASCRIPT 3D
-    ========================================================= -->
-
+    <!-- JAVASCRIPT 3D -->
     <script type="module">
-
         import * as THREE from "three";
-
-        import {
-            GLTFLoader
-        } from "three/addons/loaders/GLTFLoader.js";
-
-        import {
-            OrbitControls
-        } from "three/addons/controls/OrbitControls.js";
-
-
-
-        /* =====================================================
-           DATOS DE LOS ESPACIOS
-        ===================================================== */
+        import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
         const espacios = [
-
             {
                 id: "macuquina",
-
                 numero: "01",
-
                 titulo: "Sala de",
-
                 tituloSpan: "Macuquinas",
-
-                descripcion:
-                    "En este espacio se explica la elaboración de las antiguas monedas conocidas como macuquinas, acuñadas en Potosí durante la época colonial. La primera Casa de Moneda de Potosí inició la acuñación de estas piezas entre 1572 y 1575, utilizando la plata obtenida de la actividad minera de la región. Las macuquinas se caracterizaban por su forma irregular, ya que eran fabricadas mediante un proceso principalmente manual. La plata era preparada, laminada y posteriormente cortada y acuñada utilizando herramientas de la época. Por esta razón, sus bordes y formas no presentan la uniformidad de las monedas modernas. Estas monedas constituyen una parte fundamental de la historia monetaria de Potosí y permiten comprender la importancia que tuvo la producción de plata de la ciudad dentro de la economía colonial.",
-
-                modelo: "hombre.glb"
+                descripcion: "En este espacio se explica la elaboración de las antiguas monedas conocidas como macuquinas, acuñadas en Potosí durante la época colonial. La primera Casa de Moneda de Potosí inició la acuñación de estas piezas entre 1572 y 1575, utilizando la plata obtenida de la actividad minera de la región. Las macuquinas se caracterizaban por su forma irregular, ya que eran fabricadas mediante un proceso principalmente manual. La plata era preparada, laminada y posteriormente cortada y acuñada utilizando herramientas de la época. Por esta razón, sus bordes y formas no presentan la uniformidad de las monedas modernas. Estas monedas constituyen una parte fundamental de la historia monetaria de Potosí y permiten comprender la importancia que tuvo la producción de plata de la ciudad dentro de la economía colonial.",
+                modelo: "hombre.glb",
+                fuentes: [
+                    {
+                        texto: "IFINRA — La Casa de Moneda de Potosí y sus monedas de plata",
+                        url: "https://ifinra.org/wp-content/uploads/2025/08/potosi-8-reales-1617-18-stephen.pdf"
+                    },
+                    {
+                        texto: "Casa Nacional de Moneda — Monedas coloniales",
+                        url: "https://www.casanacionaldemoneda.bo/index.html"
+                    }
+                ]
             },
-
-
             {
-
                 id: "sala",
-
                 numero: "02",
-
                 titulo: "Sala",
-
                 tituloSpan: "Histórica",
-
-                descripcion:
-                    "Esta sala permite conocer la historia de la Casa Nacional de Moneda de Potosí, institución estrechamente relacionada con la actividad minera y la producción de monedas. La historia de la Casa está vinculada al desarrollo económico y social de Potosí, especialmente a la explotación de la plata y a la importancia que alcanzó la ciudad durante la época colonial. La actual Casa Nacional de Moneda fue construida entre 1759 y 1773, después de la primera Casa de Moneda de Potosí. En sus instalaciones se desarrollaron diferentes etapas de la producción monetaria y, con el paso del tiempo, la tecnología utilizada para acuñar monedas fue cambiando. Actualmente, el edificio funciona como museo, repositorio cultural y archivo histórico. Sus colecciones permiten acercarse a diferentes períodos de la historia de Potosí y de Bolivia, conservando objetos, documentos, obras de arte, piezas numismáticas y maquinaria relacionada con la acuñación.",
-
-                modelo: "sala.glb"
+                descripcion: "Esta sala permite conocer la historia de la Casa Nacional de Moneda de Potosí, institución estrechamente relacionada con la actividad minera y la producción de monedas. La historia de la Casa está vinculada al desarrollo económico y social de Potosí, especialmente a la explotación de la plata y a la importancia que alcanzó la ciudad durante la época colonial. La actual Casa Nacional de Moneda fue construida entre 1759 y 1773, después de la primera Casa de Moneda de Potosí. En sus instalaciones se desarrollaron diferentes etapas de la producción monetaria y, con el paso del tiempo, la tecnología utilizada para acuñar monedas fue cambiando. Actualmente, el edificio funciona como museo, repositorio cultural y archivo histórico. Sus colecciones permiten acercarse a diferentes períodos de la historia de Potosí y de Bolivia, conservando objetos, documentos, obras de arte, piezas numismáticas y maquinaria relacionada con la acuñación.",
+                modelo: "sala.glb",
+                fuentes: [
+                    {
+                        texto: "Casa Nacional de Moneda — Sitio oficial",
+                        url: "https://casanacionaldemoneda.bo/"
+                    },
+                    {
+                        texto: "Fundación Cultural del Banco Central de Bolivia — Piedra de Agua N.º 31",
+                        url: "https://www.fundacionculturalbcb.gob.bo/documentos/piedra-agua/PiedradeAgua31.pdf"
+                    }
+                ]
             },
-
-
             {
-
                 id: "fundicion",
-
                 numero: "03",
-
                 titulo: "Sala de",
-
                 tituloSpan: "Fundición",
-
-                descripcion:
-                    "La fundición fue una etapa fundamental dentro del proceso relacionado con la producción de monedas. En ella, los metales eran sometidos a procesos de calentamiento para poder ser transformados y posteriormente utilizados en las diferentes etapas de elaboración de las piezas monetarias. En la Casa Nacional de Moneda, estos procesos estuvieron relacionados principalmente con la transformación de la plata proveniente de la actividad minera de Potosí. El tratamiento del metal requería diferentes conocimientos, herramientas y maquinaria, que fueron cambiando con el desarrollo de la tecnología. La producción monetaria también estuvo vinculada al trabajo de numerosas personas que participaban en las diferentes etapas del proceso. Por ello, este espacio permite comprender que detrás de cada moneda existía un complejo sistema de extracción, tratamiento y transformación de los metales. La Casa conserva maquinaria histórica relacionada con estos procesos, constituyendo una parte importante del patrimonio tecnológico y productivo de la antigua ceca potosina.",
-
-                modelo: "fundicion.glb"
+                descripcion: "La fundición fue una etapa fundamental dentro del proceso relacionado con la producción de monedas. En ella, los metales eran sometidos a procesos de calentamiento para poder ser transformados y posteriormente utilizados en las diferentes etapas de elaboración de las piezas monetarias. En la Casa Nacional de Moneda, estos procesos estuvieron relacionados principalmente con la transformación de la plata proveniente de la actividad minera de Potosí. El tratamiento del metal requería diferentes conocimientos, herramientas y maquinaria, que fueron cambiando con el desarrollo de la tecnología. La producción monetaria también estuvo vinculada al trabajo de numerosas personas que participaban en las diferentes etapas del proceso. Por ello, este espacio permite comprender que detrás de cada moneda existía un complejo sistema de extracción, tratamiento y transformación de los metales. La Casa conserva maquinaria histórica relacionada con estos procesos, constituyendo una parte importante del patrimonio tecnológico y productivo de la antigua ceca potosina.",
+                modelo: "fundicion.glb",
+                fuentes: [
+                    {
+                        texto: "Fundación Cultural del Banco Central de Bolivia — Piedra de Agua N.º 31",
+                        url: "https://www.fundacionculturalbcb.gob.bo/documentos/piedra-agua/PiedradeAgua31.pdf"
+                    },
+                    {
+                        texto: "El Potosí — Maquinaria histórica de la Casa Nacional de Moneda",
+                        url: "https://elpotosi.net/cultura/20241128_casa-nacional-de-moneda-desmiente-prestamo-de-maquina-de-acunacion.html"
+                    }
+                ]
             },
-
-
             {
-
                 id: "cuadro",
-
                 numero: "04",
-
                 titulo: "La",
-
                 tituloSpan: "Pinacoteca",
-
-                descripcion:
-                    "La Pinacoteca de la Casa Nacional de Moneda conserva una importante colección de pintura relacionada con la historia artística de Potosí y del periodo colonial. Estas obras forman parte del patrimonio artístico que se ha reunido y conservado dentro de este repositorio cultural. Entre las colecciones destacan obras de reconocidos artistas vinculados con la tradición pictórica potosina, entre ellos Melchor Pérez de Holguín, Luis Niño y Gaspar Miguel de Berrío. También se conservan obras relacionadas con otros períodos de la historia del arte boliviano. La pintura desarrollada en Potosí refleja el encuentro de diferentes tradiciones culturales y religiosas durante el periodo colonial. Por medio de estas obras es posible conocer aspectos de la sociedad, la religión y las expresiones artísticas de diferentes épocas. Actualmente, la pinacoteca constituye una de las colecciones artísticas más importantes que resguarda la Casa Nacional de Moneda y forma parte de su patrimonio cultural.",
-
-                modelo: "cuadro.glb"
+                descripcion: "La Pinacoteca de la Casa Nacional de Moneda conserva una importante colección de pintura relacionada con la historia artística de Potosí y del periodo colonial. Estas obras forman parte del patrimonio artístico que se ha reunido y conservado dentro de este repositorio cultural. Entre las colecciones destacan obras de reconocidos artistas vinculados con la tradición pictórica potosina, entre ellos Melchor Pérez de Holguín, Luis Niño y Gaspar Miguel de Berrío. También se conservan obras relacionadas con otros períodos de la historia del arte boliviano. La pintura desarrollada en Potosí refleja el encuentro de diferentes tradiciones culturales y religiosas durante el periodo colonial. Por medio de estas obras es posible conocer aspectos de la sociedad, la religión y las expresiones artísticas de diferentes épocas. Actualmente, la pinacoteca constituye una de las colecciones artísticas más importantes que resguarda la Casa Nacional de Moneda y forma parte de su patrimonio cultural.",
+                modelo: "cuadro.glb",
+                fuentes: [
+                    {
+                        texto: "Casa Nacional de Moneda — Sitio oficial y patrimonio artístico",
+                        url: "https://casanacionaldemoneda.bo/"
+                    },
+                    {
+                        texto: "Fundación Cultural del Banco Central de Bolivia — Repositorios culturales",
+                        url: "https://fundacionculturalbcb.gob.bo/"
+                    }
+                ]
             },
-
-
             {
-
                 id: "reloj",
-
                 numero: "05",
-
                 titulo: "El",
-
                 tituloSpan: "Reloj",
-
-                descripcion:
-                    "El reloj forma parte de los elementos históricos y arquitectónicos que se encuentran vinculados a la Casa Nacional de Moneda. Dentro de un edificio que durante siglos estuvo relacionado con la producción monetaria, la administración y diferentes actividades económicas de Potosí, estos elementos también forman parte de la memoria material del lugar. La Casa Nacional de Moneda no conserva únicamente monedas y maquinaria. Su patrimonio incluye diferentes objetos, espacios y elementos que permiten comprender la evolución histórica del edificio y las actividades que se desarrollaron en su interior. Este modelo representa uno de esos elementos y permite incorporarlo a la visita virtual para observar parte del patrimonio material asociado a la Casa Nacional de Moneda.",
-
-                modelo: "reloj.glb"
+                descripcion: "El reloj forma parte de los elementos históricos y arquitectónicos que se encuentran vinculados a la Casa Nacional de Moneda. Dentro de un edificio que durante siglos estuvo relacionado con la producción monetaria, la administración y diferentes actividades económicas de Potosí, estos elementos también forman parte de la memoria material del lugar. La Casa Nacional de Moneda no conserva únicamente monedas y maquinaria. Su patrimonio incluye diferentes objetos, espacios y elementos que permiten comprender la evolución histórica del edificio y las actividades que se desarrollaron en su interior. Este modelo representa uno de esos elementos y permite incorporarlo a la visita virtual para observar parte del patrimonio material asociado a la Casa Nacional de Moneda.",
+                modelo: "reloj.glb",
+                fuentes: [
+                    {
+                        texto: "Casa Nacional de Moneda — Sitio oficial",
+                        url: "https://casanacionaldemoneda.bo/"
+                    },
+                    {
+                        texto: "Casa Nacional de Moneda — Catálogo del Archivo Histórico",
+                        url: "https://atom.casanacionaldemoneda.bo/"
+                    }
+                ]
             },
-
-
             {
-
                 id: "catedral",
-
                 numero: "06",
-
                 titulo: "La Catedral de",
-
                 tituloSpan: "Potosí",
-
-                descripcion:
-                    "La Catedral de Potosí forma parte del conjunto histórico y arquitectónico de la ciudad. Su presencia permite relacionar la Casa Nacional de Moneda con el entorno urbano de la antigua Villa Imperial de Potosí, una ciudad que alcanzó gran importancia durante el periodo colonial debido a la actividad minera y a la producción de plata. La Casa Nacional de Moneda se encontraba integrada dentro de este espacio urbano, junto con edificios religiosos, administrativos y otros lugares relacionados con la vida económica y social de la ciudad. La representación tridimensional de la Catedral permite observar uno de los elementos arquitectónicos que forman parte del paisaje histórico de Potosí y ayuda a comprender la relación entre la Casa Nacional de Moneda y el patrimonio arquitectónico de su entorno.",
-
-                modelo: "catedral.glb"
+                descripcion: "La Catedral de Potosí forma parte del conjunto histórico y arquitectónico de la ciudad. Su presencia permite relacionar la Casa Nacional de Moneda con el entorno urbano de la antigua Villa Imperial de Potosí, una ciudad que alcanzó gran importancia durante el periodo colonial debido a la actividad minera y a la producción de plata. La Casa Nacional de Moneda se encontraba integrada dentro de este espacio urbano, junto con edificios religiosos, administrativos y otros lugares relacionados con la vida económica y social de la ciudad. La representación tridimensional de la Catedral permite observar uno de los elementos arquitectónicos que forman parte del paisaje histórico de Potosí y ayuda a comprender la relación entre la Casa Nacional de Moneda y el patrimonio arquitectónico de su entorno.",
+                modelo: "catedral.glb",
+                fuentes: [
+                    {
+                        texto: "Casa Nacional de Moneda — Sitio oficial",
+                        url: "https://casanacionaldemoneda.bo/"
+                    },
+                    {
+                        texto: "Archivo Histórico Nacional — Archivo de la Casa Nacional de Moneda de Potosí",
+                        url: "https://censoarchivos.cultura.gob.es/CensoGuia/fondoDetail.htm?id=1172387"
+                    }
+                ]
             }
-
         ];
 
-
-
-
-
-        /* =====================================================
-           CREAR LAS SECCIONES
-        ===================================================== */
-
-        const espaciosContainer =
-            document.getElementById("espacios");
-
-
+        const espaciosContainer = document.getElementById("espacios");
 
         espacios.forEach((espacio, index) => {
+            const section = document.createElement("section");
+            section.className = "space-section";
+            section.dataset.index = index;
 
-            const section =
-                document.createElement("section");
-
-            section.className =
-                "space-section";
-
-            section.dataset.index =
-                index;
-
-
+            const fuentesHTML = espacio.fuentes.map(fuente => `
+                <a href="${fuente.url}" target="_blank" rel="noopener noreferrer">
+                    ${fuente.texto}
+                </a>
+            `).join("");
 
             section.innerHTML = `
-
                 <div class="space-info">
+                    <div class="space-number">${espacio.numero} / 06</div>
+                    <h2>${espacio.titulo} <span>${espacio.tituloSpan}</span></h2>
+                    <div class="space-line"></div>
+                    <p>${espacio.descripcion}</p>
 
-                    <div class="space-number">
-                        ${espacio.numero} / 06
+                    <div class="space-sources">
+                        <strong>Fuentes consultadas</strong>
+                        ${fuentesHTML}
                     </div>
 
-                    <h2>
-
-                        ${espacio.titulo}
-
-                        <span>
-                            ${espacio.tituloSpan}
-                        </span>
-
-                    </h2>
-
-                    <div class="space-line"></div>
-
-                    <p>
-                        ${espacio.descripcion}
-                    </p>
-
-                    <button
-                        class="explore-button"
-                        onclick="openModal(${index})"
-                    >
-
-                        EXPLORAR EN GRANDE
-
-                        <span class="arrow">
-                            ↗
-                        </span>
-
+                    <button class="explore-button" onclick="openModal(${index})">
+                        EXPLORAR EN GRANDE <span class="arrow">↗</span>
                     </button>
-
                 </div>
-
-
 
                 <div class="space-visual">
+                    <div class="model-container" id="model-${espacio.id}">
+                        <canvas class="model-canvas" id="canvas-${espacio.id}"></canvas>
 
-                    <div
-                        class="model-container"
-                        id="model-${espacio.id}"
-                    >
-
-                        <canvas
-                            class="model-canvas"
-                            id="canvas-${espacio.id}"
-                        ></canvas>
-
-
-
-                        <div
-                            class="model-loading"
-                            id="loading-${espacio.id}"
-                        >
-
+                        <div class="model-loading" id="loading-${espacio.id}">
                             <div class="loader-circle"></div>
-
-                            <div class="loading-text">
-                                Cargando modelo 3D...
-                            </div>
-
+                            <div class="loading-text">Cargando modelo 3D...</div>
                         </div>
 
-
-
-                        <div
-                            class="model-error"
-                            id="error-${espacio.id}"
-                        ></div>
-
+                        <div class="model-error" id="error-${espacio.id}"></div>
                     </div>
-
                 </div>
-
             `;
 
             espaciosContainer.appendChild(section);
-
         });
 
-
-
-
-
-        /* =====================================================
-           CONFIGURACIÓN DEL LOADER
-        ===================================================== */
-
-        const loader =
-            new GLTFLoader();
-
-
-
-        const modelCache =
-            new Map();
-
-
-
-        const miniScenes =
-            new Map();
-
-
-
-
-
-        /* =====================================================
-           PREPARAR MATERIALES
-        ===================================================== */
+        const loader = new GLTFLoader();
+        const modelCache = new Map();
+        const miniScenes = new Map();
 
         function prepararModelo(modelo) {
-
             modelo.traverse((objeto) => {
-
-                if (!objeto.isMesh)
-                    return;
+                if (!objeto.isMesh) return;
 
                 objeto.castShadow = true;
-
                 objeto.receiveShadow = true;
 
                 if (objeto.material) {
-
-                    objeto.material.needsUpdate =
-                        true;
-
+                    objeto.material.needsUpdate = true;
                 }
-
             });
-
         }
 
+        function ajustarModelo(modelo, tamano = 3.2) {
+            const box = new THREE.Box3().setFromObject(modelo);
+            const centro = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
 
+            modelo.position.sub(centro);
 
-
-
-        /* =====================================================
-           CENTRAR Y ESCALAR MODELO
-        ===================================================== */
-
-        function ajustarModelo(
-            modelo,
-            tamano = 3.2
-        ) {
-
-            const box =
-                new THREE.Box3()
-                    .setFromObject(modelo);
-
-
-
-            const centro =
-                box.getCenter(
-                    new THREE.Vector3()
-                );
-
-
-
-            const size =
-                box.getSize(
-                    new THREE.Vector3()
-                );
-
-
-
-            modelo.position.sub(
-                centro
-            );
-
-
-
-            const maxDimension =
-                Math.max(
-                    size.x,
-                    size.y,
-                    size.z
-                );
-
-
+            const maxDimension = Math.max(size.x, size.y, size.z);
 
             if (maxDimension > 0) {
-
-                const escala =
-                    tamano / maxDimension;
-
-                modelo.scale.setScalar(
-                    escala
-                );
-
+                const escala = tamano / maxDimension;
+                modelo.scale.setScalar(escala);
             }
 
+            const boxFinal = new THREE.Box3().setFromObject(modelo);
+            const centroFinal = boxFinal.getCenter(new THREE.Vector3());
 
-
-            const boxFinal =
-                new THREE.Box3()
-                    .setFromObject(modelo);
-
-
-
-            const centroFinal =
-                boxFinal.getCenter(
-                    new THREE.Vector3()
-                );
-
-
-
-            modelo.position.sub(
-                centroFinal
-            );
-
+            modelo.position.sub(centroFinal);
         }
-
-
-
-
-
-        /* =====================================================
-           CARGAR GLB
-        ===================================================== */
 
         function cargarModelo(ruta) {
-
-            return new Promise(
-                (resolve, reject) => {
-
-                    if (
-                        modelCache.has(ruta)
-                    ) {
-
-                        const original =
-                            modelCache.get(ruta);
-
-                        resolve(
-                            original.clone(true)
-                        );
-
-                        return;
-
-                    }
-
-
-
-                    console.log(
-                        "🟡 Cargando modelo:",
-                        ruta
-                    );
-
-
-
-                    loader.load(
-
-                        ruta,
-
-                        (gltf) => {
-
-                            console.log(
-                                "🟢 Modelo cargado correctamente:",
-                                ruta
-                            );
-
-
-
-                            const modelo =
-                                gltf.scene;
-
-
-
-                            prepararModelo(
-                                modelo
-                            );
-
-
-
-                            modelCache.set(
-                                ruta,
-                                modelo
-                            );
-
-
-
-                            resolve(
-                                modelo.clone(true)
-                            );
-
-                        },
-
-
-
-                        (xhr) => {
-
-                            if (xhr.total) {
-
-                                const porcentaje =
-                                    (
-                                        xhr.loaded /
-                                        xhr.total
-                                    ) * 100;
-
-
-
-                                console.log(
-                                    `📦 ${ruta}: ${porcentaje.toFixed(0)}%`
-                                );
-
-                            } else {
-
-                                console.log(
-                                    `📦 Descargando ${ruta}...`
-                                );
-
-                            }
-
-                        },
-
-
-
-                        (error) => {
-
-                            console.error(
-                                "🔴 ERROR cargando:",
-                                ruta,
-                                error
-                            );
-
-
-
-                            reject(error);
-
-                        }
-
-                    );
-
+            return new Promise((resolve, reject) => {
+                if (modelCache.has(ruta)) {
+                    resolve(modelCache.get(ruta).clone(true));
+                    return;
                 }
 
-            );
-
-        }
-
-
-
-
-
-        /* =====================================================
-           CREAR ESCENA 3D PEQUEÑA
-        ===================================================== */
-
-        async function crearMiniModelo(
-            espacio
-        ) {
-
-            const canvas =
-                document.getElementById(
-                    `canvas-${espacio.id}`
-                );
-
-
-
-            const loading =
-                document.getElementById(
-                    `loading-${espacio.id}`
-                );
-
-
-
-            const errorBox =
-                document.getElementById(
-                    `error-${espacio.id}`
-                );
-
-
-
-            if (!canvas)
-                return;
-
-
-
-            if (
-                miniScenes.has(
-                    espacio.id
-                )
-            ) {
-
-                return;
-
-            }
-
-
-
-            const container =
-                document.getElementById(
-                    `model-${espacio.id}`
-                );
-
-
-
-
-
-            /* =================================================
-               ESCENA
-            ================================================= */
-
-            const scene =
-                new THREE.Scene();
-
-
-
-            scene.background =
-                new THREE.Color(
-                    0x071713
-                );
-
-
-
-
-
-            /* =================================================
-               CÁMARA
-            ================================================= */
-
-            const camera =
-                new THREE.PerspectiveCamera(
-
-                    35,
-
-                    container.clientWidth /
-                    container.clientHeight,
-
-                    0.01,
-
-                    1000
-
-                );
-
-
-
-            camera.position.set(
-                0,
-                0.15,
-                5.5
-            );
-
-
-
-
-
-            /* =================================================
-               RENDERER
-            ================================================= */
-
-            const renderer =
-                new THREE.WebGLRenderer({
-
-                    canvas: canvas,
-
-                    antialias: true,
-
-                    alpha: false,
-
-                    powerPreference:
-                        "high-performance"
-
-                });
-
-
-
-            renderer.setPixelRatio(
-
-                Math.min(
-
-                    window.devicePixelRatio,
-
-                    1.7
-
-                )
-
-            );
-
-
-
-            renderer.setSize(
-
-                container.clientWidth,
-
-                container.clientHeight,
-
-                false
-
-            );
-
-
-
-            renderer.outputColorSpace =
-                THREE.SRGBColorSpace;
-
-
-
-            renderer.toneMapping =
-                THREE.ACESFilmicToneMapping;
-
-
-
-            renderer.toneMappingExposure =
-                1.15;
-
-
-
-
-
-            /* =================================================
-               LUCES
-            ================================================= */
-
-            const ambient =
-                new THREE.AmbientLight(
-                    0xffffff,
-                    2.2
-                );
-
-            scene.add(ambient);
-
-
-
-            const keyLight =
-                new THREE.DirectionalLight(
-                    0xfff0c8,
-                    3.2
-                );
-
-            keyLight.position.set(
-                4,
-                7,
-                5
-            );
-
-            scene.add(keyLight);
-
-
-
-            const fillLight =
-                new THREE.DirectionalLight(
-                    0x78b9a1,
-                    1.8
-                );
-
-            fillLight.position.set(
-                -5,
-                2,
-                3
-            );
-
-            scene.add(fillLight);
-
-
-
-            const rimLight =
-                new THREE.PointLight(
-                    0xd5b05c,
-                    3,
-                    15
-                );
-
-            rimLight.position.set(
-                0,
-                4,
-                -3
-            );
-
-            scene.add(rimLight);
-
-
-
-
-
-            /* =================================================
-               CONTROLES
-            ================================================= */
-
-            const controls =
-                new OrbitControls(
-                    camera,
-                    renderer.domElement
-                );
-
-
-
-            controls.enableDamping =
-                true;
-
-
-
-            controls.dampingFactor =
-                0.06;
-
-
-
-            controls.enablePan =
-                false;
-
-
-
-            controls.minDistance =
-                2.5;
-
-
-
-            controls.maxDistance =
-                9;
-
-
-
-            /* ROTACIÓN AUTOMÁTICA */
-
-            controls.autoRotate =
-                true;
-
-
-
-            controls.autoRotateSpeed =
-                1.8;
-
-
-
-
-
-            /* =================================================
-               CARGAR MODELO
-            ================================================= */
-
-            try {
-
-                const modelo =
-                    await cargarModelo(
-                        espacio.modelo
-                    );
-
-
-
-                ajustarModelo(
-                    modelo,
-                    3.5
-                );
-
-
-
-                scene.add(
-                    modelo
-                );
-
-
-
-                miniScenes.set(
-                    espacio.id,
-                    {
-                        scene,
-                        camera,
-                        renderer,
-                        controls,
-                        modelo
+                loader.load(
+                    ruta,
+                    (gltf) => {
+                        const modelo = gltf.scene;
+
+                        prepararModelo(modelo);
+                        modelCache.set(ruta, modelo);
+
+                        resolve(modelo.clone(true));
+                    },
+                    (xhr) => {},
+                    (error) => {
+                        reject(error);
                     }
                 );
+            });
+        }
 
+        async function crearMiniModelo(espacio) {
+            const canvas = document.getElementById(`canvas-${espacio.id}`);
+            const loading = document.getElementById(`loading-${espacio.id}`);
+            const errorBox = document.getElementById(`error-${espacio.id}`);
 
+            if (!canvas) return;
+            if (miniScenes.has(espacio.id)) return;
 
-                loading.classList.add(
-                    "hidden"
-                );
+            const container = document.getElementById(`model-${espacio.id}`);
 
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x071713);
 
+            const camera = new THREE.PerspectiveCamera(
+                35,
+                container.clientWidth / container.clientHeight,
+                0.01,
+                1000
+            );
+
+            camera.position.set(0, 0.15, 5.5);
+
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: false,
+                powerPreference: "high-performance"
+            });
+
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
+            renderer.setSize(container.clientWidth, container.clientHeight, false);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.15;
+
+            scene.add(new THREE.AmbientLight(0xffffff, 2.2));
+
+            const keyLight = new THREE.DirectionalLight(0xfff0c8, 3.2);
+            keyLight.position.set(4, 7, 5);
+            scene.add(keyLight);
+
+            const fillLight = new THREE.DirectionalLight(0x78b9a1, 1.8);
+            fillLight.position.set(-5, 2, 3);
+            scene.add(fillLight);
+
+            const rimLight = new THREE.PointLight(0xd5b05c, 3, 15);
+            rimLight.position.set(0, 4, -3);
+            scene.add(rimLight);
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.06;
+            controls.enablePan = false;
+            controls.minDistance = 2.5;
+            controls.maxDistance = 9;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.8;
+
+            try {
+                const modelo = await cargarModelo(espacio.modelo);
+
+                ajustarModelo(modelo, 3.5);
+                scene.add(modelo);
+
+                miniScenes.set(espacio.id, {
+                    scene,
+                    camera,
+                    renderer,
+                    controls,
+                    modelo
+                });
+
+                loading.classList.add("hidden");
 
                 setTimeout(() => {
-
-                    loading.style.display =
-                        "none";
-
+                    loading.style.display = "none";
                 }, 400);
-
-
-
-                console.log(
-                    `✅ ${espacio.modelo} visible`
-                );
-
-
 
                 let tiempo = 0;
 
-
-
                 function animate() {
-
-                    requestAnimationFrame(
-                        animate
-                    );
-
-
+                    requestAnimationFrame(animate);
 
                     tiempo += 0.01;
-
-
-
-                    modelo.position.y =
-                        Math.sin(tiempo) *
-                        0.025;
-
-
+                    modelo.position.y = Math.sin(tiempo) * 0.025;
 
                     controls.update();
-
-
-
-                    renderer.render(
-                        scene,
-                        camera
-                    );
-
+                    renderer.render(scene, camera);
                 }
-
-
 
                 animate();
 
+                const resize = () => {
+                    const width = container.clientWidth;
+                    const height = container.clientHeight;
 
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
 
+                    renderer.setSize(width, height, false);
+                };
 
-
-                /* =================================================
-                   RESIZE
-                ================================================= */
-
-                const resize =
-                    () => {
-
-                        const width =
-                            container.clientWidth;
-
-
-
-                        const height =
-                            container.clientHeight;
-
-
-
-                        camera.aspect =
-                            width / height;
-
-
-
-                        camera.updateProjectionMatrix();
-
-
-
-                        renderer.setSize(
-                            width,
-                            height,
-                            false
-                        );
-
-                    };
-
-
-
-                window.addEventListener(
-                    "resize",
-                    resize
-                );
-
-
-
+                window.addEventListener("resize", resize);
                 resize();
 
-
-
             } catch (error) {
-
-                loading.style.display =
-                    "none";
-
-
+                loading.style.display = "none";
 
                 errorBox.innerHTML = `
-
-                    <strong>
-                        No se pudo cargar el modelo
-                    </strong>
-
+                    <strong>No se pudo cargar el modelo</strong>
                     <small>
-
-                        Archivo:
-
-                        <br>
-
-                        <b>
-                            ${espacio.modelo}
-                        </b>
-
-                        <br><br>
-
-                        Revisa que el archivo .glb
-                        esté en la misma carpeta
-                        que espacios.html.
-
+                        Archivo:<br>
+                        <b>${espacio.modelo}</b><br><br>
+                        Revisa que el archivo .glb esté en la misma carpeta que espacios.html.
                     </small>
-
                 `;
 
-
-
-                errorBox.classList.add(
-                    "visible"
-                );
-
+                errorBox.classList.add("visible");
             }
-
         }
 
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const index = Number(entry.target.dataset.index);
 
-
-
-
-        /* =====================================================
-           CARGA LA SECCIÓN CUANDO SE ACERCA
-        ===================================================== */
-
-        const observer =
-            new IntersectionObserver(
-
-                (entries) => {
-
-                    entries.forEach(
-                        (entry) => {
-
-                            if (
-                                entry.isIntersecting
-                            ) {
-
-                                const index =
-                                    Number(
-                                        entry.target
-                                            .dataset.index
-                                    );
-
-
-
-                                const espacio =
-                                    espacios[index];
-
-
-
-                                crearMiniModelo(
-                                    espacio
-                                );
-
-
-
-                                observer.unobserve(
-                                    entry.target
-                                );
-
-                            }
-
-                        }
-                    );
-
-                },
-
-                {
-
-                    rootMargin:
-                        "700px 0px 700px 0px",
-
-                    threshold:
-                        0.01
-
+                    crearMiniModelo(espacios[index]);
+                    observer.unobserve(entry.target);
                 }
+            });
+        }, {
+            rootMargin: "700px 0px 700px 0px",
+            threshold: 0.01
+        });
 
-            );
-
-
-
-
-
-        document
-            .querySelectorAll(
-                ".space-section"
-            )
-            .forEach(
-                (section) => {
-
-                    observer.observe(
-                        section
-                    );
-
-                }
-            );
-
-
-
-
-
-        /* =====================================================
-           VARIABLES DEL MODAL
-        ===================================================== */
+        document.querySelectorAll(".space-section").forEach((section) => {
+            observer.observe(section);
+        });
 
         let modalRenderer = null;
-
         let modalCamera = null;
-
         let modalControls = null;
-
         let modalScene = null;
-
         let modalModel = null;
-
         let modalAnimationId = null;
 
+        window.openModal = async function(index) {
+            const espacio = espacios[index];
 
+            const modal = document.getElementById("modelModal");
+            const title = document.getElementById("modalTitle");
+            const container = document.getElementById("modal-canvas-container");
 
+            title.textContent = espacio.titulo + " " + espacio.tituloSpan;
 
+            modal.classList.add("open");
+            document.body.classList.add("modal-open");
 
-        /* =====================================================
-           ABRIR MODAL
-        ===================================================== */
+            limpiarModal();
 
-        window.openModal =
-            async function(index) {
+            modalScene = new THREE.Scene();
+            modalScene.background = new THREE.Color(0x061511);
 
-                const espacio =
-                    espacios[index];
-
-
-
-                const modal =
-                    document.getElementById(
-                        "modelModal"
-                    );
-
-
-
-                const title =
-                    document.getElementById(
-                        "modalTitle"
-                    );
-
-
-
-                const container =
-                    document.getElementById(
-                        "modal-canvas-container"
-                    );
-
-
-
-                title.textContent =
-                    espacio.titulo
-                    + " "
-                    + espacio.tituloSpan;
-
-
-
-                modal.classList.add(
-                    "open"
-                );
-
-
-
-                document.body.classList.add(
-                    "modal-open"
-                );
-
-
-
-                limpiarModal();
-
-
-
-
-
-                /* =================================================
-                   CREAR ESCENA
-                ================================================= */
-
-                modalScene =
-                    new THREE.Scene();
-
-
-
-                modalScene.background =
-                    new THREE.Color(
-                        0x061511
-                    );
-
-
-
-
-
-                /* =================================================
-                   CÁMARA
-                ================================================= */
-
-                modalCamera =
-                    new THREE.PerspectiveCamera(
-
-                        38,
-
-                        container.clientWidth /
-                        container.clientHeight,
-
-                        0.01,
-
-                        1000
-
-                    );
-
-
-
-                modalCamera.position.set(
-                    0,
-                    0.2,
-                    6
-                );
-
-
-
-
-
-                /* =================================================
-                   RENDERER
-                ================================================= */
-
-                modalRenderer =
-                    new THREE.WebGLRenderer({
-
-                        antialias: true,
-
-                        alpha: false,
-
-                        powerPreference:
-                            "high-performance"
-
-                    });
-
-
-
-                modalRenderer.setPixelRatio(
-
-                    Math.min(
-
-                        window.devicePixelRatio,
-
-                        2
-
-                    )
-
-                );
-
-
-
-                modalRenderer.setSize(
-
-                    container.clientWidth,
-
-                    container.clientHeight
-
-                );
-
-
-
-                modalRenderer.outputColorSpace =
-                    THREE.SRGBColorSpace;
-
-
-
-                modalRenderer.toneMapping =
-                    THREE.ACESFilmicToneMapping;
-
-
-
-                modalRenderer.toneMappingExposure =
-                    1.2;
-
-
-
-                container.appendChild(
-                    modalRenderer.domElement
-                );
-
-
-
-
-
-                /* =================================================
-                   LUCES
-                ================================================= */
-
-                modalScene.add(
-                    new THREE.AmbientLight(
-                        0xffffff,
-                        2.5
-                    )
-                );
-
-
-
-                const modalKey =
-                    new THREE.DirectionalLight(
-                        0xffefc7,
-                        4
-                    );
-
-
-
-                modalKey.position.set(
-                    5,
-                    8,
-                    6
-                );
-
-
-
-                modalScene.add(
-                    modalKey
-                );
-
-
-
-                const modalFill =
-                    new THREE.DirectionalLight(
-                        0x75b59d,
-                        2
-                    );
-
-
-
-                modalFill.position.set(
-                    -5,
-                    3,
-                    4
-                );
-
-
-
-                modalScene.add(
-                    modalFill
-                );
-
-
-
-                const modalRim =
-                    new THREE.PointLight(
-                        0xd9b45f,
-                        4,
-                        20
-                    );
-
-
-
-                modalRim.position.set(
-                    0,
-                    5,
-                    -5
-                );
-
-
-
-                modalScene.add(
-                    modalRim
-                );
-
-
-
-
-
-                /* =================================================
-                   CONTROLES DEL MODAL
-                ================================================= */
-
-                modalControls =
-                    new OrbitControls(
-                        modalCamera,
-                        modalRenderer.domElement
-                    );
-
-
-
-                modalControls.enableDamping =
-                    true;
-
-
-
-                modalControls.dampingFactor =
-                    0.05;
-
-
-
-                modalControls.enablePan =
-                    false;
-
-
-
-                modalControls.minDistance =
-                    1.5;
-
-
-
-                modalControls.maxDistance =
-                    12;
-
-
-
-                /* ROTACIÓN AUTOMÁTICA DEL MODELO GRANDE */
-
-                modalControls.autoRotate =
-                    true;
-
-
-
-                modalControls.autoRotateSpeed =
-                    2.2;
-
-
-
-
-
-                /* =================================================
-                   INDICADOR DE CARGA
-                ================================================= */
-
-                const loading =
-                    document.createElement(
-                        "div"
-                    );
-
-
-
-                loading.className =
-                    "model-loading";
-
-
-
-                loading.innerHTML = `
-
-                    <div class="loader-circle"></div>
-
-                    <div class="loading-text">
-                        Cargando modelo 3D...
-                    </div>
-
-                `;
-
-
-
-                container.appendChild(
-                    loading
-                );
-
-
-
-
-
-                try {
-
-                    modalModel =
-                        await cargarModelo(
-                            espacio.modelo
-                        );
-
-
-
-                    ajustarModelo(
-                        modalModel,
-                        4.2
-                    );
-
-
-
-                    modalScene.add(
-                        modalModel
-                    );
-
-
-
-                    loading.remove();
-
-
-
-
-
-                    /* =================================================
-                       RENDERIZADO
-                    ================================================= */
-
-                    function animateModal() {
-
-                        modalAnimationId =
-                            requestAnimationFrame(
-                                animateModal
-                            );
-
-
-
-                        modalControls.update();
-
-
-
-                        modalRenderer.render(
-                            modalScene,
-                            modalCamera
-                        );
-
-                    }
-
-
-
-                    animateModal();
-
-
-
-                    setTimeout(
-                        ajustarModal,
-                        50
-                    );
-
-
-
-                } catch (error) {
-
-                    loading.innerHTML = `
-
-                        <div style="
-                            color:#d6b878;
-                            max-width:400px;
-                            line-height:1.7;
-                        ">
-
-                            <strong>
-                                No se pudo cargar el modelo
-                            </strong>
-
-                            <br><br>
-
-                            ${espacio.modelo}
-
-                            <br><br>
-
-                            <small style="
-                                color:#92988d;
-                            ">
-
-                                Revisa que el archivo
-                                exista y que GitHub Pages
-                                esté entregando el archivo
-                                GLB correctamente.
-
-                            </small>
-
-                        </div>
-
-                    `;
-
-                }
-
-            };
-
-
-
-
-
-        /* =====================================================
-           AJUSTAR MODAL
-        ===================================================== */
-
-        function ajustarModal() {
-
-            const container =
-                document.getElementById(
-                    "modal-canvas-container"
-                );
-
-
-
-            if (
-                !modalRenderer ||
-                !modalCamera
-            ) {
-
-                return;
-
-            }
-
-
-
-            const width =
-                container.clientWidth;
-
-
-
-            const height =
-                container.clientHeight;
-
-
-
-            modalCamera.aspect =
-                width / height;
-
-
-
-            modalCamera.updateProjectionMatrix();
-
-
-
-            modalRenderer.setSize(
-                width,
-                height
+            modalCamera = new THREE.PerspectiveCamera(
+                38,
+                container.clientWidth / container.clientHeight,
+                0.01,
+                1000
             );
 
-        }
+            modalCamera.position.set(0, 0.2, 6);
 
+            modalRenderer = new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: false,
+                powerPreference: "high-performance"
+            });
 
+            modalRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            modalRenderer.setSize(container.clientWidth, container.clientHeight);
+            modalRenderer.outputColorSpace = THREE.SRGBColorSpace;
+            modalRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+            modalRenderer.toneMappingExposure = 1.2;
 
-        window.addEventListener(
-            "resize",
-            ajustarModal
-        );
+            container.appendChild(modalRenderer.domElement);
 
+            modalScene.add(new THREE.AmbientLight(0xffffff, 2.5));
 
+            const modalKey = new THREE.DirectionalLight(0xffefc7, 4);
+            modalKey.position.set(5, 8, 6);
+            modalScene.add(modalKey);
 
+            const modalFill = new THREE.DirectionalLight(0x75b59d, 2);
+            modalFill.position.set(-5, 3, 4);
+            modalScene.add(modalFill);
 
+            const modalRim = new THREE.PointLight(0xd9b45f, 4, 20);
+            modalRim.position.set(0, 5, -5);
+            modalScene.add(modalRim);
 
-        /* =====================================================
-           CERRAR MODAL
-        ===================================================== */
+            modalControls = new OrbitControls(modalCamera, modalRenderer.domElement);
 
-        window.closeModal =
-            function() {
+            modalControls.enableDamping = true;
+            modalControls.dampingFactor = 0.05;
+            modalControls.enablePan = false;
+            modalControls.minDistance = 1.5;
+            modalControls.maxDistance = 12;
+            modalControls.autoRotate = true;
+            modalControls.autoRotateSpeed = 2.2;
 
-                const modal =
-                    document.getElementById(
-                        "modelModal"
-                    );
+            const loading = document.createElement("div");
 
+            loading.className = "model-loading";
 
+            loading.innerHTML = `
+                <div class="loader-circle"></div>
+                <div class="loading-text">Cargando modelo 3D...</div>
+            `;
 
-                modal.classList.remove(
-                    "open"
-                );
+            container.appendChild(loading);
 
+            try {
+                modalModel = await cargarModelo(espacio.modelo);
 
+                ajustarModelo(modalModel, 4.2);
+                modalScene.add(modalModel);
 
-                document.body.classList.remove(
-                    "modal-open"
-                );
+                loading.remove();
 
+                function animateModal() {
+                    modalAnimationId = requestAnimationFrame(animateModal);
 
-
-                limpiarModal();
-
-            };
-
-
-
-
-
-        /* =====================================================
-           LIMPIAR MODAL
-        ===================================================== */
-
-        function limpiarModal() {
-
-            if (
-                modalAnimationId
-            ) {
-
-                cancelAnimationFrame(
-                    modalAnimationId
-                );
-
-
-
-                modalAnimationId =
-                    null;
-
-            }
-
-
-
-            if (
-                modalControls
-            ) {
-
-                modalControls.dispose();
-
-                modalControls =
-                    null;
-
-            }
-
-
-
-            if (
-                modalModel
-            ) {
-
-                if (
-                    modalScene
-                ) {
-
-                    modalScene.remove(
-                        modalModel
-                    );
-
+                    modalControls.update();
+                    modalRenderer.render(modalScene, modalCamera);
                 }
 
-                modalModel =
-                    null;
+                animateModal();
 
+                setTimeout(ajustarModal, 50);
+
+            } catch (error) {
+                loading.innerHTML = `
+                    <div style="color:#d6b878;max-width:400px;line-height:1.7;">
+                        <strong>No se pudo cargar el modelo</strong><br><br>
+                        ${espacio.modelo}<br><br>
+                        <small style="color:#92988d;">
+                            Revisa que el archivo exista y que GitHub Pages esté entregando el archivo GLB correctamente.
+                        </small>
+                    </div>
+                `;
+            }
+        };
+
+        function ajustarModal() {
+            const container = document.getElementById("modal-canvas-container");
+
+            if (!modalRenderer || !modalCamera) return;
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            modalCamera.aspect = width / height;
+            modalCamera.updateProjectionMatrix();
+
+            modalRenderer.setSize(width, height);
+        }
+
+        window.addEventListener("resize", ajustarModal);
+
+        window.closeModal = function() {
+            document.getElementById("modelModal").classList.remove("open");
+            document.body.classList.remove("modal-open");
+
+            limpiarModal();
+        };
+
+        function limpiarModal() {
+            if (modalAnimationId) {
+                cancelAnimationFrame(modalAnimationId);
+                modalAnimationId = null;
             }
 
+            if (modalControls) {
+                modalControls.dispose();
+                modalControls = null;
+            }
 
+            if (modalModel) {
+                if (modalScene) {
+                    modalScene.remove(modalModel);
+                }
 
-            if (
-                modalRenderer
-            ) {
+                modalModel = null;
+            }
 
+            if (modalRenderer) {
                 modalRenderer.dispose();
-
-
 
                 if (
                     modalRenderer.domElement &&
                     modalRenderer.domElement.parentNode
                 ) {
-
-                    modalRenderer.domElement
-                        .parentNode
-                        .removeChild(
-                            modalRenderer.domElement
-                        );
-
+                    modalRenderer.domElement.parentNode.removeChild(
+                        modalRenderer.domElement
+                    );
                 }
 
-
-
-                modalRenderer =
-                    null;
-
+                modalRenderer = null;
             }
 
+            modalScene = null;
 
-
-            modalScene =
-                null;
-
-
-
-            const container =
-                document.getElementById(
-                    "modal-canvas-container"
-                );
-
-
+            const container = document.getElementById("modal-canvas-container");
 
             if (container) {
-
-                container.innerHTML =
-                    "";
-
+                container.innerHTML = "";
             }
-
         }
 
-
-
-
-
-        /* =====================================================
-           CERRAR CON ESC
-        ===================================================== */
-
-        document.addEventListener(
-            "keydown",
-            (event) => {
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    closeModal();
-
-                }
-
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeModal();
             }
-        );
+        });
 
-
-
-
-
-        /* =====================================================
-           CERRAR AL HACER CLICK FUERA
-        ===================================================== */
-
-        document
-            .getElementById(
-                "modelModal"
-            )
-            .addEventListener(
-                "click",
-                (event) => {
-
-                    if (
-                        event.target.id ===
-                        "modelModal"
-                    ) {
-
-                        closeModal();
-
-                    }
-
-                }
-            );
-
-
-
-
-
-        /* =====================================================
-           MENSAJES DE DIAGNÓSTICO
-        ===================================================== */
-
-        console.log(
-            "🏛️ Casa Nacional de la Moneda"
-        );
-
-        console.log(
-            "🟢 Sistema de modelos 3D iniciado"
-        );
-
-        console.log(
-            "🔄 Rotación automática activada"
-        );
-
-        console.log(
-            "📁 Modelos configurados:"
-        );
-
-
-
-        espacios.forEach(
-            (espacio) => {
-
-                console.log(
-                    "   →",
-                    espacio.modelo
-                );
-
+        document.getElementById("modelModal").addEventListener("click", (event) => {
+            if (event.target.id === "modelModal") {
+                closeModal();
             }
-        );
-
+        });
     </script>
 
 </body>
-
 </html>

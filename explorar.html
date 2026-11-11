@@ -1,0 +1,710 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recorrido 3D | Casa Nacional de Moneda</title>
+<link rel="icon" type="image/png" href="img/cara.png">
+    <link rel="stylesheet" href="css/estilo.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #071713;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #recorridoCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 1;
+        }
+
+        /* ENCABEZADO */
+
+        .recorrido-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 20;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 30px;
+
+            background: rgba(7, 23, 19, 0.90);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.55);
+            backdrop-filter: blur(8px);
+        }
+
+        .recorrido-marca {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+        }
+
+        .recorrido-marca img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .recorrido-header h1 {
+            margin: 0;
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: 19px;
+            letter-spacing: 1px;
+        }
+
+        .volver {
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid #D4AF37;
+            padding: 10px 16px;
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+
+        .volver:hover {
+            background: #D4AF37;
+            color: #071713;
+        }
+
+        /* BIENVENIDA */
+
+        .pantalla-inicio {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+            background: rgba(4, 14, 12, 0.80);
+            text-align: center;
+        }
+
+        .panel-inicio {
+            width: 100%;
+            max-width: 650px;
+            padding: 45px 35px;
+
+            background: rgba(7, 23, 19, 0.97);
+            border: 1px solid rgba(212, 175, 55, 0.8);
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .icono-inicio {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .panel-inicio h2 {
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(25px, 4vw, 38px);
+            margin: 0 0 15px;
+        }
+
+        .panel-inicio p {
+            color: #eee;
+            line-height: 1.8;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .btn-iniciar {
+            padding: 15px 35px;
+            background: #D4AF37;
+            color: #071713;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-iniciar:hover {
+            background: #f0d477;
+            transform: translateY(-2px);
+        }
+
+        #mensajeError {
+            color: #ffb5a9;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        /* MENSAJE SUPERIOR */
+
+        .mensaje-centro {
+            position: fixed;
+            z-index: 4;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            padding: 10px 18px;
+            color: #fff;
+            background: rgba(7, 23, 19, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.55);
+
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* CONTROLES */
+
+        .controles {
+            position: fixed;
+            z-index: 4;
+            left: 20px;
+            bottom: 20px;
+
+            padding: 15px 18px;
+            color: #fff;
+            background: rgba(7, 23, 19, 0.90);
+            border-left: 3px solid #D4AF37;
+
+            font-size: 11px;
+            line-height: 1.9;
+            pointer-events: none;
+        }
+
+        .controles strong {
+            color: #D4AF37;
+        }
+
+        /* REPRODUCTOR MUSICAL */
+
+        .reproductor {
+            position: fixed;
+            z-index: 25;
+            right: 20px;
+            bottom: 20px;
+
+            width: 285px;
+            padding: 15px;
+
+            color: white;
+            background: rgba(7, 23, 19, 0.97);
+            border: 1px solid rgba(212, 175, 55, 0.65);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.35);
+
+            pointer-events: auto;
+        }
+
+        .reproductor-titulo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .reproductor-icono {
+            font-size: 25px;
+        }
+
+        .reproductor-titulo strong {
+            display: block;
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+        }
+
+        .reproductor-titulo small {
+            color: #ddd;
+            font-size: 10px;
+        }
+
+        .audio-botones {
+            display: flex;
+            gap: 7px;
+            margin-bottom: 12px;
+        }
+
+        .audio-botones button {
+            flex: 1;
+            padding: 8px 5px;
+            background: #4A5D5A;
+            color: white;
+            border: 1px solid #D4AF37;
+            cursor: pointer;
+            font-size: 11px;
+            transition: 0.2s;
+        }
+
+        .audio-botones button:hover {
+            background: #D4AF37;
+            color: #071713;
+        }
+
+        .volumen-contenedor {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 11px;
+        }
+
+        .volumen-contenedor input {
+            width: 100%;
+            accent-color: #D4AF37;
+            cursor: pointer;
+        }
+
+        .audio-estado {
+            color: #ddd;
+            font-size: 10px;
+            margin-top: 8px;
+        }
+
+        /* FUENTE MUSICAL */
+
+        .credito-musical {
+            display: block;
+            margin-top: 9px;
+            color: #d9d0b8;
+            font-size: 9px;
+            line-height: 1.5;
+            text-decoration: none;
+        }
+
+        .credito-musical a {
+            color: #e9ca68;
+            text-decoration: underline;
+        }
+
+        .credito-musical a:hover {
+            color: #fff;
+        }
+
+        /* CONTROL DE ILUMINACIÓN */
+
+        .control-iluminacion {
+            margin-top: 13px;
+            padding-top: 11px;
+            border-top: 1px solid rgba(212, 175, 55, 0.35);
+        }
+
+        .iluminacion-titulo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 7px;
+            color: #D4AF37;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .iluminacion-titulo span:last-child {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .control-iluminacion input {
+            width: 100%;
+            accent-color: #D4AF37;
+            cursor: pointer;
+        }
+
+        /* BOTÓN PANTALLA COMPLETA */
+
+        .boton-pantalla-completa {
+            width: 100%;
+            margin-top: 11px;
+            padding: 9px;
+
+            color: #071713;
+            background: #D4AF37;
+            border: 1px solid #D4AF37;
+
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .boton-pantalla-completa:hover {
+            background: #f0d477;
+        }
+
+        /* VENTANA DE INFORMACIÓN */
+
+        .modal-info {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.78);
+        }
+
+        .modal-contenido {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            max-height: 82vh;
+            overflow-y: auto;
+
+            padding: 35px;
+
+            color: #eee;
+            background: #0b211b;
+            border: 1px solid #D4AF37;
+            box-shadow: 0 0 35px rgba(0,0,0,0.6);
+        }
+
+        .modal-contenido h2 {
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: 25px;
+            margin: 0 35px 20px 0;
+        }
+
+        .modal-contenido h3 {
+            color: #D4AF37;
+            font-size: 15px;
+            margin-top: 22px;
+        }
+
+        .modal-contenido p,
+        .modal-contenido li {
+            color: #e8e8e8;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .modal-contenido ul {
+            padding-left: 20px;
+        }
+
+        .modal-contenido a {
+            color: #e9ca68;
+        }
+
+        .modal-fuente {
+            margin-top: 22px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212,175,55,0.4);
+            font-size: 11px;
+        }
+
+        .modal-cerrar {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+
+            width: 35px;
+            height: 35px;
+
+            color: #D4AF37;
+            background: transparent;
+            border: 1px solid #D4AF37;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-cerrar:hover {
+            background: #D4AF37;
+            color: #071713;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 600px) {
+
+            .recorrido-header {
+                padding: 14px;
+            }
+
+            .recorrido-marca {
+                gap: 8px;
+            }
+
+            .recorrido-marca img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .recorrido-header h1 {
+                font-size: 10px;
+            }
+
+            .volver {
+                font-size: 9px;
+                padding: 8px;
+            }
+
+            .panel-inicio {
+                padding: 30px 20px;
+            }
+
+            .panel-inicio p {
+                font-size: 12px;
+            }
+
+            .controles {
+                left: 10px;
+                bottom: 10px;
+                font-size: 9px;
+            }
+
+            .reproductor {
+                right: 10px;
+                bottom: 10px;
+                width: 220px;
+                padding: 10px;
+            }
+
+            .mensaje-centro {
+                top: 70px;
+                font-size: 9px;
+            }
+
+            .modal-contenido {
+                padding: 25px 20px;
+            }
+
+            .modal-contenido h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+
+    <header class="recorrido-header">
+
+        <div class="recorrido-marca">
+
+            <img
+                src="img/cara.png"
+                alt="Casa Nacional de Moneda"
+            >
+
+            <h1>CASA NACIONAL DE MONEDA</h1>
+
+        </div>
+
+        <a href="index.html" class="volver">
+            VOLVER AL INICIO
+        </a>
+
+    </header>
+
+    <!-- ESCENA 3D -->
+
+    <canvas id="recorridoCanvas"></canvas>
+
+    <!-- BIENVENIDA -->
+
+    <div class="pantalla-inicio" id="pantallaInicio">
+
+        <div class="panel-inicio">
+
+            <div class="icono-inicio">🏛️</div>
+
+            <h2>Recorrido Virtual 3D</h2>
+
+            <p>
+                Le damos la bienvenida a la Casa Nacional de Moneda
+                de Potosí. Explore su arquitectura, conozca algunos
+                de sus elementos históricos y descubra el valor
+                cultural de este importante patrimonio.
+            </p>
+
+            <button class="btn-iniciar" id="btnIniciar">
+                INICIAR RECORRIDO
+            </button>
+
+            <div id="mensajeError"></div>
+
+        </div>
+
+    </div>
+
+    <!-- IDENTIFICACIÓN DEL RECORRIDO -->
+
+    <div class="mensaje-centro" id="mensajeCentro">
+        RECORRIDO VIRTUAL · PRIMER PATIO
+    </div>
+
+    <!-- INDICACIONES -->
+
+    <div class="controles">
+        <strong>CONTROLES DEL RECORRIDO</strong><br>
+        W / A / S / D : Desplazarse<br>
+        MOUSE : Mirar alrededor<br>
+        RUEDA : Acercar / Alejar<br>
+        E : Consultar punto histórico<br>
+        TAB : Utilizar controles de audio y luz<br>
+        CLIC EN ESCENA : Continuar recorrido
+    </div>
+
+    <!-- REPRODUCTOR -->
+
+    <div class="reproductor">
+
+        <div class="reproductor-titulo">
+            <span class="reproductor-icono">♫</span>
+
+            <div>
+                <strong>MÚSICA DE POTOSÍ</strong>
+                <small>Ambiente musical del recorrido</small>
+            </div>
+        </div>
+
+        <div class="audio-botones">
+
+            <button id="btnPlay">▶ Reproducir</button>
+            <button id="btnPausa">Ⅱ Pausar</button>
+            <button id="btnSilenciar">🔊</button>
+
+        </div>
+
+        <div class="volumen-contenedor">
+            <span>VOL.</span>
+
+            <input
+                type="range"
+                id="controlVolumen"
+                min="0"
+                max="1"
+                step="0.05"
+                value="0.35"
+            >
+        </div>
+
+        <div class="audio-estado" id="audioEstado">
+            Música pausada
+        </div>
+
+        <audio
+            id="musicaRecorrido"
+            src="audio/potosi.mp3"
+            preload="metadata"
+            loop>
+        </audio>
+
+        <!-- FUENTE DE LA MÚSICA -->
+
+        <div class="credito-musical">
+            Fuente musical:
+            <a
+                href="https://www.youtube.com/watch?v=FEA7VoEoDLU&list=RDFEA7VoEoDLU&start_radio=1"
+                target="_blank"
+                rel="noopener noreferrer">
+                Consultar en YouTube
+            </a>
+        </div>
+
+        <!-- CONTROL DE ILUMINACIÓN -->
+
+        <div class="control-iluminacion">
+
+            <div class="iluminacion-titulo">
+                <span>☀ ILUMINACIÓN</span>
+                <span id="valorLuz">100%</span>
+            </div>
+
+            <input
+                type="range"
+                id="controlLuz"
+                min="50"
+                max="150"
+                step="5"
+                value="100"
+                aria-label="Ajustar iluminación del recorrido"
+            >
+
+        </div>
+
+        <!-- PANTALLA COMPLETA -->
+
+        <button
+            class="boton-pantalla-completa"
+            id="btnPantallaCompleta">
+            ⛶ VER EN GRANDE
+        </button>
+
+    </div>
+
+    <!-- VENTANA DE INFORMACIÓN HISTÓRICA -->
+
+    <div class="modal-info oculto" id="modalInfo">
+
+        <div class="modal-contenido">
+
+            <button class="modal-cerrar" id="btnCerrarInfo">
+                ×
+            </button>
+
+            <div id="contenidoInfo"></div>
+
+        </div>
+
+    </div>
+
+    <!-- THREE.JS -->
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <!-- JAVASCRIPT DEL RECORRIDO -->
+
+    <script type="module" src="js/explorar.js"></script>
+
+</body>
+</html>

@@ -1,14 +1,13 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Monedas | Casa Nacional de Moneda</title>
-
+<link rel="icon" type="image/png" href="img/cara.png">
 <link rel="stylesheet" href="css/estilo.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,1750 +20,1234 @@
 
 <style>
 
-    /* =========================================================
-       FONDO GENERAL
-    ========================================================= */
+/* =========================================================
+   FONDO GENERAL
+========================================================= */
 
-    body {
+body {
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(111,145,136,.10),
+            transparent 35%
+        ),
+        #101514;
+}
 
-        background:
-            radial-gradient(
-                circle at 50% 20%,
-                rgba(111,145,136,.10),
-                transparent 35%
-            ),
-            #101514;
+/* =========================================================
+   EXPERIENCIA
+========================================================= */
 
+.coin-experience {
+    position: relative;
+    min-height: 500vh;
+}
+
+/* =========================================================
+   CAPA FIJA 3D
+========================================================= */
+
+.coin-fixed-layer {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 80px);
+    z-index: 5;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#coinCanvas {
+    position: absolute;
+    top: 50%;
+    width: 65vw;
+    height: 92vh;
+    transform: translate(-50%, -50%);
+    display: block;
+    background: transparent;
+
+    filter:
+        drop-shadow(0 0 8px rgba(212, 175, 55, 0.70))
+        drop-shadow(0 0 18px rgba(212, 175, 55, 0.48))
+        drop-shadow(0 0 32px rgba(212, 175, 55, 0.28));
+
+    transition:
+        left 1.15s cubic-bezier(.22,.61,.36,1),
+        filter .8s ease;
+}
+
+.coin-fixed-layer.coin-right #coinCanvas {
+    left: 74%;
+}
+
+.coin-fixed-layer.coin-left #coinCanvas {
+    left: 26%;
+}
+
+/* =========================================================
+   BRILLO PRINCIPAL
+========================================================= */
+
+.coin-glow {
+    position: absolute;
+    top: 50%;
+    left: 74%;
+    width: 470px;
+    height: 470px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(212,175,55,.28) 0%,
+            rgba(212,175,55,.10) 28%,
+            rgba(111,145,136,.12) 48%,
+            transparent 72%
+        );
+
+    filter: blur(25px);
+    opacity: .9;
+
+    transition:
+        left 1.15s cubic-bezier(.22,.61,.36,1),
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+.coin-fixed-layer.coin-left .coin-glow {
+    left: 26%;
+}
+
+/* =========================================================
+   SEGUNDO HALO
+========================================================= */
+
+.coin-ring {
+    position: absolute;
+    top: 50%;
+    left: 74%;
+    width: 320px;
+    height: 320px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+
+    border: 1px solid rgba(212,175,55,.12);
+
+    box-shadow:
+        0 0 60px rgba(212,175,55,.08),
+        inset 0 0 50px rgba(212,175,55,.04);
+
+    opacity: .8;
+
+    transition:
+        left 1.15s cubic-bezier(.22,.61,.36,1);
+
+    animation: ringPulse 5s ease-in-out infinite;
+}
+
+.coin-fixed-layer.coin-left .coin-ring {
+    left: 26%;
+}
+
+@keyframes ringPulse {
+    0%,100% {
+        transform: translate(-50%,-50%) scale(.95);
+        opacity: .45;
     }
 
+    50% {
+        transform: translate(-50%,-50%) scale(1.05);
+        opacity: .9;
+    }
+}
 
-    /* =========================================================
-       EXPERIENCIA
-    ========================================================= */
+/* =========================================================
+   ETIQUETA DEL MODELO
+========================================================= */
 
-    .coin-experience {
+.coin-model-label {
+    position: absolute;
+    top: 35px;
+    left: 74%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 30;
 
-        position: relative;
+    transition:
+        left 1.15s cubic-bezier(.22,.61,.36,1);
+}
 
-        min-height: 500vh;
+.coin-fixed-layer.coin-left .coin-model-label {
+    left: 26%;
+}
 
+.coin-model-label small {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    color: #D4AF37;
+    font-size: 9px;
+    letter-spacing: 5px;
+    margin-bottom: 7px;
+}
+
+.coin-model-label strong {
+    font-family: 'Cinzel', serif;
+    color: rgba(245,242,233,.90);
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-note {
+    position: absolute;
+    top: 50%;
+    left: 74%;
+    transform: translate(-50%,-50%);
+    width: min(90%,420px);
+    padding: 25px 30px;
+    text-align: center;
+    background: rgba(18,30,28,.92);
+    border: 1px solid rgba(212,175,55,.45);
+    border-radius: 16px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.45),
+        0 0 30px rgba(212,175,55,.08);
+
+    backdrop-filter: blur(12px);
+
+    transition:
+        left 1.15s cubic-bezier(.22,.61,.36,1),
+        opacity .5s ease,
+        transform .5s ease;
+
+    z-index: 50;
+}
+
+.coin-fixed-layer.coin-left .loading-note {
+    left: 26%;
+}
+
+.loading-note.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%,-50%) scale(.9);
+}
+
+/* =========================================================
+   PARTÍCULAS
+========================================================= */
+
+.metal-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #D4AF37;
+    box-shadow: 0 0 12px #D4AF37;
+    opacity: .45;
+
+    transition:
+        left 1.15s cubic-bezier(.22,.61,.36,1);
+}
+
+.p1 {
+    top: 22%;
+    left: 69%;
+    animation: particleFloat 4s ease-in-out infinite;
+}
+
+.p2 {
+    top: 68%;
+    left: 81%;
+    animation: particleFloat 5s ease-in-out infinite 1s;
+}
+
+.p3 {
+    top: 38%;
+    left: 84%;
+    animation: particleFloat 4.5s ease-in-out infinite 1.5s;
+}
+
+.p4 {
+    top: 75%;
+    left: 67%;
+    animation: particleFloat 6s ease-in-out infinite .5s;
+}
+
+@keyframes particleFloat {
+    0%,100% {
+        transform: translate(0,0);
+        opacity: .2;
     }
 
+    50% {
+        transform: translate(15px,-25px);
+        opacity: .75;
+    }
+}
 
-    /* =========================================================
-       CAPA FIJA 3D
-    ========================================================= */
+/* =========================================================
+   PANELES
+========================================================= */
+
+.coin-story-panel {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 100px 6vw 80px;
+    position: relative;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.coin-story-left {
+    justify-content: flex-start;
+}
+
+.coin-story-right {
+    justify-content: flex-end;
+}
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
+.coin-story-card {
+    width: min(490px,38vw);
+    min-width: 350px;
+    padding: 40px;
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(42,64,60,.94),
+            rgba(18,28,27,.92)
+        );
+
+    border: 1px solid rgba(212,175,55,.28);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.38),
+        inset 0 1px 0 rgba(255,255,255,.04);
+
+    backdrop-filter: blur(14px);
+    opacity: .30;
+    transform: translateY(35px) scale(.96);
+
+    transition:
+        opacity .7s ease,
+        transform .7s ease,
+        border-color .7s ease,
+        box-shadow .7s ease;
+
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.coin-story-card::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 240px;
+    height: 240px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(212,175,55,.12),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+.coin-story-card::after {
+    content: "";
+    position: absolute;
+    top: 25px;
+    bottom: 25px;
+    left: 0;
+    width: 2px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent,
+            #D4AF37,
+            transparent
+        );
+
+    opacity: .65;
+}
+
+.coin-story-panel.active .coin-story-card {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    border-color: rgba(212,175,55,.60);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.50),
+        0 0 35px rgba(212,175,55,.07);
+}
+
+.story-number {
+    font-family: 'Montserrat', sans-serif;
+    color: #D4AF37;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+}
+
+.coin-story-card h2 {
+    font-family: 'Cinzel', serif;
+    color: #D4AF37;
+    font-size: clamp(25px,2.7vw,36px);
+    line-height: 1.18;
+    font-weight: 600;
+    margin: 0 0 20px;
+}
+
+.story-line {
+    width: 45px;
+    height: 2px;
+    background: #D4AF37;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(212,175,55,.25);
+}
+
+.coin-story-card p {
+    font-family: 'Montserrat', sans-serif;
+    color: rgba(255,255,255,.86);
+    font-size: 14px;
+    line-height: 1.85;
+    font-weight: 300;
+    margin-bottom: 18px;
+}
+
+.story-data {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+.story-chip {
+    border: 1px solid rgba(212,175,55,.30);
+    background: rgba(212,175,55,.045);
+    padding: 8px 11px;
+    color: rgba(245,242,233,.82);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    letter-spacing: 1.2px;
+}
+
+/* =========================================================
+   FUENTES CONSULTADAS
+========================================================= */
+
+.coin-sources {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(212,175,55,.22);
+    position: relative;
+    z-index: 2;
+}
+
+.coin-sources strong {
+    display: block;
+    color: #D4AF37;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+}
+
+.coin-sources a {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    color: rgba(245,242,233,.76);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    line-height: 1.7;
+    margin-bottom: 6px;
+    text-decoration: underline;
+    text-decoration-color: rgba(212,175,55,.45);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+    transition: color .3s ease;
+}
+
+.coin-sources a:hover {
+    color: #D4AF37;
+}
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.coin-buttons {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 1200;
+    display: flex;
+    gap: 10px;
+}
+
+.manual-control,
+.model-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(212,175,55,.55);
+    background: rgba(25,40,37,.95);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,.40);
+    transition: .3s ease;
+    pointer-events: auto;
+    text-decoration: none;
+}
+
+.manual-control:hover,
+.model-link:hover {
+    color: #D4AF37;
+    border-color: #D4AF37;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(212,175,55,.15);
+}
+
+.manual-control.active {
+    background: #D4AF37;
+    color: #14201e;
+    border-color: #D4AF37;
+}
+
+.manual-help {
+    position: fixed;
+    right: 25px;
+    bottom: 82px;
+    z-index: 1200;
+    padding: 10px 15px;
+    background: rgba(15,22,21,.90);
+    border: 1px solid rgba(212,175,55,.25);
+    border-radius: 10px;
+    color: rgba(255,255,255,.75);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: .3s ease;
+    pointer-events: none;
+}
+
+.manual-help.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+   INTRODUCCIÓN
+========================================================= */
+
+.coin-intro {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 6vw 80px;
+    position: relative;
+    z-index: 15;
+    pointer-events: none;
+}
+
+.intro-content {
+    width: min(520px,45vw);
+    pointer-events: auto;
+}
+
+.intro-kicker {
+    color: #D4AF37;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    margin-bottom: 18px;
+}
+
+.intro-content h1 {
+    font-family: 'Cinzel', serif;
+    color: #F5F2E9;
+    font-size: clamp(42px,5.2vw,76px);
+    line-height: 1.02;
+    font-weight: 500;
+    margin: 0 0 22px;
+}
+
+.intro-content h1 span {
+    color: #D4AF37;
+}
+
+.intro-content p {
+    color: rgba(255,255,255,.78);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    line-height: 1.9;
+    max-width: 470px;
+}
+
+.intro-line {
+    width: 70px;
+    height: 2px;
+    background: #D4AF37;
+    margin: 25px 0;
+}
+
+/* =========================================================
+   SECCIÓN IMPACTO
+========================================================= */
+
+.impact-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 6vw;
+    position: relative;
+    z-index: 25;
+}
+
+.impact-box {
+    width: min(1050px,92vw);
+    min-height: 520px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 50px;
+    padding: 60px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35,54,51,.95),
+            rgba(12,19,18,.96)
+        );
+
+    border: 1px solid rgba(212,175,55,.35);
+    box-shadow: 0 35px 100px rgba(0,0,0,.45);
+    position: relative;
+    overflow: hidden;
+}
+
+.impact-box::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(212,175,55,.14),
+            transparent 68%
+        );
+
+    right: -180px;
+    top: -200px;
+}
+
+.impact-number {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(80px,11vw,150px);
+    color: rgba(212,175,55,.12);
+    line-height: .8;
+    margin-bottom: 25px;
+}
+
+.impact-content h2 {
+    font-family: 'Cinzel', serif;
+    color: #D4AF37;
+    font-size: clamp(28px,3.4vw,46px);
+    margin: 0 0 18px;
+}
+
+.impact-content p {
+    font-family: 'Montserrat', sans-serif;
+    color: rgba(255,255,255,.80);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.impact-quote {
+    border-left: 2px solid #D4AF37;
+    padding-left: 25px;
+    color: rgba(245,242,233,.90);
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   COLECCIÓN
+========================================================= */
+
+.collection-section {
+    min-height: 120vh;
+    position: relative;
+    z-index: 30;
+    padding: 120px 6vw;
+}
+
+.collection-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.collection-header small {
+    color: #D4AF37;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    letter-spacing: 5px;
+}
+
+.collection-header h2 {
+    color: #F5F2E9;
+    font-family: 'Cinzel', serif;
+    font-size: clamp(32px,4vw,52px);
+    font-weight: 500;
+    margin: 15px 0;
+}
+
+.collection-header p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: rgba(255,255,255,.65);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.coin-collection {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 22px;
+}
+
+.coin-item {
+    position: relative;
+    min-height: 300px;
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(42,64,60,.85),
+            rgba(16,24,23,.92)
+        );
+
+    border: 1px solid rgba(212,175,55,.18);
+    overflow: hidden;
+    transition: .4s ease;
+    cursor: pointer;
+}
+
+.coin-item:hover {
+    transform: translateY(-8px);
+    border-color: rgba(212,175,55,.65);
+    box-shadow: 0 25px 60px rgba(0,0,0,.40);
+}
+
+.coin-disc {
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: rgba(65,45,10,.85);
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff0ad 0%,
+            #D4AF37 35%,
+            #9d7620 75%,
+            #654c18 100%
+        );
+
+    border: 5px solid rgba(212,175,55,.25);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        inset 0 0 10px rgba(255,255,255,.30);
+
+    transition: transform .5s ease;
+}
+
+.coin-item:hover .coin-disc {
+    transform: rotateY(180deg) rotateZ(8deg);
+}
+
+.coin-item h3 {
+    font-family: 'Cinzel', serif;
+    color: #D4AF37;
+    font-size: 20px;
+    margin: 0 0 10px;
+}
+
+.coin-item p {
+    font-family: 'Montserrat', sans-serif;
+    color: rgba(255,255,255,.68);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.coin-year {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,.35);
+}
+
+/* =========================================================
+   MODAL INFORMACIÓN - VENTANA COMPACTA
+========================================================= */
+
+.coin-info-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+
+    background: rgba(5,9,8,.94);
+    backdrop-filter: blur(16px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity .35s ease, visibility .35s ease;
+}
+
+.coin-info-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* CONTENEDOR CUADRADO */
+
+.coin-info-box {
+    position: relative;
+
+    width: min(560px, 94vw);
+    height: min(620px, 88vh);
+
+    padding: 48px 38px 30px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #263c38,
+            #111918
+        );
+
+    border: 1px solid rgba(212,175,55,.55);
+    border-radius: 16px;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.65),
+        0 0 35px rgba(212,175,55,.08);
+
+    transform: translateY(20px) scale(.96);
+    transition: transform .35s ease;
+}
+
+.coin-info-modal.show .coin-info-box {
+    transform: translateY(0) scale(1);
+}
+
+/* BARRA DE DESPLAZAMIENTO */
+
+.coin-info-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.coin-info-box::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.15);
+    border-radius: 10px;
+}
+
+.coin-info-box::-webkit-scrollbar-thumb {
+    background: rgba(212,175,55,.55);
+    border-radius: 10px;
+}
+
+.coin-info-box::-webkit-scrollbar-thumb:hover {
+    background: #D4AF37;
+}
+
+/* =========================================================
+   BOTÓN X - ESQUINA SUPERIOR DERECHA
+========================================================= */
+
+.coin-close {
+    position: absolute;
+
+    top: 13px;
+    right: 15px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(212,175,55,.10);
+    border: 1px solid rgba(212,175,55,.55);
+    border-radius: 50%;
+
+    color: #D4AF37;
+
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+    z-index: 10;
+
+    transition:
+        background .3s ease,
+        color .3s ease,
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+.coin-close:hover {
+    background: #D4AF37;
+    color: #14201e;
+    border-color: #D4AF37;
+
+    transform: rotate(90deg);
+
+    box-shadow:
+        0 0 18px rgba(212,175,55,.35);
+}
+
+.coin-close:focus-visible {
+    outline: 2px solid #F5F2E9;
+    outline-offset: 4px;
+}
+
+/* =========================================================
+   PERIODO
+========================================================= */
+
+.coin-info-box small {
+    display: block;
+    color: #D4AF37;
+    letter-spacing: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    padding-right: 35px;
+}
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.coin-info-box h2 {
+    font-family: 'Cinzel', serif;
+    color: #F5F2E9;
+    font-size: 29px;
+    line-height: 1.3;
+    margin: 13px 0 18px;
+}
+
+/* =========================================================
+   IMAGEN DE LA MONEDA
+========================================================= */
+
+.coin-modal-image {
+    display: block;
+
+    width: 100%;
+    height: 190px;
+
+    object-fit: contain;
+
+    margin: 10px auto 22px;
+    padding: 10px;
+
+    background: rgba(0,0,0,.18);
+
+    border: 1px solid rgba(212,175,55,.25);
+    border-radius: 10px;
+}
+
+/* =========================================================
+   DESCRIPCIÓN
+========================================================= */
+
+.coin-info-box p {
+    font-family: 'Montserrat', sans-serif;
+    color: rgba(255,255,255,.82);
+    line-height: 1.85;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   REFERENCIA BIBLIOGRÁFICA
+========================================================= */
+
+.coin-modal-source {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(212,175,55,.25);
+}
+
+.coin-modal-source strong {
+    display: block;
+    color: #D4AF37;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+}
+
+.coin-modal-source a {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    color: rgba(245,242,233,.80);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    line-height: 1.7;
+    text-decoration: underline;
+    text-decoration-color: rgba(212,175,55,.45);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+    transition: color .3s ease;
+}
+
+.coin-modal-source a:hover {
+    color: #D4AF37;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.historia-footer {
+    background: #3F5F5E;
+    padding: 35px 20px;
+    position: relative;
+    z-index: 40;
+    border-top: 2px solid #D4AF37;
+    text-align: center;
+}
+
+.historia-footer h3 {
+    font-family: 'Cinzel', serif;
+    color: #D4AF37;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.historia-footer p {
+    font-family: 'Montserrat', sans-serif;
+    color: #E8E8E8;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width:900px) {
 
     .coin-fixed-layer {
-
-        position: fixed;
-
-        top: 80px;
-        left: 0;
-
-        width: 100%;
-        height: calc(100vh - 80px);
-
-        z-index: 5;
-
-        pointer-events: none;
-
-        overflow: hidden;
-
+        top:110px;
+        height: calc(100vh - 110px);
     }
-
-
-    /* =========================================================
-       CANVAS
-    ========================================================= */
 
     #coinCanvas {
-
-        position: absolute;
-
-        top: 50%;
-
-        width: 65vw;
-        height: 92vh;
-
-        transform:
-            translate(-50%, -50%);
-
-        display: block;
-
-        background: transparent;
-
-        /* PRACTICA 1: efecto de postprocesamiento visual tipo glow dorado */
-        filter:
-            drop-shadow(0 0 8px rgba(212, 175, 55, 0.70))
-            drop-shadow(0 0 18px rgba(212, 175, 55, 0.48))
-            drop-shadow(0 0 32px rgba(212, 175, 55, 0.28));
-
-        transition:
-            left 1.15s cubic-bezier(.22,.61,.36,1),
-            filter .8s ease;
-
+        width:100vw;
+        height:65vh;
     }
 
-
-    .coin-fixed-layer.coin-right #coinCanvas {
-
-        left: 74%;
-
-    }
-
-
+    .coin-fixed-layer.coin-right #coinCanvas,
     .coin-fixed-layer.coin-left #coinCanvas {
-
-        left: 26%;
-
+        left:50%;
     }
 
-
-    /* =========================================================
-       BRILLO PRINCIPAL
-    ========================================================= */
-
-    .coin-glow {
-
-        position: absolute;
-
-        top: 50%;
-        left: 74%;
-
-        width: 470px;
-        height: 470px;
-
-        transform:
-            translate(-50%, -50%);
-
-        border-radius: 50%;
-
-        background:
-
-            radial-gradient(
-                circle,
-                rgba(212,175,55,.28) 0%,
-                rgba(212,175,55,.10) 28%,
-                rgba(111,145,136,.12) 48%,
-                transparent 72%
-            );
-
-        filter: blur(25px);
-
-        opacity: .9;
-
-        transition:
-
-            left 1.15s cubic-bezier(.22,.61,.36,1),
-            opacity .8s ease,
-            transform .8s ease;
-
-    }
-
-
-    .coin-fixed-layer.coin-left .coin-glow {
-
-        left: 26%;
-
-    }
-
-
-    /* =========================================================
-       SEGUNDO HALO
-    ========================================================= */
-
-    .coin-ring {
-
-        position: absolute;
-
-        top: 50%;
-        left: 74%;
-
-        width: 320px;
-        height: 320px;
-
-        transform:
-            translate(-50%, -50%);
-
-        border-radius: 50%;
-
-        border:
-            1px solid rgba(212,175,55,.12);
-
-        box-shadow:
-            0 0 60px rgba(212,175,55,.08),
-            inset 0 0 50px rgba(212,175,55,.04);
-
-        opacity: .8;
-
-        transition:
-            left 1.15s cubic-bezier(.22,.61,.36,1);
-
-        animation:
-            ringPulse 5s ease-in-out infinite;
-
-    }
-
-
+    .coin-glow,
+    .coin-ring,
+    .coin-fixed-layer.coin-left .coin-glow,
     .coin-fixed-layer.coin-left .coin-ring {
-
-        left: 26%;
-
+        left:50%;
     }
 
-
-    @keyframes ringPulse {
-
-        0%,100% {
-            transform:
-                translate(-50%,-50%)
-                scale(.95);
-            opacity: .45;
-        }
-
-        50% {
-            transform:
-                translate(-50%,-50%)
-                scale(1.05);
-            opacity: .9;
-        }
-
-    }
-
-
-    /* =========================================================
-       ETIQUETA DEL MODELO
-    ========================================================= */
-
-    .coin-model-label {
-
-        position: absolute;
-
-        top: 35px;
-        left: 74%;
-
-        transform:
-            translateX(-50%);
-
-        text-align: center;
-
-        z-index: 30;
-
-        transition:
-            left 1.15s cubic-bezier(.22,.61,.36,1);
-
-    }
-
-
+    .coin-model-label,
     .coin-fixed-layer.coin-left .coin-model-label {
-
-        left: 26%;
-
+        left:50%;
+        top:20px;
     }
 
-
-    .coin-model-label small {
-
-        display: block;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color: #D4AF37;
-
-        font-size: 9px;
-
-        letter-spacing: 5px;
-
-        margin-bottom: 7px;
-
-    }
-
-
-    .coin-model-label strong {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color:
-            rgba(245,242,233,.90);
-
-        font-size: 15px;
-
-        letter-spacing: 1px;
-
-    }
-
-
-    /* =========================================================
-       LOADING
-    ========================================================= */
-
-    .loading-note {
-
-        position: absolute;
-
-        top: 50%;
-        left: 74%;
-
-        transform:
-            translate(-50%,-50%);
-
-        width: min(90%,420px);
-
-        padding: 25px 30px;
-
-        text-align: center;
-
-        background:
-            rgba(18,30,28,.92);
-
-        border:
-            1px solid rgba(212,175,55,.45);
-
-        border-radius: 16px;
-
-        color: #fff;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 13px;
-
-        line-height: 1.7;
-
-        box-shadow:
-            0 15px 45px rgba(0,0,0,.45),
-            0 0 30px rgba(212,175,55,.08);
-
-        backdrop-filter:
-            blur(12px);
-
-        transition:
-
-            left 1.15s cubic-bezier(.22,.61,.36,1),
-            opacity .5s ease,
-            transform .5s ease;
-
-        z-index: 50;
-
-    }
-
-
+    .loading-note,
     .coin-fixed-layer.coin-left .loading-note {
-
-        left: 26%;
-
+        left:50%;
     }
 
-
-    .loading-note.hidden {
-
-        opacity: 0;
-
-        pointer-events: none;
-
-        transform:
-            translate(-50%,-50%)
-            scale(.9);
-
+    .coin-intro {
+        padding:100px 25px;
+        align-items:flex-start;
+        padding-top:140px;
     }
 
-
-    /* =========================================================
-       PARTÍCULAS
-    ========================================================= */
-
-    .metal-particle {
-
-        position: absolute;
-
-        width: 4px;
-        height: 4px;
-
-        border-radius: 50%;
-
-        background: #D4AF37;
-
-        box-shadow:
-            0 0 12px #D4AF37;
-
-        opacity: .45;
-
-        transition:
-            left 1.15s cubic-bezier(.22,.61,.36,1);
-
+    .intro-content {
+        width:100%;
     }
 
-
-    .p1 {
-        top: 22%;
-        left: 69%;
-        animation: particleFloat 4s ease-in-out infinite;
+    .intro-content h1 {
+        font-size:43px;
     }
-
-    .p2 {
-        top: 68%;
-        left: 81%;
-        animation: particleFloat 5s ease-in-out infinite 1s;
-    }
-
-    .p3 {
-        top: 38%;
-        left: 84%;
-        animation: particleFloat 4.5s ease-in-out infinite 1.5s;
-    }
-
-    .p4 {
-        top: 75%;
-        left: 67%;
-        animation: particleFloat 6s ease-in-out infinite .5s;
-    }
-
-
-    @keyframes particleFloat {
-
-        0%,100% {
-            transform:
-                translate(0,0);
-            opacity: .2;
-        }
-
-        50% {
-            transform:
-                translate(15px,-25px);
-            opacity: .75;
-        }
-
-    }
-
-
-    /* =========================================================
-       PANELES
-    ========================================================= */
 
     .coin-story-panel {
-
-        min-height: 100vh;
-
-        width: 100%;
-
-        display: flex;
-
-        align-items: center;
-
-        padding:
-            100px 6vw 80px;
-
-        position: relative;
-
-        z-index: 20;
-
-        pointer-events: none;
-
+        padding:120px 20px 80px;
+        justify-content:center;
     }
-
-
-    .coin-story-left {
-
-        justify-content:
-            flex-start;
-
-    }
-
-
-    .coin-story-right {
-
-        justify-content:
-            flex-end;
-
-    }
-
-
-    /* =========================================================
-       TARJETAS
-    ========================================================= */
 
     .coin-story-card {
-
-        width:
-            min(490px,38vw);
-
-        min-width: 350px;
-
-        padding: 40px;
-
-        border-radius: 20px;
-
-        background:
-
-            linear-gradient(
-                145deg,
-                rgba(42,64,60,.94),
-                rgba(18,28,27,.92)
-            );
-
-        border:
-            1px solid
-            rgba(212,175,55,.28);
-
-        box-shadow:
-
-            0 25px 70px
-            rgba(0,0,0,.38),
-
-            inset 0 1px 0
-            rgba(255,255,255,.04);
-
-        backdrop-filter:
-            blur(14px);
-
-        opacity: .30;
-
-        transform:
-            translateY(35px)
-            scale(.96);
-
-        transition:
-
-            opacity .7s ease,
-            transform .7s ease,
-            border-color .7s ease,
-            box-shadow .7s ease;
-
-        pointer-events: auto;
-
-        position: relative;
-
-        overflow: hidden;
-
+        width:90vw;
+        min-width:0;
+        margin-top:45vh;
+        padding:30px;
     }
-
-
-    .coin-story-card::before {
-
-        content: "";
-
-        position: absolute;
-
-        top: -100px;
-        right: -100px;
-
-        width: 240px;
-        height: 240px;
-
-        background:
-
-            radial-gradient(
-                circle,
-                rgba(212,175,55,.12),
-                transparent 70%
-            );
-
-        pointer-events: none;
-
-    }
-
-
-    .coin-story-card::after {
-
-        content: "";
-
-        position: absolute;
-
-        top: 25px;
-        bottom: 25px;
-        left: 0;
-
-        width: 2px;
-
-        background:
-
-            linear-gradient(
-                to bottom,
-                transparent,
-                #D4AF37,
-                transparent
-            );
-
-        opacity: .65;
-
-    }
-
-
-    .coin-story-panel.active
-    .coin-story-card {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-        border-color:
-            rgba(212,175,55,.60);
-
-        box-shadow:
-
-            0 30px 80px
-            rgba(0,0,0,.50),
-
-            0 0 35px
-            rgba(212,175,55,.07);
-
-    }
-
-
-    .story-number {
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color: #D4AF37;
-
-        font-size: 10px;
-
-        font-weight: 600;
-
-        letter-spacing: 4px;
-
-        margin-bottom: 15px;
-
-    }
-
-
-    .coin-story-card h2 {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color: #D4AF37;
-
-        font-size:
-            clamp(25px,2.7vw,36px);
-
-        line-height: 1.18;
-
-        font-weight: 600;
-
-        margin:
-            0 0 20px;
-
-    }
-
-
-    .story-line {
-
-        width: 45px;
-
-        height: 2px;
-
-        background: #D4AF37;
-
-        margin-bottom: 20px;
-
-        box-shadow:
-            0 0 10px
-            rgba(212,175,55,.25);
-
-    }
-
-
-    .coin-story-card p {
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color:
-            rgba(255,255,255,.86);
-
-        font-size: 14px;
-
-        line-height: 1.85;
-
-        font-weight: 300;
-
-        margin-bottom: 18px;
-
-    }
-
-
-    .story-data {
-
-        display: flex;
-
-        flex-wrap: wrap;
-
-        gap: 8px;
-
-        margin-top: 22px;
-
-    }
-
-
-    .story-chip {
-
-        border:
-            1px solid
-            rgba(212,175,55,.30);
-
-        background:
-            rgba(212,175,55,.045);
-
-        padding:
-            8px 11px;
-
-        color:
-            rgba(245,242,233,.82);
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 8px;
-
-        letter-spacing: 1.2px;
-
-    }
-
-
-    /* =========================================================
-       BOTONES
-    ========================================================= */
 
     .coin-buttons {
-
-        position: fixed;
-
-        right: 25px;
-        bottom: 25px;
-
-        z-index: 1200;
-
-        display: flex;
-
-        gap: 10px;
-
+        right:15px;
+        bottom:15px;
+        gap:6px;
     }
-
 
     .manual-control,
     .model-link {
-
-        display: inline-flex;
-
-        align-items: center;
-        justify-content: center;
-
-        border:
-            1px solid
-            rgba(212,175,55,.55);
-
-        background:
-            rgba(25,40,37,.95);
-
-        color: #fff;
-
-        padding:
-            14px 20px;
-
-        border-radius: 12px;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 13px;
-
-        font-weight: 600;
-
-        cursor: pointer;
-
-        box-shadow:
-            0 10px 30px
-            rgba(0,0,0,.40);
-
-        transition: .3s ease;
-
-        pointer-events: auto;
-
-        text-decoration: none;
-
+        font-size:10px;
+        padding:12px 14px;
     }
-
-
-    .manual-control:hover,
-    .model-link:hover {
-
-        color: #D4AF37;
-
-        border-color:
-            #D4AF37;
-
-        transform:
-            translateY(-2px);
-
-        box-shadow:
-            0 12px 35px
-            rgba(212,175,55,.15);
-
-    }
-
-
-    .manual-control.active {
-
-        background: #D4AF37;
-
-        color: #14201e;
-
-        border-color:
-            #D4AF37;
-
-    }
-
-
-    .manual-help {
-
-        position: fixed;
-
-        right: 25px;
-        bottom: 82px;
-
-        z-index: 1200;
-
-        padding:
-            10px 15px;
-
-        background:
-            rgba(15,22,21,.90);
-
-        border:
-            1px solid
-            rgba(212,175,55,.25);
-
-        border-radius: 10px;
-
-        color:
-            rgba(255,255,255,.75);
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 10px;
-
-        opacity: 0;
-
-        transform:
-            translateY(10px);
-
-        transition: .3s ease;
-
-        pointer-events: none;
-
-    }
-
-
-    .manual-help.show {
-
-        opacity: 1;
-
-        transform:
-            translateY(0);
-
-    }
-
-
-    /* =========================================================
-       INTRODUCCIÓN SUPERIOR
-    ========================================================= */
-
-    .coin-intro {
-
-        min-height: 100vh;
-
-        display: flex;
-
-        align-items: center;
-
-        padding:
-            100px 6vw 80px;
-
-        position: relative;
-
-        z-index: 15;
-
-        pointer-events: none;
-
-    }
-
-
-    .intro-content {
-
-        width:
-            min(520px,45vw);
-
-        pointer-events: auto;
-
-    }
-
-
-    .intro-kicker {
-
-        color: #D4AF37;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 10px;
-
-        letter-spacing: 5px;
-
-        margin-bottom: 18px;
-
-    }
-
-
-    .intro-content h1 {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color:
-            #F5F2E9;
-
-        font-size:
-            clamp(42px,5.2vw,76px);
-
-        line-height: 1.02;
-
-        font-weight: 500;
-
-        margin: 0 0 22px;
-
-    }
-
-
-    .intro-content h1 span {
-
-        color: #D4AF37;
-
-    }
-
-
-    .intro-content p {
-
-        color:
-            rgba(255,255,255,.78);
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 15px;
-
-        line-height: 1.9;
-
-        max-width: 470px;
-
-    }
-
-
-    .intro-line {
-
-        width: 70px;
-
-        height: 2px;
-
-        background: #D4AF37;
-
-        margin:
-            25px 0;
-
-    }
-
-
-    /* =========================================================
-       SECCIÓN IMPACTO
-    ========================================================= */
-
-    .impact-section {
-
-        min-height: 100vh;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        padding:
-            100px 6vw;
-
-        position: relative;
-
-        z-index: 25;
-
-    }
-
-
-    .impact-box {
-
-        width:
-            min(1050px,92vw);
-
-        min-height: 520px;
-
-        display: grid;
-
-        grid-template-columns:
-            1fr 1fr;
-
-        align-items: center;
-
-        gap: 50px;
-
-        padding: 60px;
-
-        background:
-            linear-gradient(
-                135deg,
-                rgba(35,54,51,.95),
-                rgba(12,19,18,.96)
-            );
-
-        border:
-            1px solid
-            rgba(212,175,55,.35);
-
-        box-shadow:
-            0 35px 100px
-            rgba(0,0,0,.45);
-
-        position: relative;
-
-        overflow: hidden;
-
-    }
-
-
-    .impact-box::before {
-
-        content: "";
-
-        position: absolute;
-
-        width: 500px;
-        height: 500px;
-
-        border-radius: 50%;
-
-        background:
-            radial-gradient(
-                circle,
-                rgba(212,175,55,.14),
-                transparent 68%
-            );
-
-        right: -180px;
-        top: -200px;
-
-    }
-
-
-    .impact-number {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        font-size:
-            clamp(80px,11vw,150px);
-
-        color:
-            rgba(212,175,55,.12);
-
-        line-height: .8;
-
-        margin-bottom: 25px;
-
-    }
-
-
-    .impact-content h2 {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color: #D4AF37;
-
-        font-size:
-            clamp(28px,3.4vw,46px);
-
-        margin:
-            0 0 18px;
-
-    }
-
-
-    .impact-content p {
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color:
-            rgba(255,255,255,.80);
-
-        font-size: 14px;
-
-        line-height: 1.9;
-
-    }
-
-
-    .impact-quote {
-
-        border-left:
-            2px solid
-            #D4AF37;
-
-        padding-left: 25px;
-
-        color:
-            rgba(245,242,233,.90);
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        font-size: 18px;
-
-        line-height: 1.6;
-
-    }
-
-
-    /* =========================================================
-       COLECCIÓN
-    ========================================================= */
-
-    .collection-section {
-
-        min-height: 120vh;
-
-        position: relative;
-
-        z-index: 30;
-
-        padding:
-            120px 6vw;
-
-    }
-
-
-    .collection-header {
-
-        text-align: center;
-
-        margin-bottom: 70px;
-
-    }
-
-
-    .collection-header small {
-
-        color: #D4AF37;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 9px;
-
-        letter-spacing: 5px;
-
-    }
-
-
-    .collection-header h2 {
-
-        color:
-            #F5F2E9;
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        font-size:
-            clamp(32px,4vw,52px);
-
-        font-weight: 500;
-
-        margin:
-            15px 0;
-
-    }
-
-
-    .collection-header p {
-
-        max-width: 650px;
-
-        margin:
-            0 auto;
-
-        color:
-            rgba(255,255,255,.65);
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 13px;
-
-        line-height: 1.8;
-
-    }
-
 
     .coin-collection {
-
-        max-width: 1100px;
-
-        margin: auto;
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-        gap: 22px;
-
+        grid-template-columns:1fr;
     }
 
-
-    .coin-item {
-
-        position: relative;
-
-        min-height: 300px;
-
-        padding: 30px;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(42,64,60,.85),
-                rgba(16,24,23,.92)
-            );
-
-        border:
-            1px solid
-            rgba(212,175,55,.18);
-
-        overflow: hidden;
-
-        transition:
-            .4s ease;
-
-        cursor: pointer;
-
+    .impact-box {
+        grid-template-columns:1fr;
+        padding:35px;
     }
-
-
-    .coin-item:hover {
-
-        transform:
-            translateY(-8px);
-
-        border-color:
-            rgba(212,175,55,.65);
-
-        box-shadow:
-            0 25px 60px
-            rgba(0,0,0,.40);
-
-    }
-
-
-    .coin-disc {
-
-        width: 105px;
-        height: 105px;
-
-        border-radius: 50%;
-
-        margin-bottom: 25px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        text-align: center;
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        font-size: 13px;
-
-        color:
-            rgba(65,45,10,.85);
-
-        background:
-
-            radial-gradient(
-                circle at 35% 30%,
-                #fff0ad 0%,
-                #D4AF37 35%,
-                #9d7620 75%,
-                #654c18 100%
-            );
-
-        border:
-            5px solid
-            rgba(212,175,55,.25);
-
-        box-shadow:
-
-            0 10px 30px
-            rgba(0,0,0,.35),
-
-            inset 0 0 10px
-            rgba(255,255,255,.30);
-
-        transition:
-            transform .5s ease;
-
-    }
-
-
-    .coin-item:hover .coin-disc {
-
-        transform:
-            rotateY(180deg)
-            rotateZ(8deg);
-
-    }
-
-
-    .coin-item h3 {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color: #D4AF37;
-
-        font-size: 20px;
-
-        margin:
-            0 0 10px;
-
-    }
-
-
-    .coin-item p {
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color:
-            rgba(255,255,255,.68);
-
-        font-size: 12px;
-
-        line-height: 1.7;
-
-    }
-
-
-    .coin-year {
-
-        position: absolute;
-
-        top: 25px;
-        right: 25px;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        font-size: 9px;
-
-        letter-spacing: 2px;
-
-        color:
-            rgba(255,255,255,.35);
-
-    }
-
-
-    /* =========================================================
-       MODAL INFORMACIÓN
-    ========================================================= */
-
-    .coin-info-modal {
-
-        position: fixed;
-
-        inset: 0;
-
-        z-index: 5000;
-
-        background:
-            rgba(5,9,8,.94);
-
-        backdrop-filter:
-            blur(16px);
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        padding: 25px;
-
-        opacity: 0;
-
-        visibility: hidden;
-
-        transition:
-            .35s ease;
-
-    }
-
-
-    .coin-info-modal.show {
-
-        opacity: 1;
-
-        visibility: visible;
-
-    }
-
 
     .coin-info-box {
-
-        max-width: 650px;
-
-        width: 100%;
-
-        padding: 50px;
-
-        background:
-            linear-gradient(
-                145deg,
-                #263c38,
-                #111918
-            );
-
-        border:
-            1px solid
-            rgba(212,175,55,.45);
-
-        box-shadow:
-            0 30px 100px
-            rgba(0,0,0,.65);
-
-        position: relative;
-
+        width: min(520px, 94vw);
+        height: min(590px, 85vh);
+        padding: 48px 25px 25px;
     }
-
-
-    .coin-close {
-
-        position: absolute;
-
-        top: 18px;
-        right: 20px;
-
-        background: transparent;
-
-        border: none;
-
-        color: #D4AF37;
-
-        font-size: 25px;
-
-        cursor: pointer;
-
-    }
-
-
-    .coin-info-box small {
-
-        color: #D4AF37;
-
-        letter-spacing: 4px;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-    }
-
 
     .coin-info-box h2 {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color:
-            #F5F2E9;
-
-        font-size: 32px;
-
-        margin:
-            15px 0 20px;
-
+        font-size: 25px;
     }
 
+    .coin-modal-image {
+        height: 180px;
+    }
+}
+
+@media (max-width:480px) {
+
+    .coin-info-modal {
+        padding: 12px;
+    }
+
+    .coin-info-box {
+        width: 100%;
+        height: 84vh;
+        padding: 48px 20px 22px;
+        border-radius: 13px;
+    }
+
+    .coin-close {
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 23px;
+    }
+
+    .coin-info-box h2 {
+        font-size: 22px;
+    }
 
     .coin-info-box p {
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color:
-            rgba(255,255,255,.76);
-
-        line-height: 1.9;
-
-        font-size: 14px;
-
+        font-size: 12px;
+        line-height: 1.8;
     }
 
-
-    /* =========================================================
-       FOOTER
-    ========================================================= */
-
-    .historia-footer {
-
-        background: #3F5F5E;
-
-        padding: 35px 20px;
-
-        position: relative;
-
-        z-index: 40;
-
-        border-top:
-            2px solid #D4AF37;
-
-        text-align: center;
-
+    .coin-modal-image {
+        height: 155px;
     }
 
-
-    .historia-footer h3 {
-
-        font-family:
-            'Cinzel',
-            serif;
-
-        color: #D4AF37;
-
-        font-size: 18px;
-
-        font-weight: 600;
-
-        letter-spacing: 1px;
-
-        margin-bottom: 6px;
-
-    }
-
-
-    .historia-footer p {
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
-        color: #E8E8E8;
-
-        font-size: 13px;
-
-        font-weight: 300;
-
-        letter-spacing: 1.5px;
-
-    }
-
-
-    /* =========================================================
-       RESPONSIVE
-    ========================================================= */
-
-    @media (max-width:900px) {
-
-        .coin-fixed-layer {
-
-            top:110px;
-
-            height:
-                calc(100vh - 110px);
-
-        }
-
-
-        #coinCanvas {
-
-            width:100vw;
-
-            height:65vh;
-
-        }
-
-
-        .coin-fixed-layer.coin-right #coinCanvas,
-        .coin-fixed-layer.coin-left #coinCanvas {
-
-            left:50%;
-
-        }
-
-
-        .coin-glow,
-        .coin-ring,
-        .coin-fixed-layer.coin-left .coin-glow,
-        .coin-fixed-layer.coin-left .coin-ring {
-
-            left:50%;
-
-        }
-
-
-        .coin-model-label,
-        .coin-fixed-layer.coin-left .coin-model-label {
-
-            left:50%;
-
-            top:20px;
-
-        }
-
-
-        .loading-note,
-        .coin-fixed-layer.coin-left .loading-note {
-
-            left:50%;
-
-        }
-
-
-        .coin-intro {
-
-            padding:
-                100px 25px;
-
-            align-items:
-                flex-start;
-
-            padding-top:
-                140px;
-
-        }
-
-
-        .intro-content {
-
-            width:100%;
-
-        }
-
-
-        .intro-content h1 {
-
-            font-size:43px;
-
-        }
-
-
-        .coin-story-panel {
-
-            padding:
-                120px 20px 80px;
-
-            justify-content:
-                center;
-
-        }
-
-
-        .coin-story-card {
-
-            width:90vw;
-
-            min-width:0;
-
-            margin-top:45vh;
-
-            padding:30px;
-
-        }
-
-
-        .coin-buttons {
-
-            right:15px;
-
-            bottom:15px;
-
-            gap:6px;
-
-        }
-
-
-        .manual-control,
-        .model-link {
-
-            font-size:10px;
-
-            padding:
-                12px 14px;
-
-        }
-
-
-        .coin-collection {
-
-            grid-template-columns:
-                1fr;
-
-        }
-
-
-        .impact-box {
-
-            grid-template-columns:
-                1fr;
-
-            padding:35px;
-
-        }
-
-    }
+}
 
 </style>
-
 
 <!-- =========================================================
      THREE.JS
@@ -1779,11 +1262,9 @@
 }
 </script>
 
-
 </head>
 
 <body id="top">
-
 
 <!-- =========================================================
      NAVBAR
@@ -1804,52 +1285,25 @@
 
     </div>
 
-
     <ul class="nav-menu">
 
-        <li>
-            <a href="index.html">
-                INICIO
-            </a>
-        </li>
+        <li><a href="index.html">INICIO</a></li>
+        <li><a href="historia.html">HISTORIA</a></li>
+        <li><a href="infraestructura.html">INFRAESTRUCTURA</a></li>
+        <li><a href="espacios.html">ESPACIOS</a></li>
 
         <li>
-            <a href="historia.html">
-                HISTORIA
-            </a>
-        </li>
-
-        <li>
-            <a href="infraestructura.html">
-                INFRAESTRUCTURA
-            </a>
-        </li>
-
-        <li>
-            <a href="espacios.html">
-                ESPACIOS
-            </a>
-        </li>
-
-        <li>
-            <a
-                href="monedas.html"
-                class="active"
-            >
+            <a href="monedas.html" class="active">
                 MONEDAS
             </a>
         </li>
 
-        <li>
-            <a href="informacion.html">
-                INFORMACIÓN
-            </a>
-        </li>
+        <li><a href="explorar.html">RECORRIDO 3D</a></li>
+        <li><a href="informacion.html">INFORMACIÓN</a></li>
 
     </ul>
 
 </nav>
-
 
 <!-- =========================================================
      EXPERIENCIA PRINCIPAL
@@ -1857,10 +1311,7 @@
 
 <main class="coin-experience">
 
-
-    <!-- =====================================================
-         CAPA FIJA 3D
-    ====================================================== -->
+    <!-- CAPA FIJA 3D -->
 
     <div
         class="coin-fixed-layer coin-right"
@@ -1868,18 +1319,13 @@
     >
 
         <div class="coin-glow"></div>
-
         <div class="coin-ring"></div>
-
 
         <canvas id="coinCanvas"></canvas>
 
-
         <div class="coin-model-label">
 
-            <small>
-                PIEZA NUMISMÁTICA
-            </small>
+            <small>PIEZA NUMISMÁTICA</small>
 
             <strong>
                 MACUQUINA · SIGLOS XVI–XVIII
@@ -1887,22 +1333,16 @@
 
         </div>
 
-
-        <div
-            class="loading-note"
-            id="loadingNote"
-        >
+        <div class="loading-note" id="loadingNote">
 
             ⏳ Cargando pieza 3D...
 
-            <br>
-            <br>
+            <br><br>
 
             Preparando la representación
             tridimensional de la macuquina.
 
         </div>
-
 
         <span class="metal-particle p1"></span>
         <span class="metal-particle p2"></span>
@@ -1911,10 +1351,7 @@
 
     </div>
 
-
-    <!-- =====================================================
-         INTRO
-    ====================================================== -->
+    <!-- INTRO -->
 
     <section class="coin-intro">
 
@@ -1933,23 +1370,18 @@
             <div class="intro-line"></div>
 
             <p>
-
                 Durante siglos, Potosí fue uno de los grandes
                 centros productores de plata del mundo.
                 En la Casa de la Moneda, ese metal se transformó
                 en monedas que circularon mucho más allá de los
                 Andes.
-
             </p>
 
         </div>
 
     </section>
 
-
-    <!-- =====================================================
-         HISTORIA 01
-    ====================================================== -->
+    <!-- HISTORIA 01 -->
 
     <section
         class="coin-story-panel coin-story-left active"
@@ -1970,34 +1402,42 @@
             <div class="story-line"></div>
 
             <p>
-
                 La plata extraída de las minas de Potosí
                 debía pasar por diferentes procesos antes
                 de convertirse en una pieza monetaria.
-
             </p>
 
             <p>
-
                 El metal era preparado, fundido y convertido
                 en láminas que posteriormente serían trabajadas
                 para producir las monedas.
-
             </p>
 
             <div class="story-data">
+                <span class="story-chip">PLATA</span>
+                <span class="story-chip">FUNDICIÓN</span>
+                <span class="story-chip">POTOSÍ</span>
+            </div>
 
-                <span class="story-chip">
-                    PLATA
-                </span>
+            <div class="coin-sources">
 
-                <span class="story-chip">
-                    FUNDICIÓN
-                </span>
+                <strong>Fuentes consultadas</strong>
 
-                <span class="story-chip">
-                    POTOSÍ
-                </span>
+                <a
+                    href="https://bibliotecadigital.bcb.gob.bo/xmlui/bitstream/handle/123456789/1735/Historia%20Monetaria%20de%20Bolivia%20T%201.pdf?sequence=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Banco Central de Bolivia — Historia Monetaria de Bolivia: desde la Precolonia a 1875
+                </a>
+
+                <a
+                    href="https://www.bcrp.gob.pe/docs/Publicaciones/libros/2020/historia-de-la-moneda-en-el-peru.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Banco Central de Reserva del Perú — Historia de la moneda en el Perú
+                </a>
 
             </div>
 
@@ -2005,10 +1445,7 @@
 
     </section>
 
-
-    <!-- =====================================================
-         HISTORIA 02
-    ====================================================== -->
+    <!-- HISTORIA 02 -->
 
     <section
         class="coin-story-panel coin-story-right"
@@ -2029,36 +1466,52 @@
             <div class="story-line"></div>
 
             <p>
-
                 Las primeras monedas producidas mediante
                 este sistema tenían formas irregulares.
                 No buscaban la perfección circular de las
                 monedas modernas.
-
             </p>
 
             <p>
-
                 El resultado fue la conocida
                 <strong>macuquina</strong>:
                 una moneda irregular, marcada por el proceso
                 artesanal de acuñación.
-
             </p>
 
             <div class="story-data">
+                <span class="story-chip">SIGLOS XVI–XVIII</span>
+                <span class="story-chip">ACUÑACIÓN MANUAL</span>
+                <span class="story-chip">MONEDA IRREGULAR</span>
+            </div>
 
-                <span class="story-chip">
-                    SIGLOS XVI–XVIII
-                </span>
+            <div class="coin-sources">
 
-                <span class="story-chip">
-                    ACUÑACIÓN MANUAL
-                </span>
+                <strong>Fuentes consultadas</strong>
 
-                <span class="story-chip">
-                    MONEDA IRREGULAR
-                </span>
+                <a
+                    href="https://www.bcra.gob.ar/archivos/Pdfs/BCRAyVos/2011_Cuadernillo_INSTITUCIONAL_SIN_AUTORIDADES.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Banco Central de la República Argentina — Museo Histórico y Numismático
+                </a>
+
+                <a
+                    href="https://www.bcrp.gob.pe/docs/Publicaciones/libros/2020/historia-de-la-moneda-en-el-peru.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Banco Central de Reserva del Perú — Historia de la moneda en el Perú
+                </a>
+
+                <a
+                    href="https://tesauros.cultura.gob.es/tesauros/numismatica/1186921.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ministerio de Cultura de España — Tesauro de Numismática: Macuquina
+                </a>
 
             </div>
 
@@ -2066,10 +1519,7 @@
 
     </section>
 
-
-    <!-- =====================================================
-         HISTORIA 03
-    ====================================================== -->
+    <!-- HISTORIA 03 -->
 
     <section
         class="coin-story-panel coin-story-left"
@@ -2090,33 +1540,41 @@
             <div class="story-line"></div>
 
             <p>
-
                 Para acuñar la moneda se colocaba el metal
                 entre los cuños y se aplicaba un golpe de
                 martillo.
-
             </p>
 
             <p>
-
                 Cada golpe dejaba sobre la plata las imágenes,
                 símbolos y leyendas que identificaban la moneda.
-
             </p>
 
             <div class="story-data">
+                <span class="story-chip">CUÑO</span>
+                <span class="story-chip">MARTILLO</span>
+                <span class="story-chip">PLATA</span>
+            </div>
 
-                <span class="story-chip">
-                    CUÑO
-                </span>
+            <div class="coin-sources">
 
-                <span class="story-chip">
-                    MARTILLO
-                </span>
+                <strong>Fuentes consultadas</strong>
 
-                <span class="story-chip">
-                    PLATA
-                </span>
+                <a
+                    href="https://www.bcra.gob.ar/archivos/Pdfs/BCRAyVos/2011_Cuadernillo_INSTITUCIONAL_SIN_AUTORIDADES.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Banco Central de la República Argentina — Museo Histórico y Numismático
+                </a>
+
+                <a
+                    href="https://www.bcrp.gob.pe/docs/Publicaciones/libros/2020/historia-de-la-moneda-en-el-peru.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Banco Central de Reserva del Perú — Historia de la moneda en el Perú
+                </a>
 
             </div>
 
@@ -2124,10 +1582,7 @@
 
     </section>
 
-
-    <!-- =====================================================
-         HISTORIA 04
-    ====================================================== -->
+    <!-- HISTORIA 04 -->
 
     <section
         class="coin-story-panel coin-story-right"
@@ -2148,33 +1603,41 @@
             <div class="story-line"></div>
 
             <p>
-
                 Las monedas producidas con plata de Potosí
                 participaron en redes comerciales que conectaban
                 diferentes regiones de América, Europa y Asia.
-
             </p>
 
             <p>
-
                 La plata potosina terminó formando parte
                 de una historia económica de alcance mundial.
-
             </p>
 
             <div class="story-data">
+                <span class="story-chip">AMÉRICA</span>
+                <span class="story-chip">EUROPA</span>
+                <span class="story-chip">ASIA</span>
+            </div>
 
-                <span class="story-chip">
-                    AMÉRICA
-                </span>
+            <div class="coin-sources">
 
-                <span class="story-chip">
-                    EUROPA
-                </span>
+                <strong>Fuentes consultadas</strong>
 
-                <span class="story-chip">
-                    ASIA
-                </span>
+                <a
+                    href="https://www.man.es/man/estudio/programas-internos/numismatica/patrimonio-iberoamericano.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Museo Arqueológico Nacional de España — Patrimonio Numismático Iberoamericano
+                </a>
+
+                <a
+                    href="https://www.scielo.org.bo/scielo.php?pid=S2518-44312024000300105&script=sci_arttext"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    SciELO Bolivia — 450 y 250 años de las dos fundaciones de la Casa de Moneda de Potosí
+                </a>
 
             </div>
 
@@ -2182,18 +1645,13 @@
 
     </section>
 
-
-    <!-- =====================================================
-         IMPACTO
-    ====================================================== -->
+    <!-- IMPACTO -->
 
     <section class="impact-section">
 
         <div class="impact-box">
 
             <div>
-
-       
 
                 <div class="story-number">
                     EL GOLPE DE LA HISTORIA
@@ -2207,38 +1665,30 @@
                     </h2>
 
                     <p>
-
                         Cada pieza representaba metal,
                         trabajo, comercio y poder.
                         Detrás de una pequeña moneda existía
                         toda una cadena de producción que
                         comenzaba en las minas de Potosí.
-
                     </p>
 
                 </div>
 
             </div>
 
-
             <div class="impact-quote">
-
                 “De la plata extraída
                 de los Andes nació
                 una moneda destinada
                 a viajar mucho más
                 allá de Potosí.”
-
             </div>
 
         </div>
 
     </section>
 
-
-    <!-- =====================================================
-         COLECCIÓN
-    ====================================================== -->
+    <!-- COLECCIÓN NUMISMÁTICA -->
 
     <section class="collection-section">
 
@@ -2253,39 +1703,34 @@
             </h2>
 
             <p>
-
                 Explora algunas de las piezas relacionadas
                 con la historia monetaria de Potosí.
 
                 Cada pieza representa una etapa diferente
                 de la historia de la acuñación.
-
             </p>
 
         </div>
 
-
         <div class="coin-collection">
 
+            <!-- MACUQUINAS -->
 
             <article
                 class="coin-item"
                 data-title="Las Macuquinas"
                 data-periodo="Siglos XVI–XVIII"
-                data-texto="Monedas de forma irregular producidas mediante acuñación manual. Su aspecto refleja directamente el proceso artesanal utilizado para fabricarlas."
+                data-imagen="img/macu.jpg"
+                data-texto="Las macuquinas fueron monedas de plata elaboradas mediante un procedimiento de acuñación manual. Su característica más reconocible es la forma irregular de sus bordes, resultado del corte de los fragmentos de metal y del trabajo realizado con los cuños y el martillo. En Potosí, este tipo de moneda tuvo una importante presencia durante el periodo colonial. Sus diseños incorporaban símbolos, escudos y leyendas que permitían reconocer su procedencia y valor. Aunque su apariencia era diferente a la de las monedas actuales, estas piezas formaron parte de una amplia circulación comercial y representan una etapa fundamental de la historia monetaria de la región."
+                data-cita="Patrimonio Argentino. (s. f.). Catálogo de moneda macuquina de Potosí."
+                data-url="https://patrimonioargentino.cultura.gob.ar/index.php/Detail/objects/111950"
             >
 
-                <span class="coin-year">
-                    XVI–XVIII
-                </span>
+                <span class="coin-year">XVI–XVIII</span>
 
-                <div class="coin-disc">
-                    MACU
-                </div>
+                <div class="coin-disc">MACU</div>
 
-                <h3>
-                    Las Macuquinas
-                </h3>
+                <h3>Las Macuquinas</h3>
 
                 <p>
                     El resultado más característico
@@ -2294,25 +1739,23 @@
 
             </article>
 
+            <!-- REAL DE A 8 -->
 
             <article
                 class="coin-item"
                 data-title="Real de a 8"
                 data-periodo="Moneda de plata"
-                data-texto="El Real de a 8 fue una de las grandes monedas de plata de la época y estuvo relacionado con la producción de las casas de moneda hispanoamericanas."
+                data-imagen="img/real.jpg"
+                data-texto="El Real de a 8 fue una moneda de plata de gran importancia durante la época colonial. Su valor equivalía a ocho reales y su uso se extendió por diferentes territorios gracias al comercio marítimo y terrestre. Las monedas de este tipo acuñadas en América alcanzaron una amplia circulación y se convirtieron en una referencia para las transacciones comerciales de su tiempo. La producción de estas piezas estuvo vinculada con casas de moneda como la de Potosí, cuya actividad permitió transformar la plata extraída de la región en dinero destinado a distintos mercados. Su reconocimiento llegó a ser tan amplio que el Real de a 8 es considerado una de las monedas más representativas de la historia monetaria hispanoamericana."
+                data-cita="Blog Numismático. (2018, 17 de julio). El primer real de a 8 acuñado en América."
+                data-url="https://blognumismatico.com/2018/07/17/el-primer-real-de-a-8-acunado-en-america/"
             >
 
-                <span class="coin-year">
-                    PLATA
-                </span>
+                <span class="coin-year">PLATA</span>
 
-                <div class="coin-disc">
-                    8
-                </div>
+                <div class="coin-disc">8</div>
 
-                <h3>
-                    Real de a 8
-                </h3>
+                <h3>Real de a 8</h3>
 
                 <p>
                     Una de las denominaciones
@@ -2321,25 +1764,23 @@
 
             </article>
 
+            <!-- MONEDA CORAZÓN -->
 
             <article
                 class="coin-item"
                 data-title="Moneda Corazón"
-                data-periodo="1727"
-                data-texto="Pieza conocida como Moneda Corazón, correspondiente al siglo XVIII y relacionada con la producción monetaria de Potosí."
+                data-periodo="Siglo XVIII"
+                data-imagen="img/cora.jpg"
+                data-texto="La denominada Moneda Corazón es una pieza singular dentro de la historia numismática relacionada con Potosí. Su nombre se debe a su particular forma, que se aparta de la apariencia habitual de las monedas circulares. Este tipo de ejemplar llama la atención porque permite observar que la producción monetaria de la época también estuvo marcada por piezas poco comunes. Su existencia despierta interés entre coleccionistas e investigadores, ya que muestra la variedad de formas y características que pueden encontrarse en los objetos monetarios antiguos. Por ello, constituye un ejemplo llamativo de la diversidad presente en la historia de la acuñación potosina."
+                data-cita="Blog Numismático. (2016, 4 de julio). Las monedas en forma de corazón de Potosí."
+                data-url="https://blognumismatico.com/2016/07/04/las-monedas-en-forma-de-corazon-de-potosi/"
             >
 
-                <span class="coin-year">
-                    1727
-                </span>
+                <span class="coin-year">SIGLO XVIII</span>
 
-                <div class="coin-disc">
-                    ♥
-                </div>
+                <div class="coin-disc">♥</div>
 
-                <h3>
-                    Moneda Corazón
-                </h3>
+                <h3>Moneda Corazón</h3>
 
                 <p>
                     Una pieza singular dentro
@@ -2348,25 +1789,23 @@
 
             </article>
 
+            <!-- CARLOS III Y IV -->
 
             <article
                 class="coin-item"
                 data-title="Busto de Carlos III y IV"
                 data-periodo="1772–1825"
-                data-texto="Las monedas con bustos reales representan una etapa posterior de la producción monetaria y muestran la evolución de los diseños utilizados en las piezas."
+                data-imagen="img/carlos.jpg"
+                data-texto="Las monedas con los bustos de Carlos III y Carlos IV reflejan una etapa en la que los retratos de los monarcas adquirieron protagonismo en el diseño monetario. En estas piezas, la representación del gobernante permitía identificar la autoridad bajo cuyo reinado se realizaba la acuñación. Los cambios de monarca también se reflejaban en las características de las monedas, como el retrato, las inscripciones y otros elementos grabados. Estos ejemplares permiten apreciar la evolución de los diseños monetarios durante las últimas décadas del periodo colonial y ayudan a comprender la relación entre la moneda, el poder político y la administración de los territorios americanos."
+                data-cita="Blog Numismático. (2022, 19 de septiembre). Los bustos de Carlos III y Carlos IV en los 8 reales."
+                data-url="https://blognumismatico.com/2022/09/19/los-bustos-de-carlos-iii-y-carlos-iv-en-los-8-reales/"
             >
 
-                <span class="coin-year">
-                    1772–1825
-                </span>
+                <span class="coin-year">1772–1825</span>
 
-                <div class="coin-disc">
-                    III
-                </div>
+                <div class="coin-disc">III</div>
 
-                <h3>
-                    Carlos III y IV
-                </h3>
+                <h3>Carlos III y IV</h3>
 
                 <p>
                     El retrato real aparece como
@@ -2375,25 +1814,23 @@
 
             </article>
 
+            <!-- PROVINCIAS UNIDAS -->
 
             <article
                 class="coin-item"
                 data-title="Provincias Unidas"
                 data-periodo="1813–1815"
-                data-texto="Las monedas de las Provincias Unidas reflejan el proceso de transformación política y monetaria ocurrido durante los años de las guerras de independencia."
+                data-imagen="img/prov.jpg"
+                data-texto="Las monedas de las Provincias Unidas del Río de la Plata pertenecen a un periodo de profundos cambios políticos en Sudamérica. Durante las guerras de independencia, la necesidad de contar con símbolos propios también se manifestó en la producción monetaria. Estas piezas incorporaron elementos e inscripciones que expresaban una nueva identidad política y se diferenciaban de los diseños asociados al poder monárquico español. Su acuñación en Potosí está relacionada con los acontecimientos que marcaron la transición entre el orden colonial y los primeros proyectos republicanos. Por esta razón, son testimonios materiales de una etapa importante de transformación política y monetaria."
+                data-cita="Blog Numismático. (2021, 21 de septiembre). Monedas del Río de la Plata."
+                data-url="https://blognumismatico.com/2021/09/21/monedas-riodelaplata/"
             >
 
-                <span class="coin-year">
-                    1813–1815
-                </span>
+                <span class="coin-year">1813–1815</span>
 
-                <div class="coin-disc">
-                    PU
-                </div>
+                <div class="coin-disc">PU</div>
 
-                <h3>
-                    Provincias Unidas
-                </h3>
+                <h3>Provincias Unidas</h3>
 
                 <p>
                     Una etapa de transformación
@@ -2402,25 +1839,23 @@
 
             </article>
 
+            <!-- 8 SOLES -->
 
             <article
                 class="coin-item"
                 data-title="8 Soles de 1827"
                 data-periodo="1827"
-                data-texto="Los 8 Soles de 1827 pertenecen a la etapa posterior a la independencia y están vinculados al nuevo escenario monetario de la región."
+                data-imagen="img/sol.jpg"
+                data-texto="La moneda de 8 Soles de 1827 pertenece a los primeros años de la etapa republicana y refleja los cambios que se produjeron en la organización monetaria después de la independencia. En este periodo, las nuevas autoridades comenzaron a establecer símbolos y diseños que representaran el nuevo contexto político. La pieza está vinculada con la actividad de acuñación desarrollada en Potosí y constituye un ejemplo de la continuidad de la producción monetaria en la región durante los primeros años de vida republicana. Su diseño y sus inscripciones permiten reconocer una etapa distinta a la de las monedas coloniales, marcada por la construcción de nuevas instituciones y referencias políticas."
+                data-cita="CGB Numismática. (s. f.). Bolivia: 8 Soles, Simón Bolívar, 1827, Potosí."
+                data-url="https://www.cgbfr.es/bolivie-8-soles-simon-bolivar-1827-potosi-ttb-,fwo_326073,a.html"
             >
 
-                <span class="coin-year">
-                    1827
-                </span>
+                <span class="coin-year">1827</span>
 
-                <div class="coin-disc">
-                    8S
-                </div>
+                <div class="coin-disc">8S</div>
 
-                <h3>
-                    8 Soles
-                </h3>
+                <h3>8 Soles</h3>
 
                 <p>
                     Una moneda perteneciente
@@ -2435,9 +1870,8 @@
 
 </main>
 
-
 <!-- =========================================================
-     MODAL INFORMACIÓN
+     MODAL INFORMACIÓN DE MONEDAS
 ========================================================== -->
 
 <div
@@ -2447,11 +1881,16 @@
 
     <div class="coin-info-box">
 
+        <!-- BOTÓN X PARA CERRAR -->
+
         <button
+            type="button"
             class="coin-close"
             id="coinClose"
+            aria-label="Cerrar ventana"
+            title="Cerrar"
         >
-            ×
+            &times;
         </button>
 
         <small id="coinPeriodo">
@@ -2462,14 +1901,37 @@
             Moneda
         </h2>
 
+        <img
+            id="coinImage"
+            class="coin-modal-image"
+            src=""
+            alt="Imagen de la moneda seleccionada"
+        >
+
         <p id="coinText">
             Información de la pieza.
         </p>
 
+        <div class="coin-modal-source">
+
+            <strong>
+                Referencia bibliográfica
+            </strong>
+
+            <a
+                id="coinCitation"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Fuente consultada
+            </a>
+
+        </div>
+
     </div>
 
 </div>
-
 
 <!-- =========================================================
      BOTONES 3D
@@ -2484,20 +1946,15 @@
         🖐 Manipular modelo 3D
     </button>
 
-
 </div>
-
 
 <div
     class="manual-help"
     id="manualHelp"
 >
-
     Arrastra para rotar · rueda para zoom ·
     clic derecho para mover
-
 </div>
-
 
 <!-- =========================================================
      FOOTER
@@ -2515,1217 +1972,834 @@
 
 </footer>
 
-
 <!-- =========================================================
      THREE.JS
 ========================================================== -->
 
 <script type="module">
 
-    import * as THREE from 'three';
+import * as THREE from 'three';
 
-    import {
-        GLTFLoader
-    } from 'three/addons/loaders/GLTFLoader.js';
+import {
+    GLTFLoader
+} from 'three/addons/loaders/GLTFLoader.js';
 
-    import {
-        OrbitControls
-    } from 'three/addons/controls/OrbitControls.js';
-
-
-    /* =========================================================
-       VARIABLES
-    ========================================================= */
-
-    let scene;
-    let camera;
-    let renderer;
-    let controls;
-
-    let model;
-    let modelGroup;
-
-    let particles;
-
-    let modelLoaded = false;
-
-    let manualMode = false;
-
-    let currentSection = 0;
-
-    let targetScale = 1;
-
-    let targetRotationY = 0;
-
-    let targetRotationX = 0;
-
-    let targetY = 0;
-
-    let pulse = 0;
-
-    let elapsed = 0;
+import {
+    OrbitControls
+} from 'three/addons/controls/OrbitControls.js';
 
 
-    /* =========================================================
-       ELEMENTOS
-    ========================================================= */
+/* =========================================================
+   VARIABLES
+========================================================= */
 
-    const canvas =
-        document.getElementById(
-            'coinCanvas'
-        );
+let scene;
+let camera;
+let renderer;
+let controls;
 
-    const coinLayer =
-        document.getElementById(
-            'coinLayer'
-        );
+let model;
+let modelGroup;
 
-    const loadingNote =
-        document.getElementById(
-            'loadingNote'
-        );
+let particles;
 
-    const manualButton =
-        document.getElementById(
-            'manualButton'
-        );
+let modelLoaded = false;
+let manualMode = false;
+let currentSection = 0;
 
-    const manualHelp =
-        document.getElementById(
-            'manualHelp'
-        );
+let targetScale = 1;
+let targetRotationY = 0;
+let targetRotationX = 0;
+let targetY = 0;
+
+let pulse = 0;
+let elapsed = 0;
 
 
-    /* =========================================================
-       ESCENA
-    ========================================================= */
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
-    scene =
-        new THREE.Scene();
+const canvas =
+    document.getElementById('coinCanvas');
+
+const coinLayer =
+    document.getElementById('coinLayer');
+
+const loadingNote =
+    document.getElementById('loadingNote');
+
+const manualButton =
+    document.getElementById('manualButton');
+
+const manualHelp =
+    document.getElementById('manualHelp');
 
 
-    /* =========================================================
-       CÁMARA
-    ========================================================= */
+/* =========================================================
+   ESCENA
+========================================================= */
 
-    camera =
-        new THREE.PerspectiveCamera(
-            32,
-            window.innerWidth /
-            window.innerHeight,
-            0.1,
-            100
-        );
+scene = new THREE.Scene();
 
-    camera.position.set(
-        0,
-        0.05,
-        4.2
+
+/* =========================================================
+   CÁMARA
+========================================================= */
+
+camera =
+    new THREE.PerspectiveCamera(
+        32,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100
     );
 
+camera.position.set(
+    0,
+    0.05,
+    4.2
+);
 
-    /* =========================================================
-       RENDERER
-    ========================================================= */
 
-    renderer =
-        new THREE.WebGLRenderer({
+/* =========================================================
+   RENDERER
+========================================================= */
 
-            canvas: canvas,
+renderer =
+    new THREE.WebGLRenderer({
 
-            antialias: true,
+        canvas: canvas,
+        antialias: true,
+        alpha: true,
 
-            alpha: true,
+        powerPreference:
+            'high-performance'
 
-            powerPreference:
-                'high-performance'
+    });
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+renderer.toneMappingExposure =
+    1.25;
+
+
+/* =========================================================
+   GRUPO
+========================================================= */
+
+modelGroup = new THREE.Group();
+
+scene.add(modelGroup);
+
+
+/* =========================================================
+   ILUMINACIÓN
+========================================================= */
+
+const hemisphere =
+    new THREE.HemisphereLight(
+        0xe7eee9,
+        0x101514,
+        2.6
+    );
+
+scene.add(hemisphere);
+
+
+const goldLight =
+    new THREE.SpotLight(
+        0xD4AF37,
+        12,
+        15,
+        Math.PI / 5,
+        .55,
+        1.3
+    );
+
+goldLight.position.set(
+    3.5,
+    4.5,
+    4
+);
+
+scene.add(goldLight);
+scene.add(goldLight.target);
+
+
+const greenLight =
+    new THREE.PointLight(
+        0x6F9188,
+        9,
+        12
+    );
+
+greenLight.position.set(
+    -4,
+    1.5,
+    4
+);
+
+scene.add(greenLight);
+
+
+const backGold =
+    new THREE.PointLight(
+        0xD4AF37,
+        6,
+        10
+    );
+
+backGold.position.set(
+    0,
+    2,
+    -3
+);
+
+scene.add(backGold);
+
+
+/* =========================================================
+   CARGAR MACUQUINA
+========================================================= */
+
+const loader = new GLTFLoader();
+
+loader.load(
+
+    'macuquina.glb',
+
+    function(gltf) {
+
+        model = gltf.scene;
+
+        modelGroup.add(model);
+
+
+        model.traverse(function(child) {
+
+            if (child.isMesh) {
+
+                child.castShadow = true;
+                child.receiveShadow = true;
+
+                if (child.material) {
+
+                    child.material =
+                        child.material.clone();
+
+                    if ('emissive' in child.material) {
+
+                        child.material.emissive =
+                            new THREE.Color(0x241c08);
+
+                        child.material.emissiveIntensity =
+                            .18;
+
+                    }
+
+                }
+
+            }
 
         });
 
 
-    renderer.setPixelRatio(
-        Math.min(
-            window.devicePixelRatio,
-            2
-        )
+        /* CENTRAR */
+
+        const box =
+            new THREE.Box3().setFromObject(model);
+
+        const size =
+            box.getSize(new THREE.Vector3());
+
+        const center =
+            box.getCenter(new THREE.Vector3());
+
+        model.position.sub(center);
+
+
+        /* ESCALA */
+
+        const maxDimension =
+            Math.max(size.x, size.y, size.z);
+
+        const desiredSize = 2.65;
+
+        const fitScale =
+            desiredSize / maxDimension;
+
+        model.scale.setScalar(fitScale);
+
+        model.position.y = 0;
+
+        modelGroup.rotation.y = Math.PI;
+        modelGroup.rotation.x = .04;
+
+        targetRotationY = Math.PI + .12;
+        targetRotationX = .04;
+
+        modelLoaded = true;
+
+        loadingNote.classList.add('hidden');
+
+        createParticles();
+
+        applySectionState(0, true);
+
+    },
+
+    function(progress) {
+
+        if (progress.total > 0) {
+
+            const percentage =
+                Math.round(
+                    progress.loaded / progress.total * 100
+                );
+
+            loadingNote.innerHTML =
+                `⏳ Cargando pieza 3D...
+                <br><br>
+                ${percentage}%`;
+
+        }
+
+    },
+
+    function(error) {
+
+        console.error(
+            'Error cargando macuquina.glb:',
+            error
+        );
+
+        loadingNote.innerHTML =
+            `❌ No se pudo cargar
+            <strong>macuquina.glb</strong>.
+            <br><br>
+            Verifique que el archivo
+            esté en la misma carpeta
+            que monedas.html.`;
+
+    }
+
+);
+
+
+/* =========================================================
+   PARTÍCULAS
+========================================================= */
+
+function createParticles() {
+
+    const geometry =
+        new THREE.BufferGeometry();
+
+    const positions = [];
+
+    for (let i = 0; i < 220; i++) {
+
+        positions.push(
+            (Math.random() - .5) * 5,
+            (Math.random() - .5) * 5,
+            (Math.random() - .5) * 3
+        );
+
+    }
+
+    geometry.setAttribute(
+        'position',
+        new THREE.Float32BufferAttribute(positions, 3)
     );
 
+    const material =
+        new THREE.PointsMaterial({
+
+            color: 0xD4AF37,
+            size: .018,
+            transparent: true,
+            opacity: .48
+
+        });
+
+    particles =
+        new THREE.Points(
+            geometry,
+            material
+        );
+
+    scene.add(particles);
+
+}
+
+
+/* =========================================================
+   CONTROLES
+========================================================= */
+
+controls =
+    new OrbitControls(
+        camera,
+        canvas
+    );
+
+controls.enableDamping = true;
+controls.dampingFactor = .06;
+
+controls.enableRotate = false;
+controls.enableZoom = false;
+controls.enablePan = false;
+
+controls.screenSpacePanning = true;
+
+controls.rotateSpeed = .75;
+controls.zoomSpeed = .8;
+controls.panSpeed = .8;
+
+controls.minDistance = 2.5;
+controls.maxDistance = 7;
+
+controls.target.set(0, 0, 0);
+
+
+/* =========================================================
+   ESTADOS DEL SCROLL
+========================================================= */
+
+const sectionStates = [
+
+    {
+        side: 'right',
+        scale: 1,
+        rotY: .12,
+        rotX: .04,
+        y: 0
+    },
+
+    {
+        side: 'left',
+        scale: 1.10,
+        rotY: -.35,
+        rotX: -.04,
+        y: .02
+    },
+
+    {
+        side: 'right',
+        scale: 1.22,
+        rotY: .50,
+        rotX: .08,
+        y: -.02
+    },
+
+    {
+        side: 'left',
+        scale: 1.15,
+        rotY: -.55,
+        rotX: -.06,
+        y: .03
+    }
+
+];
+
+
+/* =========================================================
+   APLICAR ESTADO
+========================================================= */
+
+function applySectionState(index, instant = false) {
+
+    currentSection = index;
+
+    const state = sectionStates[index];
+
+    coinLayer.classList.remove(
+        'coin-left',
+        'coin-right'
+    );
+
+    coinLayer.classList.add(
+        state.side === 'left'
+            ? 'coin-left'
+            : 'coin-right'
+    );
+
+    targetScale = state.scale;
+
+    targetRotationY = Math.PI + state.rotY;
+    targetRotationX = state.rotX;
+
+    targetY = state.y;
+
+    pulse = 1;
+
+    if (instant && modelGroup) {
+
+        modelGroup.rotation.y = targetRotationY;
+        modelGroup.rotation.x = targetRotationX;
+        modelGroup.position.y = targetY;
+
+        modelGroup.scale.setScalar(targetScale);
+
+    }
+
+    document
+        .querySelectorAll('.coin-story-panel')
+        .forEach(function(panel) {
+
+            panel.classList.remove('active');
+
+        });
+
+    const activePanel =
+        document.querySelector(
+            `.coin-story-panel[data-index="${index}"]`
+        );
+
+    if (activePanel) {
+        activePanel.classList.add('active');
+    }
+
+}
+
+
+/* =========================================================
+   OBSERVER
+========================================================= */
+
+const observer =
+    new IntersectionObserver(
+
+        function(entries) {
+
+            entries.forEach(function(entry) {
+
+                if (
+                    entry.isIntersecting &&
+                    !manualMode
+                ) {
+
+                    const index =
+                        Number(entry.target.dataset.index);
+
+                    applySectionState(index);
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: .55
+        }
+
+    );
+
+document
+    .querySelectorAll('.coin-story-panel')
+    .forEach(function(section) {
+
+        observer.observe(section);
+
+    });
+
+
+/* =========================================================
+   BOTÓN MANUAL
+========================================================= */
+
+manualButton.addEventListener('click', function() {
+
+    manualMode = !manualMode;
+
+    if (manualMode) {
+
+        controls.enableRotate = true;
+        controls.enableZoom = true;
+        controls.enablePan = true;
+
+        coinLayer.style.pointerEvents = 'auto';
+
+        manualButton.classList.add('active');
+
+        manualButton.textContent =
+            '↺ Volver al modo historia';
+
+        manualHelp.classList.add('show');
+
+    } else {
+
+        controls.enableRotate = false;
+        controls.enableZoom = false;
+        controls.enablePan = false;
+
+        coinLayer.style.pointerEvents = 'none';
+
+        manualButton.classList.remove('active');
+
+        manualButton.textContent =
+            '🖐 Manipular modelo 3D';
+
+        manualHelp.classList.remove('show');
+
+        camera.position.set(0, .05, 4.2);
+
+        controls.target.set(0, 0, 0);
+
+        controls.update();
+
+        applySectionState(currentSection);
+
+    }
+
+});
+
+
+/* =========================================================
+   ANIMACIÓN
+========================================================= */
+
+const clock = new THREE.Clock();
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    const delta = clock.getDelta();
+
+    elapsed += delta;
+
+    if (modelLoaded && modelGroup) {
+
+        if (!manualMode) {
+
+            /* ROTACIÓN */
+
+            modelGroup.rotation.y += .0019;
+
+
+            /* FLOTACIÓN */
+
+            const floatingY =
+                targetY +
+                Math.sin(elapsed * 1.2) * .025;
+
+            modelGroup.position.y +=
+                (floatingY - modelGroup.position.y) * .05;
+
+
+            /* RESPIRACIÓN */
+
+            const breathing =
+                1 +
+                Math.sin(elapsed * 1.5) * .008;
+
+
+            /* PULSO */
+
+            const desiredScale =
+                targetScale *
+                breathing *
+                (1 + pulse * .055);
+
+            const scaleVector =
+                new THREE.Vector3(
+                    desiredScale,
+                    desiredScale,
+                    desiredScale
+                );
+
+            modelGroup.scale.lerp(
+                scaleVector,
+                .07
+            );
+
+
+            /* INCLINACIÓN */
+
+            modelGroup.rotation.x += (
+
+                targetRotationX +
+                Math.sin(elapsed * .75) * .012 -
+                modelGroup.rotation.x
+
+            ) * .04;
+
+            pulse *= .92;
+
+        }
+
+    }
+
+
+    /* PARTÍCULAS */
+
+    if (particles) {
+
+        particles.rotation.y += .0008;
+
+        particles.rotation.x =
+            Math.sin(elapsed * .2) * .04;
+
+    }
+
+    controls.update();
+
+    renderer.render(scene, camera);
+
+}
+
+animate();
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+window.addEventListener('resize', function() {
+
+    camera.aspect =
+        window.innerWidth / window.innerHeight;
+
+    camera.updateProjectionMatrix();
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
-
-    renderer.outputColorSpace =
-        THREE.SRGBColorSpace;
-
-
-    renderer.toneMapping =
-        THREE.ACESFilmicToneMapping;
-
-
-    renderer.toneMappingExposure =
-        1.25;
-
-
-    /* =========================================================
-       GRUPO
-    ========================================================= */
-
-    modelGroup =
-        new THREE.Group();
-
-    scene.add(
-        modelGroup
+    renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, 2)
     );
 
+});
 
-    /* =========================================================
-       ILUMINACIÓN
-    ========================================================= */
 
-    const hemisphere =
-        new THREE.HemisphereLight(
-            0xe7eee9,
-            0x101514,
-            2.6
-        );
+/* =========================================================
+   MODAL DE MONEDAS
+========================================================= */
 
-    scene.add(
-        hemisphere
-    );
+const infoModal =
+    document.getElementById('coinInfoModal');
 
+const infoTitle =
+    document.getElementById('coinTitle');
 
-    const goldLight =
-        new THREE.SpotLight(
-            0xD4AF37,
-            12,
-            15,
-            Math.PI / 5,
-            .55,
-            1.3
-        );
+const infoPeriodo =
+    document.getElementById('coinPeriodo');
 
+const infoText =
+    document.getElementById('coinText');
 
-    goldLight.position.set(
-        3.5,
-        4.5,
-        4
-    );
+const infoImage =
+    document.getElementById('coinImage');
 
+const infoCitation =
+    document.getElementById('coinCitation');
 
-    scene.add(
-        goldLight
-    );
+const closeInfo =
+    document.getElementById('coinClose');
 
-    scene.add(
-        goldLight.target
-    );
 
+/* ABRIR MODAL */
 
-    const greenLight =
-        new THREE.PointLight(
-            0x6F9188,
-            9,
-            12
-        );
+document
+    .querySelectorAll('.coin-item')
+    .forEach(function(item) {
 
+        item.addEventListener('click', function() {
 
-    greenLight.position.set(
-        -4,
-        1.5,
-        4
-    );
+            infoTitle.textContent =
+                item.dataset.title;
 
+            infoPeriodo.textContent =
+                item.dataset.periodo;
 
-    scene.add(
-        greenLight
-    );
+            infoText.textContent =
+                item.dataset.texto;
 
+            infoImage.src =
+                item.dataset.imagen;
 
-    const backGold =
-        new THREE.PointLight(
-            0xD4AF37,
-            6,
-            10
-        );
+            infoImage.alt =
+                'Imagen de ' + item.dataset.title;
 
+            infoCitation.textContent =
+                item.dataset.cita;
 
-    backGold.position.set(
-        0,
-        2,
-        -3
-    );
+            infoCitation.href =
+                item.dataset.url;
 
+            infoModal.classList.add('show');
 
-    scene.add(
-        backGold
-    );
+            document.body.style.overflow = 'hidden';
 
+        });
 
-    /* =========================================================
-       CARGAR MACUQUINA
-    ========================================================= */
+    });
 
-    const loader =
-        new GLTFLoader();
 
+/* CERRAR CON BOTÓN X */
 
-    loader.load(
+closeInfo.addEventListener(
+    'click',
+    closeInfoModal
+);
 
-        'macuquina.glb',
 
-        function(gltf) {
+/* CERRAR AL HACER CLIC FUERA */
 
-            model =
-                gltf.scene;
+infoModal.addEventListener('click', function(event) {
 
-
-            modelGroup.add(
-                model
-            );
-
-
-            model.traverse(
-                function(child) {
-
-                    if (
-                        child.isMesh
-                    ) {
-
-                        child.castShadow =
-                            true;
-
-                        child.receiveShadow =
-                            true;
-
-
-                        if (
-                            child.material
-                        ) {
-
-                            child.material =
-                                child.material.clone();
-
-
-                            if (
-                                'emissive'
-                                in child.material
-                            ) {
-
-                                child.material.emissive =
-                                    new THREE.Color(
-                                        0x241c08
-                                    );
-
-                                child.material.emissiveIntensity =
-                                    .18;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-
-            /* =================================================
-               CENTRAR
-            ================================================= */
-
-            const box =
-                new THREE.Box3()
-                    .setFromObject(
-                        model
-                    );
-
-
-            const size =
-                box.getSize(
-                    new THREE.Vector3()
-                );
-
-
-            const center =
-                box.getCenter(
-                    new THREE.Vector3()
-                );
-
-
-            model.position.sub(
-                center
-            );
-
-
-            /* =================================================
-               ESCALA
-            ================================================= */
-
-            const maxDimension =
-                Math.max(
-                    size.x,
-                    size.y,
-                    size.z
-                );
-
-
-            const desiredSize =
-                2.65;
-
-
-            const fitScale =
-                desiredSize /
-                maxDimension;
-
-
-            model.scale.setScalar(
-                fitScale
-            );
-
-
-            model.position.y =
-                0;
-
-
-            modelGroup.rotation.y =
-                Math.PI;
-
-
-            modelGroup.rotation.x =
-                .04;
-
-
-            targetRotationY =
-                Math.PI +
-                .12;
-
-
-            targetRotationX =
-                .04;
-
-
-            modelLoaded =
-                true;
-
-
-            loadingNote.classList.add(
-                'hidden'
-            );
-
-
-            createParticles();
-
-
-            applySectionState(
-                0,
-                true
-            );
-
-        },
-
-
-        function(progress) {
-
-            if (
-                progress.total > 0
-            ) {
-
-                const percentage =
-                    Math.round(
-                        progress.loaded /
-                        progress.total *
-                        100
-                    );
-
-
-                loadingNote.innerHTML =
-
-                    `⏳ Cargando pieza 3D...
-                    <br><br>
-                    ${percentage}%`;
-
-            }
-
-        },
-
-
-        function(error) {
-
-            console.error(
-                'Error cargando macuquina.glb:',
-                error
-            );
-
-
-            loadingNote.innerHTML =
-
-                `❌ No se pudo cargar
-                <strong>macuquina.glb</strong>.
-                <br><br>
-                Verifique que el archivo
-                esté en la misma carpeta
-                que monedas.html.`;
-
-        }
-
-    );
-
-
-    /* =========================================================
-       PARTÍCULAS
-    ========================================================= */
-
-    function createParticles() {
-
-        const geometry =
-            new THREE.BufferGeometry();
-
-
-        const positions = [];
-
-
-        for (
-            let i = 0;
-            i < 220;
-            i++
-        ) {
-
-            positions.push(
-
-                (Math.random() - .5) * 5,
-
-                (Math.random() - .5) * 5,
-
-                (Math.random() - .5) * 3
-
-            );
-
-        }
-
-
-        geometry.setAttribute(
-
-            'position',
-
-            new THREE.Float32BufferAttribute(
-                positions,
-                3
-            )
-
-        );
-
-
-        const material =
-            new THREE.PointsMaterial({
-
-                color:
-                    0xD4AF37,
-
-                size:
-                    .018,
-
-                transparent:
-                    true,
-
-                opacity:
-                    .48
-
-            });
-
-
-        particles =
-            new THREE.Points(
-                geometry,
-                material
-            );
-
-
-        scene.add(
-            particles
-        );
-
+    if (event.target === infoModal) {
+        closeInfoModal();
     }
 
-
-    /* =========================================================
-       CONTROLES
-    ========================================================= */
-
-    controls =
-        new OrbitControls(
-            camera,
-            canvas
-        );
+});
 
 
-    controls.enableDamping =
-        true;
+/* FUNCIÓN PARA CERRAR */
+
+function closeInfoModal() {
+
+    infoModal.classList.remove('show');
+
+    document.body.style.overflow = '';
+
+}
 
 
-    controls.dampingFactor =
-        .06;
+/* CERRAR CON ESCAPE */
 
+document.addEventListener('keydown', function(event) {
 
-    controls.enableRotate =
-        false;
-
-
-    controls.enableZoom =
-        false;
-
-
-    controls.enablePan =
-        false;
-
-
-    controls.screenSpacePanning =
-        true;
-
-
-    controls.rotateSpeed =
-        .75;
-
-
-    controls.zoomSpeed =
-        .8;
-
-
-    controls.panSpeed =
-        .8;
-
-
-    controls.minDistance =
-        2.5;
-
-
-    controls.maxDistance =
-        7;
-
-
-    controls.target.set(
-        0,
-        0,
-        0
-    );
-
-
-    /* =========================================================
-       ESTADOS DEL SCROLL
-    ========================================================= */
-
-    const sectionStates = [
-
-        {
-            side: 'right',
-            scale: 1,
-            rotY: .12,
-            rotX: .04,
-            y: 0
-        },
-
-        {
-            side: 'left',
-            scale: 1.10,
-            rotY: -.35,
-            rotX: -.04,
-            y: .02
-        },
-
-        {
-            side: 'right',
-            scale: 1.22,
-            rotY: .50,
-            rotX: .08,
-            y: -.02
-        },
-
-        {
-            side: 'left',
-            scale: 1.15,
-            rotY: -.55,
-            rotX: -.06,
-            y: .03
-        }
-
-    ];
-
-
-    /* =========================================================
-       APLICAR ESTADO
-    ========================================================= */
-
-    function applySectionState(
-        index,
-        instant = false
+    if (
+        event.key === 'Escape' &&
+        infoModal.classList.contains('show')
     ) {
 
-        currentSection =
-            index;
-
-
-        const state =
-            sectionStates[index];
-
-
-        coinLayer.classList.remove(
-            'coin-left',
-            'coin-right'
-        );
-
-
-        coinLayer.classList.add(
-
-            state.side === 'left'
-                ? 'coin-left'
-                : 'coin-right'
-
-        );
-
-
-        targetScale =
-            state.scale;
-
-
-        targetRotationY =
-            Math.PI +
-            state.rotY;
-
-
-        targetRotationX =
-            state.rotX;
-
-
-        targetY =
-            state.y;
-
-
-        pulse =
-            1;
-
-
-        if (
-            instant &&
-            modelGroup
-        ) {
-
-            modelGroup.rotation.y =
-                targetRotationY;
-
-            modelGroup.rotation.x =
-                targetRotationX;
-
-            modelGroup.position.y =
-                targetY;
-
-            modelGroup.scale.setScalar(
-                targetScale
-            );
-
-        }
-
-
-        document
-            .querySelectorAll(
-                '.coin-story-panel'
-            )
-            .forEach(
-                function(panel) {
-
-                    panel.classList.remove(
-                        'active'
-                    );
-
-                }
-            );
-
-
-        const activePanel =
-            document.querySelector(
-
-                `.coin-story-panel[data-index="${index}"]`
-
-            );
-
-
-        if (
-            activePanel
-        ) {
-
-            activePanel.classList.add(
-                'active'
-            );
-
-        }
+        closeInfoModal();
 
     }
 
-
-    /* =========================================================
-       OBSERVER
-    ========================================================= */
-
-    const observer =
-        new IntersectionObserver(
-
-            function(entries) {
-
-                entries.forEach(
-                    function(entry) {
-
-                        if (
-
-                            entry.isIntersecting &&
-
-                            !manualMode
-
-                        ) {
-
-                            const index =
-                                Number(
-                                    entry.target
-                                        .dataset
-                                        .index
-                                );
-
-
-                            applySectionState(
-                                index
-                            );
-
-                        }
-
-                    }
-                );
-
-            },
-
-            {
-                threshold: .55
-            }
-
-        );
-
-
-    document
-        .querySelectorAll(
-            '.coin-story-panel'
-        )
-        .forEach(
-            function(section) {
-
-                observer.observe(
-                    section
-                );
-
-            }
-        );
-
-
-    /* =========================================================
-       BOTÓN MANUAL
-    ========================================================= */
-
-    manualButton.addEventListener(
-        'click',
-        function() {
-
-            manualMode =
-                !manualMode;
-
-
-            if (
-                manualMode
-            ) {
-
-                controls.enableRotate =
-                    true;
-
-                controls.enableZoom =
-                    true;
-
-                controls.enablePan =
-                    true;
-
-
-                coinLayer.style.pointerEvents =
-                    'auto';
-
-
-                manualButton.classList.add(
-                    'active'
-                );
-
-
-                manualButton.textContent =
-                    '↺ Volver al modo historia';
-
-
-                manualHelp.classList.add(
-                    'show'
-                );
-
-            }
-
-            else {
-
-                controls.enableRotate =
-                    false;
-
-                controls.enableZoom =
-                    false;
-
-                controls.enablePan =
-                    false;
-
-
-                coinLayer.style.pointerEvents =
-                    'none';
-
-
-                manualButton.classList.remove(
-                    'active'
-                );
-
-
-                manualButton.textContent =
-                    '🖐 Manipular modelo 3D';
-
-
-                manualHelp.classList.remove(
-                    'show'
-                );
-
-
-                camera.position.set(
-                    0,
-                    .05,
-                    4.2
-                );
-
-
-                controls.target.set(
-                    0,
-                    0,
-                    0
-                );
-
-
-                controls.update();
-
-
-                applySectionState(
-                    currentSection
-                );
-
-            }
-
-        }
-    );
-
-
-    /* =========================================================
-       ANIMACIÓN
-    ========================================================= */
-
-    const clock =
-        new THREE.Clock();
-
-
-    function animate() {
-
-        requestAnimationFrame(
-            animate
-        );
-
-
-        const delta =
-            clock.getDelta();
-
-
-        elapsed += delta;
-
-
-        if (
-            modelLoaded &&
-            modelGroup
-        ) {
-
-            if (
-                !manualMode
-            ) {
-
-                /* ROTACIÓN */
-
-                modelGroup.rotation.y +=
-                    .0019;
-
-
-                /* FLOTACIÓN */
-
-                const floatingY =
-
-                    targetY +
-
-                    Math.sin(
-                        elapsed * 1.2
-                    ) * .025;
-
-
-                modelGroup.position.y +=
-
-                    (
-                        floatingY -
-                        modelGroup.position.y
-                    ) * .05;
-
-
-                /* RESPIRACIÓN */
-
-                const breathing =
-
-                    1 +
-
-                    Math.sin(
-                        elapsed * 1.5
-                    ) * .008;
-
-
-                /* PULSO */
-
-                const desiredScale =
-
-                    targetScale *
-                    breathing *
-                    (
-                        1 +
-                        pulse * .055
-                    );
-
-
-                const scaleVector =
-                    new THREE.Vector3(
-                        desiredScale,
-                        desiredScale,
-                        desiredScale
-                    );
-
-
-                modelGroup.scale.lerp(
-                    scaleVector,
-                    .07
-                );
-
-
-                /* INCLINACIÓN */
-
-                modelGroup.rotation.x +=
-
-                    (
-
-                        targetRotationX +
-
-                        Math.sin(
-                            elapsed * .75
-                        ) * .012 -
-
-                        modelGroup.rotation.x
-
-                    ) * .04;
-
-
-                pulse *= .92;
-
-            }
-
-        }
-
-
-        /* PARTÍCULAS */
-
-        if (
-            particles
-        ) {
-
-            particles.rotation.y +=
-                .0008;
-
-
-            particles.rotation.x =
-
-                Math.sin(
-                    elapsed * .2
-                ) * .04;
-
-        }
-
-
-        controls.update();
-
-
-        renderer.render(
-            scene,
-            camera
-        );
-
-    }
-
-
-    animate();
-
-
-    /* =========================================================
-       RESIZE
-    ========================================================= */
-
-    window.addEventListener(
-        'resize',
-        function() {
-
-            camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
-
-
-            camera.updateProjectionMatrix();
-
-
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-
-
-            renderer.setPixelRatio(
-                Math.min(
-                    window.devicePixelRatio,
-                    2
-                )
-            );
-
-        }
-    );
-
-
-    /* =========================================================
-       MODAL DE MONEDAS
-    ========================================================= */
-
-    const infoModal =
-        document.getElementById(
-            'coinInfoModal'
-        );
-
-    const infoTitle =
-        document.getElementById(
-            'coinTitle'
-        );
-
-    const infoPeriodo =
-        document.getElementById(
-            'coinPeriodo'
-        );
-
-    const infoText =
-        document.getElementById(
-            'coinText'
-        );
-
-    const closeInfo =
-        document.getElementById(
-            'coinClose'
-        );
-
-
-    document
-        .querySelectorAll(
-            '.coin-item'
-        )
-        .forEach(
-            function(item) {
-
-                item.addEventListener(
-                    'click',
-                    function() {
-
-                        infoTitle.textContent =
-                            item.dataset.title;
-
-                        infoPeriodo.textContent =
-                            item.dataset.periodo;
-
-                        infoText.textContent =
-                            item.dataset.texto;
-
-                        infoModal.classList.add(
-                            'show'
-                        );
-
-                        document.body.style.overflow =
-                            'hidden';
-
-                    }
-                );
-
-            }
-        );
-
-
-    closeInfo.addEventListener(
-        'click',
-        closeInfoModal
-    );
-
-
-    infoModal.addEventListener(
-        'click',
-        function(event) {
-
-            if (
-                event.target ===
-                infoModal
-            ) {
-
-                closeInfoModal();
-
-            }
-
-        }
-    );
-
-
-    function closeInfoModal() {
-
-        infoModal.classList.remove(
-            'show'
-        );
-
-        document.body.style.overflow =
-            '';
-
-    }
-
-
-    document.addEventListener(
-        'keydown',
-        function(event) {
-
-            if (
-                event.key === 'Escape'
-            ) {
-
-                closeInfoModal();
-
-            }
-
-        }
-    );
+});
 
 </script>
 
-
 </body>
-
 </html>

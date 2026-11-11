@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Historia | Casa Nacional de Moneda</title>
-
+<link rel="icon" type="image/png" href="img/cara.png">
     <link rel="stylesheet" href="css/estilo.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +26,19 @@
                 #101514;
         }
 
+        /* =========================================================
+           MENÚ: PÁGINA ACTUAL EN DORADO
+        ========================================================= */
+
+        nav .nav-menu a.active {
+            color: #D4AF37 !important;
+        }
+
+        nav .nav-menu a.active::after {
+            width: 100%;
+            background: #D4AF37;
+        }
+
         .historia-experience {
             position: relative;
             min-height: 400vh;
@@ -40,25 +54,18 @@
             left: 0;
             width: 100%;
             height: calc(100vh - 80px);
-
             z-index: 5;
             pointer-events: none;
-
             overflow: hidden;
         }
 
         #canvas {
             position: absolute;
-
             top: 50%;
-
             width: 58vw;
             height: 88vh;
-
             transform: translate(-50%, -50%);
-
             display: block;
-
             background: transparent;
 
             transition:
@@ -84,15 +91,11 @@
 
         .model-glow {
             position: absolute;
-
             top: 50%;
             left: 75%;
-
             width: 380px;
             height: 380px;
-
             transform: translate(-50%, -50%);
-
             border-radius: 50%;
 
             background:
@@ -104,7 +107,6 @@
                 );
 
             filter: blur(18px);
-
             opacity: 0.85;
 
             transition:
@@ -123,26 +125,16 @@
 
         .loading-note {
             position: absolute;
-
             top: 50%;
             left: 75%;
-
             transform: translate(-50%, -50%);
-
             width: min(90%, 420px);
-
             padding: 24px 28px;
-
             text-align: center;
-
             background: rgba(18, 30, 28, 0.90);
-
             border: 1px solid rgba(212,175,55,0.45);
-
             border-radius: 16px;
-
             color: #fff;
-
             font-size: 15px;
             line-height: 1.6;
 
@@ -166,12 +158,8 @@
 
         .loading-note.hidden {
             opacity: 0;
-
             pointer-events: none;
-
-            transform:
-                translate(-50%, -50%)
-                scale(.9);
+            transform: translate(-50%, -50%) scale(.9);
         }
 
         /* =========================================================
@@ -180,29 +168,18 @@
 
         .story-panel {
             min-height: 100vh;
-
             width: 100%;
-
             display: flex;
-
             align-items: center;
-
             padding: 100px 6vw 80px;
-
             position: relative;
-
             z-index: 20;
-
             pointer-events: none;
         }
-
-        /* TEXTO IZQUIERDA */
 
         .story-left {
             justify-content: flex-start;
         }
-
-        /* TEXTO DERECHA */
 
         .story-right {
             justify-content: flex-end;
@@ -214,11 +191,8 @@
 
         .story-card {
             width: min(460px, 38vw);
-
             min-width: 350px;
-
             padding: 35px;
-
             border-radius: 20px;
 
             background:
@@ -235,12 +209,8 @@
                 inset 0 1px 0 rgba(255,255,255,0.04);
 
             backdrop-filter: blur(14px);
-
             opacity: .45;
-
-            transform:
-                translateY(25px)
-                scale(.97);
+            transform: translateY(25px) scale(.97);
 
             transition:
                 opacity .7s ease,
@@ -253,11 +223,7 @@
 
         .story-panel.active .story-card {
             opacity: 1;
-
-            transform:
-                translateY(0)
-                scale(1);
-
+            transform: translateY(0) scale(1);
             border-color: rgba(212,175,55,0.60);
 
             box-shadow:
@@ -272,11 +238,8 @@
         .story-card h1,
         .story-card h2 {
             color: #D4AF37;
-
             margin-bottom: 22px;
-
             line-height: 1.15;
-
             font-weight: 700;
         }
 
@@ -290,11 +253,8 @@
 
         .story-card p {
             color: rgba(255,255,255,0.88);
-
             font-size: 15px;
-
             line-height: 1.85;
-
             margin-bottom: 18px;
         }
 
@@ -303,50 +263,72 @@
         }
 
         /* =========================================================
+           FUENTES DE CADA CUADRO INFORMATIVO
+        ========================================================= */
+
+        .fuentes-cuadro {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(212,175,55,0.30);
+        }
+
+        .fuentes-cuadro .fuente-titulo {
+            display: block;
+            color: #D4AF37;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+        }
+
+        .fuentes-cuadro a {
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+            color: #D8C58A;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            line-height: 1.7;
+            text-decoration: none;
+            margin-bottom: 5px;
+            transition: color .3s ease;
+        }
+
+        .fuentes-cuadro a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* =========================================================
            BOTÓN MANUAL
         ========================================================= */
 
         .manual-control {
             position: fixed;
-
             right: 25px;
             bottom: 25px;
-
             z-index: 1200;
-
             border: 1px solid rgba(212,175,55,0.55);
-
-            background:
-                rgba(25,40,37,0.95);
-
+            background: rgba(25,40,37,0.95);
             color: #fff;
-
             padding: 14px 20px;
-
             border-radius: 12px;
-
             font-family: 'Montserrat', sans-serif;
-
             font-size: 14px;
-
             font-weight: 600;
-
             cursor: pointer;
 
             box-shadow:
                 0 10px 30px rgba(0,0,0,0.40);
 
-            transition:
-                .3s ease;
-
+            transition: .3s ease;
             pointer-events: auto;
         }
 
         .manual-control:hover {
             color: #D4AF37;
-
             border-color: #D4AF37;
-
             transform: translateY(-2px);
 
             box-shadow:
@@ -355,9 +337,7 @@
 
         .manual-control.active {
             background: #D4AF37;
-
             color: #14201e;
-
             border-color: #D4AF37;
         }
 
@@ -367,43 +347,24 @@
 
         .manual-help {
             position: fixed;
-
             right: 25px;
             bottom: 82px;
-
             z-index: 1200;
-
             padding: 10px 15px;
-
-            background:
-                rgba(15,22,21,0.90);
-
-            border:
-                1px solid rgba(212,175,55,0.25);
-
+            background: rgba(15,22,21,0.90);
+            border: 1px solid rgba(212,175,55,0.25);
             border-radius: 10px;
-
-            color:
-                rgba(255,255,255,0.75);
-
+            color: rgba(255,255,255,0.75);
             font-size: 11px;
-
             opacity: 0;
-
-            transform:
-                translateY(10px);
-
-            transition:
-                .3s ease;
-
+            transform: translateY(10px);
+            transition: .3s ease;
             pointer-events: none;
         }
 
         .manual-help.show {
             opacity: 1;
-
-            transform:
-                translateY(0);
+            transform: translateY(0);
         }
 
         /* =========================================================
@@ -412,17 +373,11 @@
 
         .misterio-panel {
             position: fixed;
-
             top: 80px;
-
             right: -500px;
-
             width: min(480px, 90vw);
-
             height: calc(100vh - 80px);
-
             padding: 40px;
-
             overflow-y: auto;
 
             background:
@@ -432,14 +387,12 @@
                     rgba(13,21,20,0.98)
                 );
 
-            border-left:
-                1px solid rgba(212,175,55,0.35);
+            border-left: 1px solid rgba(212,175,55,0.35);
 
             box-shadow:
                 -20px 0 60px rgba(0,0,0,0.50);
 
             backdrop-filter: blur(18px);
-
             z-index: 1100;
 
             transition:
@@ -452,41 +405,28 @@
 
         .misterio-panel h2 {
             color: #D4AF37;
-
             font-size: 30px;
-
             margin-bottom: 25px;
         }
 
         .misterio-panel h3 {
             color: #D4AF37;
-
             font-size: 20px;
-
-            margin:
-                30px 0 15px;
+            margin: 30px 0 15px;
         }
 
         .misterio-panel p {
-            color:
-                rgba(255,255,255,0.86);
-
+            color: rgba(255,255,255,0.86);
             font-size: 14px;
-
             line-height: 1.8;
-
             margin-bottom: 16px;
         }
 
         .misterio-panel img {
             width: 100%;
-
             border-radius: 14px;
-
             margin-bottom: 25px;
-
-            border:
-                1px solid rgba(212,175,55,0.25);
+            border: 1px solid rgba(212,175,55,0.25);
 
             box-shadow:
                 0 15px 40px rgba(0,0,0,0.35);
@@ -498,31 +438,19 @@
 
         .misterio-button {
             margin-top: 10px;
-
             padding: 13px 20px;
-
             border-radius: 10px;
-
-            border:
-                1px solid rgba(212,175,55,0.55);
-
-            background:
-                rgba(212,175,55,0.08);
-
+            border: 1px solid rgba(212,175,55,0.55);
+            background: rgba(212,175,55,0.08);
             color: #D4AF37;
-
             font-family: 'Montserrat', sans-serif;
-
             font-weight: 600;
-
             cursor: pointer;
-
             transition: .3s ease;
         }
 
         .misterio-button:hover {
             background: #D4AF37;
-
             color: #14201e;
         }
 
@@ -532,65 +460,88 @@
 
         .close-misterio {
             position: absolute;
-
             top: 20px;
             right: 20px;
-
             width: 35px;
             height: 35px;
-
             border-radius: 50%;
-
-            border:
-                1px solid rgba(212,175,55,0.35);
-
-            background:
-                rgba(0,0,0,0.25);
-
+            border: 1px solid rgba(212,175,55,0.35);
+            background: rgba(0,0,0,0.25);
             color: #fff;
-
             cursor: pointer;
-
             font-size: 18px;
-
             transition: .3s ease;
         }
 
         .close-misterio:hover {
             color: #D4AF37;
-
             border-color: #D4AF37;
         }
 
         /* =========================================================
-           FOOTER NUEVO VERDECITO IGUAL A LA IMAGEN
-        ========================================================= */
+   FOOTER - ESTILO DE LA IMAGEN DE REFERENCIA
+========================================================= */
 
-        .historia-footer {
-            background: #3F5F5E; /* verde petróleo de tu imagen */
-            padding: 35px 20px;
-            position: relative;
-            z-index: 30;
-            border-top: 2px solid #D4AF37; /* lineita amarilla dorada */
-            text-align: center;
-        }
+footer {
+    width: 100%;
+    min-height: 142px;
+    margin-top: 40px;
+    padding: 30px 20px;
 
-        .historia-footer h3 {
-            font-family: 'Cinzel', serif;
-            color: #D4AF37; /* amarillo dorado */
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-        .historia-footer p {
-            font-family: 'Montserrat', sans-serif;
-            color: #E8E8E8; /* blanco gris */
-            font-size: 13px;
-            font-weight: 300;
-            letter-spacing: 1.5px;
-        }
+    background: #4A5D5A;
+    border-top: 2px solid #D4AF37;
+
+    border-radius: 0;
+
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+footer h3 {
+    margin: 0 0 8px;
+
+    color: #D4AF37;
+
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}
+
+footer p {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+/* Adaptación para celulares */
+
+@media (max-width: 600px) {
+    footer {
+        min-height: 125px;
+        padding: 25px 15px;
+    }
+
+    footer h3 {
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+
+    footer p {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+    }
+}
 
         /* =========================================================
            MODO MANUAL
@@ -616,11 +567,8 @@
 
             .model-fixed-layer {
                 position: fixed;
-
                 top: 110px;
-
-                height:
-                    calc(100vh - 110px);
+                height: calc(100vh - 110px);
             }
 
             #canvas {
@@ -643,58 +591,40 @@
             .model-fixed-layer.model-left .loading-note,
             .model-fixed-layer.model-right .loading-note {
                 left: 50%;
-
                 width: 80%;
             }
 
             .story-panel {
                 min-height: 100vh;
-
-                padding:
-                    120px 20px 80px;
-
+                padding: 120px 20px 80px;
                 justify-content: center;
             }
 
             .story-card {
                 width: 90vw;
-
                 min-width: 0;
-
                 margin-top: 45vh;
-
-                background:
-                    rgba(18,28,27,0.93);
+                background: rgba(18,28,27,0.93);
             }
 
             .manual-control {
                 right: 15px;
-
                 bottom: 15px;
-
                 font-size: 12px;
-
-                padding:
-                    12px 15px;
+                padding: 12px 15px;
             }
 
             .manual-help {
                 right: 15px;
-
                 bottom: 70px;
-
                 max-width: 230px;
-
                 text-align: right;
             }
 
             .misterio-panel {
                 width: 100vw;
-
                 right: -100vw;
-
-                padding:
-                    35px 25px;
+                padding: 35px 25px;
             }
         }
 
@@ -736,12 +666,19 @@
 
         </div>
 
-         <ul class="nav-menu">
+        <ul class="nav-menu">
             <li><a href="index.html">INICIO</a></li>
-            <li><a href="historia.html">HISTORIA</a></li>
+
+            <li>
+                <a href="historia.html" class="active" aria-current="page">
+                    HISTORIA
+                </a>
+            </li>
+
             <li><a href="infraestructura.html">INFRAESTRUCTURA</a></li>
-            <li><a href="espacios.html">ESPACIOS</a></li> <!-- NUEVO -->
+            <li><a href="espacios.html">ESPACIOS</a></li>
             <li><a href="monedas.html">MONEDAS</a></li>
+            <li><a href="explorar.html">RECORRIDO 3D</a></li>
             <li><a href="informacion.html">INFORMACIÓN</a></li>
         </ul>
 
@@ -828,6 +765,26 @@
                     La Corona española necesitaba controlar este flujo de riqueza, cobrar impuestos y transformar la plata bruta en dinero legal para financiar sus guerras en Europa. Las monedas acuñadas aquí se convirtieron en la primera divisa de uso global.
                 </p>
 
+                <div class="fuentes-cuadro">
+                    <span class="fuente-titulo">FUENTES HISTÓRICAS:</span>
+
+                    <a
+                        href="https://censoarchivos.cultura.gob.es/CensoGuia/fondoDetail.htm?id=1172387"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Archivo Histórico de la Casa Nacional de Moneda – Reseña histórica
+                    </a>
+
+                    <a
+                        href="https://www.scielo.org.bo/scielo.php?lng=en&nrm=iso&pid=S2518-44312024000300105&script=sci_arttext"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Investigación académica sobre la Casa de Moneda de Potosí
+                    </a>
+                </div>
+
             </div>
 
         </section>
@@ -851,6 +808,26 @@
                     La mita obligó a millones de indígenas a trabajar en condiciones extremas. Cuando la explotación de la plata se volvió masiva y los indígenas no daban abasto, los españoles decidieron importar miles de esclavos africanos. Pero el plan fracasó por razones climáticas: al llegar de zonas tropicales a los más de 4,000 metros de altura de la Villa Imperial, el frío seco y congelante les causó muertes masivas por neumonía. Los pocos sobrevivientes fueron trasladados al interior de la Casa de la Moneda para mover a la fuerza los pesados engranajes cuando los animales se cansaban.
                 </p>
 
+                <div class="fuentes-cuadro">
+                    <span class="fuente-titulo">FUENTES HISTÓRICAS:</span>
+
+                    <a
+                        href="https://www.scielo.org.bo/scielo.php?pid=S2518-44312024000300105&script=sci_arttext"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Investigación académica sobre la mita y el trabajo forzado
+                    </a>
+
+                    <a
+                        href="https://www.fundacionculturalbcb.gob.bo/documentos/boletin-cultural/2024/boletin_64_2024.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Fundación Cultural del Banco Central de Bolivia – Boletín Cultural N.º 64
+                    </a>
+                </div>
+
             </div>
 
         </section>
@@ -873,6 +850,26 @@
                 <p>
                     La primera casa operó desde 1574 acuñando a golpe de martillo las monedas imperfectas llamadas macuquinas. A mediados del siglo XVII, este lugar fue escenario del fraude económico más grande de la era colonial: los alcaldes y ensayadores mezclaron secretamente la plata con cobre, haciendo que la economía mundial casi colapse. El Rey envió a un juez implacable que terminó condenando a la horca a los hombres más ricos de Potosí en los mismos patios del edificio. Finalmente, tras la independencia en 1825, la ceca siguió funcionando como fábrica de monedas nacionales hasta su cierre definitivo en 1951.
                 </p>
+
+                <div class="fuentes-cuadro">
+                    <span class="fuente-titulo">FUENTES HISTÓRICAS:</span>
+
+                    <a
+                        href="https://bibliotecadigital.bcb.gob.bo/xmlui/bitstream/handle/123456789/1735/Historia%20Monetaria%20de%20Bolivia%20T%201.pdf?sequence=1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Banco Central de Bolivia – Historia Monetaria de Bolivia, tomo I
+                    </a>
+
+                    <a
+                        href="https://www.bcb.gob.bo/?q=content%2F45"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Banco Central de Bolivia – Museo Virtual
+                    </a>
+                </div>
 
                 <button
                     class="misterio-button"
@@ -907,6 +904,26 @@
                 <p>
                     Entre todos sus elementos destaca especialmente el famoso mascarón, una pieza que se convirtió en uno de los símbolos más reconocibles del edificio.
                 </p>
+
+                <div class="fuentes-cuadro">
+                    <span class="fuente-titulo">FUENTES INSTITUCIONALES:</span>
+
+                    <a
+                        href="https://casanacionaldemoneda.bo/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Casa Nacional de Moneda – Sitio oficial
+                    </a>
+
+                    <a
+                        href="https://historico.abi.bo/index.php/noticias/culturas/39159-concluye-intervencion-del-mascaron-de-la-casa-nacional-de-moneda-y-hoy-luce-todo-su-esplendor"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Agencia Boliviana de Información – El Mascarón de la Casa Nacional de Moneda
+                    </a>
+                </div>
 
                 <button
                     class="misterio-button"
@@ -970,26 +987,38 @@
                 Si tapas ese lado y observas solo el lado derecho, la expresión cambia por completo a un rostro contrito que refleja la profunda tristeza y el sufrimiento de los indígenas sometidos al trabajo forzado.
             </p>
 
+            <div class="fuentes-cuadro">
+                <span class="fuente-titulo">FUENTES CONSULTADAS:</span>
+
+                <a
+                    href="https://casanacionaldemoneda.bo/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Casa Nacional de Moneda – Información institucional
+                </a>
+
+                <a
+                    href="https://historico.abi.bo/index.php/noticias/culturas/39159-concluye-intervencion-del-mascaron-de-la-casa-nacional-de-moneda-y-hoy-luce-todo-su-esplendor"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Agencia Boliviana de Información – Intervención del Mascarón
+                </a>
+            </div>
+
         </aside>
 
     </main>
 
-    <!-- =========================================================
-         FOOTER NUEVO
-    ========================================================= -->
+    <!-- FOOTER -->
+<footer class="espacios-footer">
 
-    <footer class="historia-footer">
+    <h3>Casa Nacional de la Moneda</h3>
 
-        <h3>
-            Casa Nacional de la Moneda
-        </h3>
+    <p>Potosí | Bolivia</p>
 
-        <p>
-            Potosí | Bolivia
-        </p>
-
-    </footer>
-
+</footer>
     <!-- =========================================================
          THREE.JS
     ========================================================= -->
@@ -1031,10 +1060,22 @@
 
         scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera = new THREE.PerspectiveCamera(
+            42,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            100
+        );
+
         camera.position.set(0, 0.15, 4.6);
 
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
+
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -1047,7 +1088,15 @@
         const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
         scene.add(ambientLight);
 
-        const goldLight = new THREE.SpotLight(0xD4AF37, 10, 15, Math.PI / 5, 0.55, 1.5);
+        const goldLight = new THREE.SpotLight(
+            0xD4AF37,
+            10,
+            15,
+            Math.PI / 5,
+            0.55,
+            1.5
+        );
+
         goldLight.position.set(3.5, 4.5, 5);
         scene.add(goldLight);
         scene.add(goldLight.target);
@@ -1062,61 +1111,125 @@
 
         const loader = new GLTFLoader();
 
-        loader.load('careta.glb', function(gltf) {
-            model = gltf.scene;
-            modelGroup.add(model);
-            model.traverse(function(child) {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                    if (child.material) {
-                        child.material = child.material.clone();
-                        if ('emissive' in child.material) {
-                            child.material.emissive = new THREE.Color(0x241c08);
-                            child.material.emissiveIntensity = 0.18;
+        loader.load(
+            'careta.glb',
+
+            function(gltf) {
+
+                model = gltf.scene;
+                modelGroup.add(model);
+
+                model.traverse(function(child) {
+
+                    if (child.isMesh) {
+
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+
+                        if (child.material) {
+
+                            child.material = child.material.clone();
+
+                            if ('emissive' in child.material) {
+
+                                child.material.emissive = new THREE.Color(0x241c08);
+                                child.material.emissiveIntensity = 0.18;
+
+                            }
+
                         }
+
                     }
+
+                });
+
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+
+                model.position.sub(center);
+
+                const maxDimension = Math.max(size.x, size.y, size.z);
+                const desiredSize = 3.15;
+                const fitScale = desiredSize / maxDimension;
+
+                model.scale.setScalar(fitScale);
+                model.position.y = -0.05;
+
+                modelGroup.rotation.y = Math.PI;
+
+                targetRotationY = Math.PI + 0.10;
+                targetRotationX = 0.02;
+
+                modelLoaded = true;
+
+                loadingNote.classList.add('hidden');
+
+                createParticles();
+                applySectionState(0, true);
+
+            },
+
+            function(progress) {
+
+                if (progress.total > 0) {
+
+                    const percentage = Math.round(
+                        progress.loaded / progress.total * 100
+                    );
+
+                    loadingNote.innerHTML =
+                        `⏳ Cargando modelo 3D... <br><br> ${percentage}%`;
+
                 }
-            });
-            const box = new THREE.Box3().setFromObject(model);
-            const size = box.getSize(new THREE.Vector3());
-            const center = box.getCenter(new THREE.Vector3());
-            model.position.sub(center);
-            const maxDimension = Math.max(size.x, size.y, size.z);
-            const desiredSize = 3.15;
-            const fitScale = desiredSize / maxDimension;
-            model.scale.setScalar(fitScale);
-            model.position.y = -0.05;
-            modelGroup.rotation.y = Math.PI;
-            targetRotationY = Math.PI + 0.10;
-            targetRotationX = 0.02;
-            modelLoaded = true;
-            loadingNote.classList.add('hidden');
-            createParticles();
-            applySectionState(0, true);
-        }, function(progress) {
-            if (progress.total > 0) {
-                const percentage = Math.round(progress.loaded / progress.total * 100);
-                loadingNote.innerHTML = `⏳ Cargando modelo 3D... <br><br> ${percentage}%`;
+
+            },
+
+            function(error) {
+
+                console.error('Error cargando careta.glb:', error);
+
+                loadingNote.innerHTML =
+                    `❌ No se pudo cargar el modelo 3D. <br><br> Verifique que <strong>careta.glb</strong> esté en la misma carpeta que historia.html.`;
+
             }
-        }, function(error) {
-            console.error('Error cargando careta.glb:', error);
-            loadingNote.innerHTML = `❌ No se pudo cargar el modelo 3D. <br><br> Verifique que <strong>careta.glb</strong> esté en la misma carpeta que historia.html.`;
-        });
+
+        );
 
         function createParticles() {
+
             const geometry = new THREE.BufferGeometry();
             const positions = [];
+
             for (let i = 0; i < 180; i++) {
-                positions.push((Math.random() - 0.5) * 5, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 3);
+
+                positions.push(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 3
+                );
+
             }
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            const material = new THREE.PointsMaterial({ color: 0xD4AF37, size: 0.018, transparent: true, opacity: 0.55 });
+
+            geometry.setAttribute(
+                'position',
+                new THREE.Float32BufferAttribute(positions, 3)
+            );
+
+            const material = new THREE.PointsMaterial({
+                color: 0xD4AF37,
+                size: 0.018,
+                transparent: true,
+                opacity: 0.55
+            });
+
             particles = new THREE.Points(geometry, material);
             scene.add(particles);
+
         }
 
         controls = new OrbitControls(camera, canvas);
+
         controls.enableDamping = true;
         controls.dampingFactor = 0.06;
         controls.enableRotate = false;
@@ -1131,101 +1244,243 @@
         controls.target.set(0, 0, 0);
 
         const sectionStates = [
-            { side: 'right', scale: 1.00, rotY: 0.10, rotX: 0.02, y: 0 },
-            { side: 'left', scale: 1.05, rotY: -0.18, rotX: -0.02, y: 0.02 },
-            { side: 'right', scale: 1.08, rotY: 0.15, rotX: 0.02, y: -0.02 },
-            { side: 'left', scale: 1.03, rotY: -0.12, rotX: -0.02, y: 0.03 }
+
+            {
+                side: 'right',
+                scale: 1.00,
+                rotY: 0.10,
+                rotX: 0.02,
+                y: 0
+            },
+
+            {
+                side: 'left',
+                scale: 1.05,
+                rotY: -0.18,
+                rotX: -0.02,
+                y: 0.02
+            },
+
+            {
+                side: 'right',
+                scale: 1.08,
+                rotY: 0.15,
+                rotX: 0.02,
+                y: -0.02
+            },
+
+            {
+                side: 'left',
+                scale: 1.03,
+                rotY: -0.12,
+                rotX: -0.02,
+                y: 0.03
+            }
+
         ];
 
         function applySectionState(index, instant = false) {
+
             currentSection = index;
+
             const state = sectionStates[index];
-            modelLayer.classList.remove('model-left', 'model-right');
-            modelLayer.classList.add(state.side === 'left' ? 'model-left' : 'model-right');
+
+            modelLayer.classList.remove(
+                'model-left',
+                'model-right'
+            );
+
+            modelLayer.classList.add(
+                state.side === 'left'
+                    ? 'model-left'
+                    : 'model-right'
+            );
+
             targetScale = state.scale;
             targetRotationY = Math.PI + state.rotY;
             targetRotationX = state.rotX;
             targetY = state.y;
+
             pulse = 1;
+
             if (instant && modelGroup) {
+
                 modelGroup.rotation.y = targetRotationY;
                 modelGroup.rotation.x = targetRotationX;
                 modelGroup.position.y = targetY;
                 modelGroup.scale.setScalar(targetScale);
+
             }
-            document.querySelectorAll('.story-panel').forEach(function(panel) { panel.classList.remove('active'); });
-            const activePanel = document.querySelector(`.story-panel[data-index="${index}"]`);
-            if (activePanel) { activePanel.classList.add('active'); }
+
+            document.querySelectorAll('.story-panel').forEach(
+                function(panel) {
+                    panel.classList.remove('active');
+                }
+            );
+
+            const activePanel = document.querySelector(
+                `.story-panel[data-index="${index}"]`
+            );
+
+            if (activePanel) {
+                activePanel.classList.add('active');
+            }
+
         }
 
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting && !manualMode) {
-                    const index = Number(entry.target.dataset.index);
-                    applySectionState(index);
-                }
-            });
-        }, { threshold: 0.55 });
+        const observer = new IntersectionObserver(
 
-        document.querySelectorAll('.story-panel').forEach(function(section) { observer.observe(section); });
+            function(entries) {
+
+                entries.forEach(function(entry) {
+
+                    if (entry.isIntersecting && !manualMode) {
+
+                        const index = Number(entry.target.dataset.index);
+
+                        applySectionState(index);
+
+                    }
+
+                });
+
+            },
+
+            {
+                threshold: 0.55
+            }
+
+        );
+
+        document.querySelectorAll('.story-panel').forEach(
+            function(section) {
+                observer.observe(section);
+            }
+        );
 
         manualButton.addEventListener('click', function() {
+
             manualMode = !manualMode;
+
             if (manualMode) {
+
                 controls.enableRotate = true;
                 controls.enableZoom = true;
                 controls.enablePan = true;
                 controls.screenSpacePanning = true;
+
                 modelLayer.classList.add('manual-active');
                 manualButton.classList.add('active');
+
                 manualButton.textContent = '↺ Volver al modo historia';
+
                 manualHelp.classList.add('show');
+
             } else {
+
                 controls.enableRotate = false;
                 controls.enableZoom = false;
                 controls.enablePan = false;
+
                 modelLayer.classList.remove('manual-active');
                 manualButton.classList.remove('active');
+
                 manualButton.textContent = '🖐 Manipular modelo 3D';
+
                 manualHelp.classList.remove('show');
+
                 camera.position.set(0, 0.15, 4.6);
                 controls.target.set(0, 0, 0);
                 controls.update();
+
                 applySectionState(currentSection);
+
             }
+
         });
 
         const clock = new THREE.Clock();
+
         function animate() {
+
             requestAnimationFrame(animate);
+
             const delta = clock.getDelta();
+
             elapsed += delta;
+
             if (modelLoaded && modelGroup) {
+
                 if (!manualMode) {
+
                     modelGroup.rotation.y += 0.0018;
-                    const floatingY = targetY + Math.sin(elapsed * 1.15) * 0.018;
-                    modelGroup.position.y += (floatingY - modelGroup.position.y) * 0.05;
-                    const breathing = 1 + Math.sin(elapsed * 1.4) * 0.006;
-                    const desiredScale = targetScale * breathing * (1 + pulse * 0.08);
-                    modelGroup.scale.lerp(new THREE.Vector3(desiredScale, desiredScale, desiredScale), 0.07);
-                    modelGroup.rotation.x += (targetRotationX + Math.sin(elapsed * 0.7) * 0.008 - modelGroup.rotation.x) * 0.04;
+
+                    const floatingY =
+                        targetY + Math.sin(elapsed * 1.15) * 0.018;
+
+                    modelGroup.position.y +=
+                        (floatingY - modelGroup.position.y) * 0.05;
+
+                    const breathing =
+                        1 + Math.sin(elapsed * 1.4) * 0.006;
+
+                    const desiredScale =
+                        targetScale * breathing * (1 + pulse * 0.08);
+
+                    modelGroup.scale.lerp(
+                        new THREE.Vector3(
+                            desiredScale,
+                            desiredScale,
+                            desiredScale
+                        ),
+                        0.07
+                    );
+
+                    modelGroup.rotation.x +=
+                        (
+                            targetRotationX +
+                            Math.sin(elapsed * 0.7) * 0.008 -
+                            modelGroup.rotation.x
+                        ) * 0.04;
+
                     pulse *= 0.92;
+
                 }
+
             }
+
             if (particles) {
+
                 particles.rotation.y += 0.0008;
-                particles.rotation.x = Math.sin(elapsed * 0.2) * 0.04;
+
+                particles.rotation.x =
+                    Math.sin(elapsed * 0.2) * 0.04;
+
             }
+
             controls.update();
+
             renderer.render(scene, camera);
+
         }
+
         animate();
 
         window.addEventListener('resize', function() {
+
             camera.aspect = window.innerWidth / window.innerHeight;
+
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+            );
+
+            renderer.setPixelRatio(
+                Math.min(window.devicePixelRatio, 2)
+            );
+
         });
 
         const misterioPanel = document.getElementById('misterioPanel');
@@ -1233,15 +1488,24 @@
         const misterioButton2 = document.getElementById('misterioButton2');
         const closeMisterio = document.getElementById('closeMisterio');
 
-        function openMisterio() { misterioPanel.classList.add('open'); }
-        function closeMisterioPanel() { misterioPanel.classList.remove('open'); }
+        function openMisterio() {
+            misterioPanel.classList.add('open');
+        }
+
+        function closeMisterioPanel() {
+            misterioPanel.classList.remove('open');
+        }
 
         misterioButton.addEventListener('click', openMisterio);
         misterioButton2.addEventListener('click', openMisterio);
         closeMisterio.addEventListener('click', closeMisterioPanel);
 
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') { closeMisterioPanel(); }
+
+            if (event.key === 'Escape') {
+                closeMisterioPanel();
+            }
+
         });
 
     </script>

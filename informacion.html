@@ -1,196 +1,581 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Información oficial Casa Nacional de la Moneda Potosí - horarios, tarifas 2026, ubicación">
-    <title>Información | Casa Nacional de la Moneda - Potosí</title>
-    
+
+    <title>Información al Visitante | Casa Nacional de Moneda</title>
+<link rel="icon" type="image/png" href="img/cara.png">
+    <link rel="stylesheet" href="css/estilo.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(rgba(74, 93, 90, 0.85), rgba(74, 93, 90, 0.95)), 
-                        url('img/visita.jpg') center/cover fixed;
+            background:
+                radial-gradient(circle at 50% 20%, rgba(111,145,136,0.10), transparent 35%),
+                #101514;
+            overflow-x: hidden;
+        }
+
+        /* MENÚ: PÁGINA ACTUAL */
+        nav .nav-menu li:last-child a,
+        nav .nav-menu a[href="informacion.html"] {
+            color: #D4AF37 !important;
+            border-bottom: 2px solid #D4AF37 !important;
+        }
+
+        .informacion-experience {
+            position: relative;
+            min-height: 600vh;
+        }
+
+        /* MODELO 3D FIJO */
+        .model-fixed-layer {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 80px);
+            z-index: 10;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 50%;
+            width: 55vw;
+            height: 94vh;
+            transform: translate(-50%, -50%);
+            display: block;
+            background: transparent;
+
+            transition:
+                left 1.15s cubic-bezier(.22,.61,.36,1),
+                filter .8s ease;
+        }
+
+        .model-fixed-layer.model-right #canvas {
+            left: 75%;
+        }
+
+        .model-fixed-layer.model-left #canvas {
+            left: 25%;
+        }
+
+        /* BRILLO */
+        .model-glow {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            width: 460px;
+            height: 460px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(212,175,55,0.23) 0%,
+                    rgba(111,145,136,0.14) 35%,
+                    transparent 70%
+                );
+
+            filter: blur(22px);
+            opacity: 0.9;
+
+            transition:
+                left 1.15s cubic-bezier(.22,.61,.36,1),
+                opacity .8s ease;
+        }
+
+        .model-fixed-layer.model-left .model-glow {
+            left: 25%;
+        }
+
+        /* MENSAJE DE CARGA */
+        .loading-note {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            width: min(90%, 420px);
+            padding: 24px 28px;
+            text-align: center;
+
+            background: rgba(18,30,28,0.94);
+            border: 1px solid rgba(212,175,55,0.45);
+            border-radius: 16px;
+
             color: #fff;
+            font-size: 14px;
+            line-height: 1.7;
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.45),
+                0 0 30px rgba(212,175,55,0.08);
+
+            backdrop-filter: blur(12px);
+
+            transition:
+                left 1.15s cubic-bezier(.22,.61,.36,1),
+                opacity .5s ease,
+                transform .5s ease;
+
+            z-index: 10;
+        }
+
+        .model-fixed-layer.model-left .loading-note {
+            left: 25%;
+        }
+
+        .loading-note.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(.9);
+        }
+
+        /* ETIQUETA DEL MODELO */
+        .model-caption {
+            position: fixed;
+            top: 105px;
+            left: 75%;
+            transform: translateX(-50%);
+            width: auto;
+            max-width: 90%;
+            z-index: 30;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+
+            padding: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-align: center;
+
+            pointer-events: none;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+
+            transition:
+                left 1.15s cubic-bezier(.22,.61,.36,1),
+                opacity .8s ease;
+        }
+
+        .model-fixed-layer.model-left ~ .model-caption {
+            left: 25%;
+        }
+
+        .model-fixed-layer.model-right ~ .model-caption {
+            left: 75%;
+        }
+
+        .model-caption .caption-label {
+            color: #D4AF37;
+            font-size: 10px;
+            letter-spacing: 5px;
+            font-weight: 500;
+        }
+
+        .model-caption .caption-title {
+            color: #e8e5dc;
+            font-size: clamp(12px, 1.3vw, 17px);
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* SECCIONES */
+        .story-panel {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 110px 6vw 80px;
+            position: relative;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .story-left {
+            justify-content: flex-start;
+        }
+
+        .story-right {
+            justify-content: flex-end;
+        }
+
+        /* TARJETAS */
+        .story-card {
+            width: min(490px, 40vw);
+            min-width: 350px;
+            padding: 35px;
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(42,64,60,0.95),
+                    rgba(18,28,27,0.95)
+                );
+
+            border: 1px solid rgba(212,175,55,0.28);
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.38),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+
+            backdrop-filter: blur(14px);
+            opacity: .45;
+            transform: translateY(25px) scale(.97);
+
+            transition:
+                opacity .7s ease,
+                transform .7s ease,
+                border-color .7s ease,
+                box-shadow .7s ease;
+
+            pointer-events: auto;
+        }
+
+        .story-panel.active .story-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            border-color: rgba(212,175,55,0.60);
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.50),
+                0 0 35px rgba(212,175,55,0.07);
+        }
+
+        /* TEXTOS */
+        .story-card h1,
+        .story-card h2 {
+            font-family: 'Cinzel', serif;
+            color: #D4AF37;
+            margin-bottom: 22px;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .story-card h1 {
+            font-size: clamp(27px, 3vw, 40px);
+        }
+
+        .story-card h2 {
+            font-size: clamp(24px, 2.6vw, 32px);
+        }
+
+        .story-card h3 {
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: 19px;
+            margin: 25px 0 12px;
+        }
+
+        .story-card p {
+            color: rgba(255,255,255,0.88);
+            font-size: 14px;
+            line-height: 1.85;
+            margin-bottom: 17px;
+        }
+
+        .story-card strong {
+            color: #D4AF37;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: #b8c9c3;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        /* SECCIÓN 6: CONTACTO */
+        .story-panel[data-index="5"] {
+            min-height: 100vh;
+            height: auto;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding-top: 130px;
+            padding-bottom: 100px;
+        }
+
+        .story-panel[data-index="5"] .story-card {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        /* BOTÓN DE MANIPULACIÓN */
+        .manual-control {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            z-index: 1200;
+
+            border: 1px solid rgba(212,175,55,0.55);
+            background: rgba(25,40,37,0.95);
+            color: #fff;
+
+            padding: 14px 20px;
+            border-radius: 12px;
+
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.40);
+            transition: .3s ease;
+        }
+
+        .manual-control:hover {
+            color: #D4AF37;
+            border-color: #D4AF37;
+            transform: translateY(-2px);
+        }
+
+        .manual-control.active {
+            background: #D4AF37;
+            color: #14201e;
+            border-color: #D4AF37;
+        }
+
+        .manual-help {
+            position: fixed;
+            right: 25px;
+            bottom: 82px;
+            z-index: 1200;
+
+            padding: 10px 15px;
+            background: rgba(15,22,21,0.90);
+            border: 1px solid rgba(212,175,55,0.25);
+            border-radius: 10px;
+
+            color: rgba(255,255,255,0.75);
+            font-size: 11px;
+
+            opacity: 0;
+            transform: translateY(10px);
+            transition: .3s ease;
+            pointer-events: none;
+        }
+
+        .manual-help.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .model-fixed-layer.manual-active {
+            pointer-events: auto;
+        }
+
+        .model-fixed-layer.manual-active #canvas {
+            cursor: grab;
+        }
+
+        .model-fixed-layer.manual-active #canvas:active {
+            cursor: grabbing;
+        }
+
+        /* INFORMACIÓN DE VISITA */
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.18);
+
+            color: rgba(255,255,255,0.88);
+            font-size: 13px;
             line-height: 1.6;
         }
 
-        /* NAVBAR */
-        nav {
-            background: #4A5D5A;
-            padding: 0 50px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 80px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-logo img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .nav-logo span {
-            color: #fff;
-            font-weight: 700;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 40px;
-        }
-
-        .nav-menu a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            padding-bottom: 5px;
-        }
-
-        .nav-menu a:hover, .nav-menu a.active {
+        .info-line strong {
             color: #D4AF37;
-            border-bottom: 2px solid #D4AF37;
+            text-align: right;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 2px solid #D4AF37;
-        }
-
-        h1 {
-            font-size: 42px;
-            color: #D4AF37;
-            font-weight: 800;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.95);
-            color: #1a1a1a;
-            margin-bottom: 30px;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            border-left: 5px solid #4A5D5A;
-        }
-
-        .section h2 {
-            color: #4A5D5A;
-            font-size: 28px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section h3 {
-            color: #4A5D5A;
-            font-size: 22px;
-            margin: 15px 0 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .info-card {
-            background: #4A5D5A;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 3px solid #D4AF37;
-        }
-
-        .info-card strong { color: #D4AF37; }
-
-        .map-container {
+        .schedule-block {
             margin-top: 20px;
-            border-radius: 12px;
+            padding: 17px;
+            border-radius: 13px;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(212,175,55,0.18);
+        }
+
+        .schedule-block h3 {
+            margin-top: 0;
+        }
+
+        .schedule-block p {
+            margin-bottom: 8px;
+        }
+
+        .schedule-times {
+            color: #fff;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .notice {
+            margin-top: 18px;
+            padding: 14px;
+            border-left: 3px solid #D4AF37;
+            background: rgba(212,175,55,0.07);
+            border-radius: 0 10px 10px 0;
+            color: rgba(255,255,255,0.82);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* TABLA DE TARIFAS */
+        .tariff-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .tariff-table th {
+            color: #D4AF37;
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 1px solid rgba(212,175,55,0.5);
+        }
+
+        .tariff-table td {
+            color: rgba(255,255,255,0.88);
+            padding: 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .tariff-table td:last-child {
+            color: #D4AF37;
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* MAPA */
+        .map-container {
+            width: 100%;
+            height: 230px;
             overflow: hidden;
-            border: 3px solid #4A5D5A;
+            border-radius: 14px;
+            border: 1px solid rgba(212,175,55,0.35);
+            margin-top: 20px;
         }
 
         .map-container iframe {
             width: 100%;
-            height: 400px;
+            height: 100%;
             border: 0;
-            display: block;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            display: table;
-        }
-
-        table th {
-            background: #4A5D5A;
+        /* ENLACES */
+        .gold-link {
+            display: inline-block;
+            margin-top: 10px;
             color: #D4AF37;
-            padding: 15px;
-            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(212,175,55,0.45);
+            padding-bottom: 4px;
+            transition: .3s ease;
         }
 
-        table td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table tr:nth-child(even) { background: #f5f5f5; }
-
-        .highlight-box {
-            background: linear-gradient(135deg, #4A5D5A, #5f7572);
+        .gold-link:hover {
             color: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #D4AF37;
+            border-color: #fff;
         }
 
-        /* FOOTER IGUALITO AL DE HISTORIA.HTML */
+        /* BIBLIOGRAFÍA */
+        .source-item {
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.18);
+        }
+
+        .source-item p {
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .source-item a {
+            color: #D4AF37;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+            text-decoration: none;
+        }
+
+        .source-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* CONTACTO DE LA DESARROLLADORA */
+        .developer-contact {
+            margin-top: 28px;
+            padding: 20px;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(212,175,55,0.28);
+            border-radius: 13px;
+        }
+
+        .developer-contact h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .developer-contact p {
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .developer-contact .info-line {
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .developer-contact a {
+            color: #D4AF37;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+            transition: color 0.3s ease;
+        }
+
+        .developer-contact a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
         .historia-footer {
             background: #3F5F5E;
             padding: 35px 20px;
@@ -217,119 +602,1317 @@
             letter-spacing: 1.5px;
         }
 
-        @media (max-width: 768px) {
-            nav {
-                padding: 15px 20px;
-                flex-direction: column;
-                height: auto;
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+
+            .model-fixed-layer {
+                top: 110px;
+                height: calc(100vh - 110px);
             }
-            .nav-menu {
-                gap: 15px;
-                flex-wrap: wrap;
+
+            #canvas {
+                width: 100vw;
+                height: 65vh;
+            }
+
+            .model-fixed-layer.model-right #canvas,
+            .model-fixed-layer.model-left #canvas {
+                left: 50%;
+            }
+
+            .model-glow,
+            .model-fixed-layer.model-left .model-glow,
+            .model-fixed-layer.model-right .model-glow {
+                left: 50%;
+                width: 320px;
+                height: 320px;
+            }
+
+            .loading-note,
+            .model-fixed-layer.model-left .loading-note,
+            .model-fixed-layer.model-right .loading-note {
+                left: 50%;
+                width: 80%;
+            }
+
+            .model-caption {
+                top: 120px;
+                left: 50% !important;
+                width: 90%;
+                max-width: 90%;
+                padding: 0;
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                backdrop-filter: none;
+            }
+
+            .model-caption .caption-label {
+                font-size: 9px;
+            }
+
+            .model-caption .caption-title {
+                font-size: 12px;
+            }
+
+            .story-panel {
+                min-height: 100vh;
+                padding: 120px 20px 80px;
                 justify-content: center;
-                margin-top: 10px;
             }
-            h1 { font-size: 28px; }
-            .section { padding: 25px; }
+
+            .story-card {
+                width: 90vw;
+                min-width: 0;
+                margin-top: 42vh;
+                background: rgba(18,28,27,0.95);
+            }
+
+            /* CONTACTO EN MÓVILES */
+            .story-panel[data-index="5"] {
+                min-height: 100vh;
+                height: auto;
+                align-items: center;
+                justify-content: center;
+                padding: 120px 20px 80px;
+            }
+
+            .story-panel[data-index="5"] .story-card {
+                width: 90vw;
+                min-width: 0;
+                margin-top: 42vh;
+            }
+
+            .manual-control {
+                right: 15px;
+                bottom: 15px;
+                font-size: 11px;
+                padding: 12px 15px;
+            }
+
+            .manual-help {
+                right: 15px;
+                bottom: 70px;
+                max-width: 230px;
+                text-align: right;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .story-card {
+                padding: 25px;
+            }
+
+            .story-card p {
+                font-size: 13px;
+            }
+
+            .info-line {
+                font-size: 12px;
+            }
+
+            .tariff-table {
+                font-size: 11px;
+            }
         }
     </style>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
+
 <body>
+
+    <!-- NAVBAR -->
     <nav>
         <div class="nav-logo">
-            <img src="img/cara.png" alt="Logo Casa de la Moneda">
+            <img src="img/cara.png" alt="Casa de la Moneda">
             <span>CASA NACIONAL DE MONEDA</span>
         </div>
+
         <ul class="nav-menu">
             <li><a href="index.html">INICIO</a></li>
             <li><a href="historia.html">HISTORIA</a></li>
             <li><a href="infraestructura.html">INFRAESTRUCTURA</a></li>
             <li><a href="espacios.html">ESPACIOS</a></li>
             <li><a href="monedas.html">MONEDAS</a></li>
-            <li><a href="informacion.html" class="active">INFORMACIÓN</a></li>
+            <li><a href="explorar.html">RECORRIDO 3D</a></li>
+            <li><a href="informacion.html" aria-current="page">INFORMACIÓN</a></li>
         </ul>
     </nav>
 
-    <div class="container">
-        <header>
-            <div style="font-size:48px;">🏛️</div>
-            <h1>CASA NACIONAL DE LA MONEDA</h1>
-            <p style="margin-top: 10px; color: #D4AF37;">Donde se acuñó el 80% de la plata del mundo en los siglos XVI-XVII</p>
-        </header>
+    <!-- EXPERIENCIA DE INFORMACIÓN -->
+    <main class="informacion-experience">
 
-        <div class="section">
-            <h2>📍 Ubicación</h2>
-            <div class="info-grid">
-                <div class="info-card">
-                    <strong>Dirección:</strong><br>
-                    Calle Ayacucho s/n<br>
-                    Villa Imperial de Potosí, Bolivia
-                </div>
-                <div class="info-card">
-                    <strong>Coordenadas:</strong><br>
-                    19°35'17.672" S<br>
-                    65°45'15.228" W
-                </div>
-                <div class="info-card">
-                    <strong>Referencia:</strong><br>
-                    A 2 min de la Plaza 10 de Noviembre<br>
-                    Centro Histórico de Potosí
-                </div>
-            </div>
-            
-            <div class="map-container">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.123456!2d-65.754282!3d-19.588241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93f96812c0c0c0c1%3A0x123456789abcdef0!2sCasa%20Nacional%20de%20la%20Moneda%2C%20Potos%C3%AD!5e0!3m2!1ses!2sbo!4v1700000000000!5m2!1ses!2sbo"
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+        <!-- MODELO 3D FIJO -->
+        <div class="model-fixed-layer model-right" id="modelLayer">
+
+            <div class="model-glow" id="modelGlow"></div>
+
+            <canvas id="canvas"></canvas>
+
+            <div class="loading-note" id="loadingNote">
+                ⏳ Cargando modelo 3D...
+                <br><br>
+                Estamos preparando una representación tridimensional
+                de una pieza histórica relacionada con la acuñación
+                de monedas.
             </div>
         </div>
 
-        <div class="section">
-            <h2>🕐 Horarios de Visita</h2>
-            <h3>Lunes a Viernes</h3>
-            <p><strong>Español:</strong> 09:00 - 09:30 - 10:00 - 10:30 - 11:30 - 12:00 - 12:30 - 13:30 - 14:00 - 15:00</p>
-            <p><strong>Inglés, Francés e Italiano:</strong> 09:00 - 11:00 - 14:30</p>
-            <p style="color: #b71c1c; font-weight:700;"><strong>Cierre de boletería:</strong> 15:15</p>
+        <!-- NOMBRE DEL MODELO -->
+        <div class="model-caption">
+            <span class="caption-label">MODELO 3D</span>
+            <span class="caption-title">PRENSA DE VOLANTE · PRENSA DE BALANCÍN</span>
+        </div>
 
-            <h3>Sábado y Domingo</h3>
-            <p><strong>Español:</strong> 09:15 - 10:00 - 10:30 - 11:30</p>
-            <p><strong>Inglés, Francés e Italiano:</strong> 09:15 - 11:00</p>
-            <p style="color: #b71c1c; font-weight:700;"><strong>Cierre de boletería:</strong> 11:45</p>
+        <!-- BOTÓN DE MANIPULACIÓN -->
+        <button class="manual-control" id="manualButton">
+            🖐 Manipular modelo 3D
+        </button>
 
-            <div class="highlight-box">
-                <p><strong>⏱️ Duración del tour:</strong> 1 hora 30 minutos aprox.</p>
-                <p><strong>👥 Aforo máximo:</strong> 25 personas por turno</p>
+        <div class="manual-help" id="manualHelp">
+            Arrastra para rotar · rueda para zoom · clic derecho para mover
+        </div>
+
+        <!-- SECCIÓN 1 -->
+        <section class="story-panel story-left active" data-index="0">
+            <div class="story-card">
+                <span class="eyebrow">PLANIFICA TU VISITA</span>
+                <h1>Información al Visitante</h1>
+
+                <p>
+                    La Casa Nacional de Moneda de Potosí es uno de los
+                    espacios culturales más importantes de Bolivia.
+                    En sus instalaciones se conservan colecciones
+                    históricas, monedas, documentos y diferentes
+                    elementos que permiten conocer parte de la historia
+                    económica, social y cultural del país.
+                </p>
+
+                <p>
+                    En esta sección encontrarás información útil para
+                    organizar tu visita, conocer los horarios de
+                    atención, consultar las tarifas y ubicar el museo.
+                </p>
             </div>
-        </div>
+        </section>
 
-        <div class="section">
-            <h2>💰 Tarifas 2026</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Precio</th>
-                        <th>Nota</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>Nacionales</strong></td><td>Bs 20</td><td>-</td></tr>
-                    <tr><td><strong>Extranjeros</strong></td><td>Bs 70</td><td>-</td></tr>
-                    <tr><td><strong>Niños menores de 10 años</strong></td><td>Gratis</td><td>Con documento boliviano</td></tr>
-                    <tr><td><strong>Adultos mayores de 60 años</strong></td><td>Gratis</td><td>Con documento boliviano</td></tr>
-                    <tr><td><strong>Uso de cámara</strong></td><td>Bs 20</td><td>Fotografía</td></tr>
-                    <tr><td><strong>Uso de filmadora</strong></td><td>Bs 40</td><td>Video</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <!-- SECCIÓN 2: UBICACIÓN -->
+        <section class="story-panel story-right" data-index="1">
+            <div class="story-card">
+                <span class="eyebrow">¿DÓNDE ENCONTRARNOS?</span>
+                <h2>Ubicación del Museo</h2>
 
+                <p>
+                    La Casa Nacional de Moneda se encuentra en el
+                    centro histórico de la Villa Imperial de Potosí,
+                    en una zona de fácil referencia para los visitantes.
+                </p>
+
+                <div class="info-line">
+                    <span>Dirección</span>
+                    <strong>Calle Ayacucho s/n</strong>
+                </div>
+
+                <div class="info-line">
+                    <span>Ciudad</span>
+                    <strong>Potosí, Bolivia</strong>
+                </div>
+
+                <div class="info-line">
+                    <span>Referencia</span>
+                    <strong>Centro histórico</strong>
+                </div>
+
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps?q=Casa+Nacional+de+Moneda,+Potos%C3%AD,+Bolivia&output=embed"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen
+                        title="Ubicación de la Casa Nacional de Moneda">
+                    </iframe>
+                </div>
+
+                <a
+                    class="gold-link"
+                    href="https://www.google.com/maps/search/?api=1&query=Casa+Nacional+de+Moneda+Potosi"
+                    target="_blank"
+                    rel="noopener">
+                    Ver ubicación en Google Maps →
+                </a>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: HORARIOS -->
+        <section class="story-panel story-left" data-index="2">
+            <div class="story-card">
+                <span class="eyebrow">ORGANIZA TU RECORRIDO</span>
+                <h2>Horarios de Atención</h2>
+
+                <p>
+                    Para la gestión 2026 se difundió el siguiente
+                    horario general de atención al público:
+                </p>
+
+                <div class="info-line">
+                    <span>Lunes a viernes</span>
+                    <strong>08:30 – 16:30</strong>
+                </div>
+
+                <div class="info-line">
+                    <span>Sábados y domingos</span>
+                    <strong>09:00 – 13:00</strong>
+                </div>
+
+                <div class="schedule-block">
+                    <h3>Turnos de visitas guiadas</h3>
+
+                    <p><strong>Lunes a viernes · Español</strong></p>
+
+                    <div class="schedule-times">
+                        09:00 · 09:30 · 10:00 · 10:30 · 11:00 · 11:30
+                        <br>
+                        12:00 · 12:30 · 13:30 · 14:00 · 14:30 · 15:00
+                    </div>
+
+                    <p style="margin-top:15px;">
+                        <strong>Otros idiomas</strong>
+                    </p>
+
+                    <div class="schedule-times">
+                        09:00 · 11:00 · 14:30
+                    </div>
+
+                    <p style="margin-top:12px;">
+                        Cierre de boletería: 15:15.
+                    </p>
+                </div>
+
+                <div class="schedule-block">
+                    <h3>Sábados y domingos</h3>
+
+                    <p><strong>Español</strong></p>
+
+                    <div class="schedule-times">
+                        09:00 · 09:30 · 10:00 · 10:30 · 11:00 · 11:30
+                    </div>
+
+                    <p style="margin-top:15px;">
+                        <strong>Otros idiomas</strong>
+                    </p>
+
+                    <div class="schedule-times">
+                        09:00 · 11:00
+                    </div>
+
+                    <p style="margin-top:12px;">
+                        Cierre de boletería: 11:45.
+                    </p>
+                </div>
+
+                <div class="notice">
+                    Los turnos detallados corresponden a horarios
+                    difundidos durante la etapa de restauración.
+                    Pueden modificarse según las condiciones de
+                    atención del museo. Se recomienda confirmar
+                    previamente antes de realizar la visita.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: TARIFAS -->
+        <section class="story-panel story-right" data-index="3">
+            <div class="story-card">
+                <span class="eyebrow">INGRESO AL MUSEO</span>
+                <h2>Tarifas de Ingreso</h2>
+
+                <p>
+                    Las tarifas difundidas para el ingreso a la
+                    Casa Nacional de Moneda son las siguientes:
+                </p>
+
+                <table class="tariff-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo de visitante</th>
+                            <th>Tarifa</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Visitantes nacionales</td>
+                            <td>Bs 20</td>
+                        </tr>
+                        <tr>
+                            <td>Visitantes extranjeros</td>
+                            <td>Bs 70</td>
+                        </tr>
+                        <tr>
+                            <td>Niños menores de 10 años</td>
+                            <td>Gratis</td>
+                        </tr>
+                        <tr>
+                            <td>Personas mayores de 60 años</td>
+                            <td>Gratis</td>
+                        </tr>
+                        <tr>
+                            <td>Uso de cámara fotográfica</td>
+                            <td>Bs 20</td>
+                        </tr>
+                        <tr>
+                            <td>Uso de filmadora</td>
+                            <td>Bs 40</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="notice">
+                    Las tarifas y condiciones de ingreso pueden
+                    estar sujetas a disposiciones institucionales.
+                    Para evitar inconvenientes, consulta los precios
+                    vigentes directamente con el museo.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: RECOMENDACIONES -->
+        <section class="story-panel story-left" data-index="4">
+            <div class="story-card">
+                <span class="eyebrow">ANTES DE INGRESAR</span>
+                <h2>Recomendaciones para tu Visita</h2>
+
+                <p>
+                    Para disfrutar mejor del recorrido por la Casa
+                    Nacional de Moneda, es conveniente tener en cuenta
+                    algunas recomendaciones:
+                </p>
+
+                <h3>Planifica tu llegada</h3>
+                <p>
+                    Procura llegar con anticipación para consultar
+                    la disponibilidad de los turnos y realizar el
+                    ingreso con tranquilidad.
+                </p>
+
+                <h3>Tiempo de recorrido</h3>
+                <p>
+                    Como referencia, puedes considerar aproximadamente
+                    una hora y treinta minutos para conocer los
+                    principales espacios del museo. La duración
+                    efectiva depende del recorrido y del grupo.
+                </p>
+
+                <h3>Grupos de visitantes</h3>
+                <p>
+                    Si tienes previsto acudir con un grupo numeroso,
+                    consulta previamente las condiciones de ingreso
+                    y la disponibilidad de visitas guiadas.
+                </p>
+
+                <h3>Respeto al patrimonio</h3>
+                <p>
+                    Durante el recorrido, respeta las indicaciones
+                    del personal y las normas de conservación de
+                    los ambientes y objetos históricos.
+                </p>
+
+                <div class="notice">
+                    Una visita organizada permite conocer con mayor
+                    tranquilidad la historia, la arquitectura y las
+                    colecciones que conserva este importante
+                    repositorio cultural.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: CONTACTO -->
+        <section class="story-panel story-right" data-index="5">
+            <div class="story-card">
+                <span class="eyebrow">MÁS INFORMACIÓN</span>
+                <h2>Contacto Institucional</h2>
+
+                <p>
+                    Si necesitas confirmar los horarios, tarifas
+                    o condiciones de ingreso, puedes comunicarte
+                    directamente con la Casa Nacional de Moneda.
+                </p>
+
+                <div class="info-line">
+                    <span>Dirección</span>
+                    <strong>(+591) 62-22777</strong>
+                </div>
+
+                <div class="info-line">
+                    <span>Administración</span>
+                    <strong>(+591) 62-25406</strong>
+                </div>
+
+                <div class="info-line">
+                    <span>Museo</span>
+                    <strong>(+591) 62-25408</strong>
+                </div>
+
+                <div class="info-line">
+                    <span>WhatsApp</span>
+                    <strong>(+591) 64399060</strong>
+                </div>
+
+                <a
+                    class="gold-link"
+                    href="https://casanacionaldemoneda.bo/"
+                    target="_blank"
+                    rel="noopener">
+                    Visitar sitio web oficial →
+                </a>
+
+                <!-- CONTACTO DE LA DESARROLLADORA -->
+                <div class="developer-contact">
+                    <h3>Contacto de la Desarrolladora</h3>
+
+                    <p>
+                        Este proyecto fue desarrollado con el propósito
+                        de presentar información histórica y cultural
+                        de la Casa Nacional de Moneda mediante una
+                        experiencia web que incorpora recursos
+                        tridimensionales interactivos.
+                    </p>
+
+                    <div class="info-line">
+                        <span>Nombre</span>
+                        <strong>Susan Virginia Maidana Aliaga</strong>
+                    </div>
+
+                    <div class="info-line">
+                        <span>Carrera</span>
+                        <strong>Ingeniería Informática</strong>
+                    </div>
+
+                    <div class="info-line">
+                        <span>Universidad</span>
+                        <strong>Universidad Nacional Siglo XX</strong>
+                    </div>
+
+                    <div class="info-line">
+                        <span>Sitio web de la carrera</span>
+                        <strong>
+                            <a
+                                href="https://iinformatica-unsxx.edu.bo/"
+                                target="_blank"
+                                rel="noopener">
+                                Ingeniería Informática UNSXX →
+                            </a>
+                        </strong>
+                    </div>
+
+                    <div class="info-line">
+                        <span>Correo electrónico</span>
+                        <strong>
+                            <a href="mailto:svmaidanaliaga@gmail.com">
+                                svmaidanaliaga@gmail.com
+                            </a>
+                        </strong>
+                    </div>
+                </div>
+
+                <!-- FUENTES DE INFORMACIÓN -->
+                <h3>Fuentes de información</h3>
+
+                <div class="source-item">
+                    <p>
+                        Casa Nacional de Moneda. (s. f.).
+                        <strong>Casa Nacional de Moneda.</strong>
+                    </p>
+
+                    <a
+                        href="https://casanacionaldemoneda.bo/"
+                        target="_blank"
+                        rel="noopener">
+                        https://casanacionaldemoneda.bo/
+                    </a>
+                </div>
+
+                <div class="source-item">
+                    <p>
+                        El Potosí. (2025, 30 de diciembre).
+                        <strong>
+                            Casa de Moneda atenderá todos los días desde 2026.
+                        </strong>
+                    </p>
+
+                    <a
+                        href="https://elpotosi.net/cultura/20251230_casa-de-moneda-atendera-todos-los-dias-desde-2026.html"
+                        target="_blank"
+                        rel="noopener">
+                        Consultar publicación
+                    </a>
+                </div>
+
+                <div class="source-item">
+                    <p>
+                        Casa Nacional de Moneda. (2026, 18 de septiembre).
+                        <strong>
+                            Información sobre horarios de visita durante
+                            la etapa de restauración.
+                        </strong>
+                    </p>
+
+                    <a
+                        href="https://www.findglocal.com/BO/Potos%C3%AD/1009729675776562/Casa-Nacional-de-Moneda---Fundaci%C3%B3n-Cultural-del-Banco-Central-de-Bolivia"
+                        target="_blank"
+                        rel="noopener">
+                        Consultar publicación institucional difundida
+                    </a>
+                </div>
+
+                <div class="source-item">
+                    <p>
+                        Bolivia TV. (2025, 29 de diciembre).
+                        <strong>
+                            Casa Nacional de Moneda superó las 75 mil
+                            visitas y amplía horarios desde 2026.
+                        </strong>
+                    </p>
+
+                    <a
+                        href="https://www.boliviatv.bo/principal/nota.php?noticia=28f16e17d077d747e42355014721b22c"
+                        target="_blank"
+                        rel="noopener">
+                        Consultar publicación
+                    </a>
+                </div>
+
+                <p style="margin-top:20px;">
+                    La información puede actualizarse de acuerdo con
+                    las disposiciones de la institución.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
     <footer class="historia-footer">
         <h3>Casa Nacional de la Moneda</h3>
         <p>Potosí | Bolivia</p>
     </footer>
+
+    <!-- THREE.JS -->
+    <script type="module">
+
+        import * as THREE from 'three';
+
+        import {
+            GLTFLoader
+        } from 'three/addons/loaders/GLTFLoader.js';
+
+        import {
+            OrbitControls
+        } from 'three/addons/controls/OrbitControls.js';
+
+
+        /* VARIABLES GENERALES */
+
+        let scene;
+        let camera;
+        let renderer;
+        let controls;
+
+        let model;
+        let modelGroup;
+        let particles;
+
+        let modelLoaded = false;
+        let manualMode = false;
+
+        let currentSection = 0;
+
+        let targetScale = 1;
+        let targetRotationY = 0;
+        let targetRotationX = 0;
+        let targetY = 0;
+
+        let pulse = 0;
+        let elapsed = 0;
+
+        const canvas = document.getElementById('canvas');
+        const modelLayer = document.getElementById('modelLayer');
+        const loadingNote = document.getElementById('loadingNote');
+        const manualButton = document.getElementById('manualButton');
+        const manualHelp = document.getElementById('manualHelp');
+
+
+        /* ESCENA */
+
+        scene = new THREE.Scene();
+
+
+        /* CÁMARA */
+
+        camera = new THREE.PerspectiveCamera(
+            42,
+            1,
+            0.1,
+            100
+        );
+
+        camera.position.set(0, 0.15, 6.2);
+
+
+        /* RENDERIZADOR */
+
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
+
+        renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio, 2)
+        );
+
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+
+
+        /* AJUSTAR TAMAÑO DEL CANVAS */
+
+        function resizeRenderer() {
+
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(width, height, false);
+        }
+
+        resizeRenderer();
+
+
+        /* GRUPO DEL MODELO */
+
+        modelGroup = new THREE.Group();
+        scene.add(modelGroup);
+
+
+        /* ILUMINACIÓN */
+
+        const ambientLight = new THREE.AmbientLight(
+            0xffffff,
+            2.0
+        );
+
+        scene.add(ambientLight);
+
+
+        const goldLight = new THREE.SpotLight(
+            0xD4AF37,
+            11,
+            18,
+            Math.PI / 5,
+            0.55,
+            1.5
+        );
+
+        goldLight.position.set(3.5, 4.5, 5);
+        scene.add(goldLight);
+        scene.add(goldLight.target);
+
+
+        const greenLight = new THREE.PointLight(
+            0x6F9188,
+            8,
+            14
+        );
+
+        greenLight.position.set(-4, 1.5, 4);
+        scene.add(greenLight);
+
+
+        const backLight = new THREE.PointLight(
+            0xD4AF37,
+            6,
+            12
+        );
+
+        backLight.position.set(0, 3, -3);
+        scene.add(backLight);
+
+
+        /* CARGAR MODELO 3D */
+
+        const loader = new GLTFLoader();
+
+        loader.load(
+            'herramienta.glb',
+
+            function(gltf) {
+
+                model = gltf.scene;
+                modelGroup.add(model);
+
+
+                /* CONFIGURACIÓN DE MATERIALES */
+
+                model.traverse(function(child) {
+
+                    if (child.isMesh) {
+
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+
+                        if (child.material) {
+
+                            child.material = child.material.clone();
+
+                            if ('emissive' in child.material) {
+
+                                child.material.emissive =
+                                    new THREE.Color(0x241c08);
+
+                                child.material.emissiveIntensity = 0.18;
+                            }
+                        }
+                    }
+                });
+
+
+                /* CENTRAR MODELO */
+
+                const box = new THREE.Box3().setFromObject(model);
+
+                const size = box.getSize(new THREE.Vector3());
+
+                const center = box.getCenter(new THREE.Vector3());
+
+                model.position.sub(center);
+
+
+                /* ESCALA DEL MODELO */
+
+                const maxDimension = Math.max(
+                    size.x,
+                    size.y,
+                    size.z
+                );
+
+                const desiredSize = 3.80;
+
+                const fitScale = desiredSize / maxDimension;
+
+                model.scale.setScalar(fitScale);
+
+
+                /* POSICIÓN INICIAL */
+
+                model.position.y = -0.05;
+
+                modelGroup.rotation.y = Math.PI;
+
+                targetRotationY = Math.PI + 0.10;
+                targetRotationX = 0.02;
+
+
+                /* MODELO CARGADO */
+
+                modelLoaded = true;
+
+                loadingNote.classList.add('hidden');
+
+                createParticles();
+
+                applySectionState(0, true);
+
+
+                console.log(
+                    'Modelo herramienta.glb cargado correctamente.'
+                );
+            },
+
+
+            /* PROGRESO DE CARGA */
+
+            function(progress) {
+
+                if (progress.total > 0) {
+
+                    const percentage = Math.round(
+                        progress.loaded / progress.total * 100
+                    );
+
+                    loadingNote.innerHTML = `
+                        ⏳ Cargando modelo 3D...
+                        <br><br>
+                        ${percentage}%
+                    `;
+                }
+            },
+
+
+            /* ERROR DE CARGA */
+
+            function(error) {
+
+                console.error(
+                    'Error cargando herramienta.glb:',
+                    error
+                );
+
+                loadingNote.innerHTML = `
+                    ❌ No se pudo cargar el modelo 3D.
+                    <br><br>
+                    Verifique que <strong>herramienta.glb</strong>
+                    esté en la misma carpeta que informacion.html.
+                `;
+            }
+        );
+
+
+        /* PARTÍCULAS DORADAS */
+
+        function createParticles() {
+
+            const geometry = new THREE.BufferGeometry();
+
+            const positions = [];
+
+            for (let i = 0; i < 180; i++) {
+
+                positions.push(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 3
+                );
+            }
+
+            geometry.setAttribute(
+                'position',
+                new THREE.Float32BufferAttribute(positions, 3)
+            );
+
+            const material = new THREE.PointsMaterial({
+                color: 0xD4AF37,
+                size: 0.018,
+                transparent: true,
+                opacity: 0.55
+            });
+
+            particles = new THREE.Points(
+                geometry,
+                material
+            );
+
+            scene.add(particles);
+        }
+
+
+        /* CONTROLES ORBIT */
+
+        controls = new OrbitControls(
+            camera,
+            canvas
+        );
+
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+
+        controls.enableRotate = false;
+        controls.enableZoom = false;
+        controls.enablePan = false;
+
+        controls.screenSpacePanning = true;
+        controls.panSpeed = 0.8;
+        controls.rotateSpeed = 0.7;
+        controls.zoomSpeed = 0.8;
+
+        controls.minDistance = 3.5;
+        controls.maxDistance = 9;
+
+        controls.target.set(0, 0, 0);
+
+
+        /* CONFIGURACIÓN POR SECCIÓN */
+
+        const sectionStates = [
+
+            {
+                side: 'right',
+                scale: 1.00,
+                rotY: 0.10,
+                rotX: 0.02,
+                y: 0
+            },
+
+            {
+                side: 'left',
+                scale: 1.08,
+                rotY: 0.15,
+                rotX: 0.02,
+                y: -0.02
+            },
+
+            {
+                side: 'right',
+                scale: 1.03,
+                rotY: -0.12,
+                rotX: -0.02,
+                y: 0.03
+            },
+
+            {
+                side: 'left',
+                scale: 1.08,
+                rotY: 0.20,
+                rotX: 0.02,
+                y: 0
+            },
+
+            {
+                side: 'right',
+                scale: 1.05,
+                rotY: -0.15,
+                rotX: -0.02,
+                y: 0.02
+            },
+
+            {
+                side: 'left',
+                scale: 1.08,
+                rotY: 0.12,
+                rotX: 0.02,
+                y: 0
+            }
+
+        ];
+
+
+        /* CAMBIAR ESTADO SEGÚN SECCIÓN */
+
+        function applySectionState(index, instant = false) {
+
+            currentSection = index;
+
+            const state = sectionStates[index];
+
+            if (!state) return;
+
+
+            modelLayer.classList.remove(
+                'model-left',
+                'model-right'
+            );
+
+            modelLayer.classList.add(
+                state.side === 'left'
+                    ? 'model-left'
+                    : 'model-right'
+            );
+
+
+            targetScale = state.scale;
+
+            targetRotationY = Math.PI + state.rotY;
+
+            targetRotationX = state.rotX;
+
+            targetY = state.y;
+
+            pulse = 1;
+
+
+            if (instant && modelGroup) {
+
+                modelGroup.rotation.y = targetRotationY;
+
+                modelGroup.rotation.x = targetRotationX;
+
+                modelGroup.position.y = targetY;
+
+                modelGroup.scale.setScalar(targetScale);
+            }
+
+
+            document.querySelectorAll('.story-panel').forEach(
+                function(panel) {
+                    panel.classList.remove('active');
+                }
+            );
+
+
+            const activePanel = document.querySelector(
+                `.story-panel[data-index="${index}"]`
+            );
+
+            if (activePanel) {
+                activePanel.classList.add('active');
+            }
+        }
+
+
+        /* OBSERVADOR DE SECCIONES */
+
+        const panels = document.querySelectorAll('.story-panel');
+
+        /*
+         * Se usa una zona central de detección.
+         * Esto evita depender de que una sección larga
+         * alcance un porcentaje alto de visibilidad.
+         */
+
+        const observer = new IntersectionObserver(
+
+            function(entries) {
+
+                entries.forEach(function(entry) {
+
+                    if (entry.isIntersecting && !manualMode) {
+
+                        const index = Number(
+                            entry.target.dataset.index
+                        );
+
+                        applySectionState(index);
+                    }
+                });
+            },
+
+            {
+                root: null,
+                rootMargin: '-20% 0px -20% 0px',
+                threshold: 0
+            }
+        );
+
+
+        panels.forEach(function(section) {
+            observer.observe(section);
+        });
+
+
+        /*
+         * DETECCIÓN COMPLEMENTARIA AL DESPLAZARSE.
+         *
+         * Es especialmente importante para la sección de contacto,
+         * porque su contenido es más largo que la altura de pantalla.
+         * Se toma como referencia el centro de la ventana.
+         */
+
+        let scrollTicking = false;
+
+        function detectCurrentSection() {
+
+            if (manualMode) {
+                scrollTicking = false;
+                return;
+            }
+
+            const referenceY = window.innerHeight * 0.42;
+
+            let selectedPanel = null;
+
+            panels.forEach(function(panel) {
+
+                const rect = panel.getBoundingClientRect();
+
+                if (
+                    rect.top <= referenceY &&
+                    rect.bottom > referenceY
+                ) {
+                    selectedPanel = panel;
+                }
+            });
+
+            if (selectedPanel) {
+
+                const index = Number(
+                    selectedPanel.dataset.index
+                );
+
+                if (index !== currentSection) {
+                    applySectionState(index);
+                }
+            }
+
+            scrollTicking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+
+            if (!scrollTicking) {
+
+                window.requestAnimationFrame(
+                    detectCurrentSection
+                );
+
+                scrollTicking = true;
+            }
+        }, { passive: true });
+
+
+        /* MODO MANUAL */
+
+        manualButton.addEventListener(
+            'click',
+            function() {
+
+                manualMode = !manualMode;
+
+
+                if (manualMode) {
+
+                    controls.enableRotate = true;
+                    controls.enableZoom = true;
+                    controls.enablePan = true;
+                    controls.screenSpacePanning = true;
+
+                    modelLayer.classList.add('manual-active');
+
+                    manualButton.classList.add('active');
+
+                    manualButton.textContent =
+                        '↺ Volver al modo historia';
+
+                    manualHelp.classList.add('show');
+
+
+                } else {
+
+                    controls.enableRotate = false;
+                    controls.enableZoom = false;
+                    controls.enablePan = false;
+
+                    modelLayer.classList.remove('manual-active');
+
+                    manualButton.classList.remove('active');
+
+                    manualButton.textContent =
+                        '🖐 Manipular modelo 3D';
+
+                    manualHelp.classList.remove('show');
+
+
+                    camera.position.set(0, 0.15, 6.2);
+
+                    controls.target.set(0, 0, 0);
+
+                    controls.update();
+
+                    applySectionState(currentSection);
+                }
+            }
+        );
+
+
+        /* ANIMACIÓN */
+
+        const clock = new THREE.Clock();
+
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+
+            elapsed += delta;
+
+
+            if (modelLoaded && modelGroup) {
+
+                if (!manualMode) {
+
+                    modelGroup.rotation.y += 0.0018;
+
+
+                    const floatingY =
+                        targetY +
+                        Math.sin(elapsed * 1.15) * 0.018;
+
+
+                    modelGroup.position.y +=
+                        (floatingY - modelGroup.position.y) * 0.05;
+
+
+                    const breathing =
+                        1 + Math.sin(elapsed * 1.4) * 0.006;
+
+
+                    const desiredScale =
+                        targetScale *
+                        breathing *
+                        (1 + pulse * 0.08);
+
+
+                    modelGroup.scale.lerp(
+                        new THREE.Vector3(
+                            desiredScale,
+                            desiredScale,
+                            desiredScale
+                        ),
+                        0.07
+                    );
+
+
+                    modelGroup.rotation.x +=
+                        (
+                            targetRotationX +
+                            Math.sin(elapsed * 0.7) * 0.008 -
+                            modelGroup.rotation.x
+                        ) * 0.04;
+
+
+                    pulse *= 0.92;
+                }
+            }
+
+
+            if (particles) {
+
+                particles.rotation.y += 0.0008;
+
+                particles.rotation.x =
+                    Math.sin(elapsed * 0.2) * 0.04;
+            }
+
+
+            controls.update();
+
+            renderer.render(scene, camera);
+        }
+
+
+        animate();
+
+
+        /* REDIMENSIONAR VENTANA */
+
+        window.addEventListener(
+            'resize',
+            function() {
+
+                resizeRenderer();
+
+                renderer.setPixelRatio(
+                    Math.min(window.devicePixelRatio, 2)
+                );
+            }
+        );
+
+    </script>
+
 </body>
 </html>
