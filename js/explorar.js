@@ -1,4 +1,3 @@
-
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
@@ -22,6 +21,38 @@ const contenedorBarraCarga = document.getElementById('contenedorBarraCarga');
 const modalInfo = document.getElementById('modalInfo');
 const contenidoInfo = document.getElementById('contenidoInfo');
 const btnCerrarInfo = document.getElementById('btnCerrarInfo');
+
+// =====================================================
+// 1.1. ESTILO DE LAS IMÁGENES INFORMATIVAS
+// =====================================================
+
+const estiloImagenesInfo = document.createElement('style');
+
+estiloImagenesInfo.textContent = `
+    #contenidoInfo .imagen-informacion {
+        display: block;
+        width: 100%;
+        max-width: 480px;
+        height: 270px;
+        object-fit: cover;
+        object-position: center center;
+        margin: 20px auto;
+        border-radius: 10px;
+        border: 2px solid rgba(212, 175, 55, 0.7);
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.35);
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 600px) {
+        #contenidoInfo .imagen-informacion {
+            max-width: 100%;
+            height: 210px;
+            margin: 16px auto;
+        }
+    }
+`;
+
+document.head.appendChild(estiloImagenesInfo);
 
 const musica = document.getElementById('musicaRecorrido');
 const btnPlay = document.getElementById('btnPlay');
@@ -150,8 +181,8 @@ const teclas = {
     d: false
 };
 
-const ALTURA_OJOS = 0.90;
-const VELOCIDAD = 2.5;
+const ALTURA_OJOS = 0.70;
+const VELOCIDAD = 0.80;
 const DISTANCIA_COLISION = 0.15;
 const RADIO_VISITANTE = 0.05;
 
@@ -252,7 +283,11 @@ const informacion = {
 
         contenido: `
             <h2>Historia y arquitectura de la Casa Nacional de Moneda</h2>
-
+<img
+        class="imagen-informacion"
+        src="img/fachada.jpg"
+        alt="Fachada de la Casa Nacional de Moneda de Potosí"
+    >
             <p>
                 La construcción del edificio actual de la Casa Nacional
                 de Moneda se realizó entre los años 1759 y 1773.
@@ -297,6 +332,11 @@ const informacion = {
         contenido: `
             <h2>Información para el visitante</h2>
 
+             <img
+        class="imagen-informacion"
+        src="img/visita.png"
+        alt="Primer patio de la Casa Nacional de Moneda"
+    >
             <p>
                 La Casa Nacional de Moneda ofrece recorridos guiados
                 para que los visitantes conozcan sus ambientes,
@@ -384,6 +424,11 @@ const informacion = {
 
         contenido: `
             <h2>El primer patio de la Casa Nacional de Moneda</h2>
+ <img
+        class="imagen-informacion"
+        src="img/patio.jpeg"
+        alt="Primer patio de la Casa Nacional de Moneda"
+    >
 
             <p>
                 El primer patio constituye uno de los espacios
@@ -445,7 +490,11 @@ const informacion = {
 
         contenido: `
             <h2>El emblemático Mascarón</h2>
-
+ <img
+        class="imagen-informacion"
+        src="img/mascaron.jpeg"
+        alt="Primer patio de la Casa Nacional de Moneda"
+    >
             <p>
                 El Mascarón es una de las piezas más conocidas
                 de la Casa Nacional de Moneda. Se encuentra

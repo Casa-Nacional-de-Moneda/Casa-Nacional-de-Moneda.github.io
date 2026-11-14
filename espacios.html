@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espacios | Casa Nacional de la Moneda</title>
-<link rel="icon" type="image/png" href="img/cara.png">
+    <link rel="icon" type="image/png" href="img/cara.png">
+
     <!-- FUENTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -338,12 +339,21 @@
             color: #D4AF37;
         }
 
-        /* BOTÓN */
+        /* BOTONES DE EXPLORACIÓN */
 
-        .explore-button {
+        .explore-buttons {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
             margin-top: 35px;
+        }
+
+        .explore-button,
+        .image-button {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 13px;
             padding: 14px 24px;
             border: 1px solid rgba(201, 166, 88, 0.65);
@@ -356,14 +366,16 @@
             transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .explore-button:hover {
+        .explore-button:hover,
+        .image-button:hover {
             background: #c3a45d;
             color: #071713;
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(191, 158, 82, 0.18);
         }
 
-        .explore-button .arrow {
+        .explore-button .arrow,
+        .image-button .arrow {
             font-size: 1rem;
         }
 
@@ -580,7 +592,114 @@
         }
 
         /* =========================================================
-           FOOTER - MISMO ESTILO DE LA IMAGEN DE REFERENCIA
+           MODAL DE IMÁGENES
+        ========================================================= */
+
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 4000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background: radial-gradient(
+                circle at center,
+                rgba(22, 61, 48, 0.65),
+                rgba(1, 10, 8, 0.97)
+            );
+            backdrop-filter: blur(12px);
+        }
+
+        .image-modal.open {
+            display: flex;
+        }
+
+        .image-modal-content {
+            position: relative;
+            width: min(100%, 1000px);
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 35px;
+            background: #0b211a;
+            border: 1px solid rgba(201, 166, 88, 0.45);
+            box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+            text-align: center;
+        }
+
+        .image-modal-title {
+            margin-bottom: 25px;
+            color: #e3ce98;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 166, 88, 0.5);
+            background: rgba(4, 20, 16, 0.7);
+            color: #ddc889;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .image-modal-close:hover {
+            background: #c3a45d;
+            color: #071713;
+            transform: rotate(90deg);
+        }
+
+        .image-modal-photo {
+            display: block;
+            width: 100%;
+            max-height: 62vh;
+            object-fit: contain;
+            margin: 0 auto;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            background: #061511;
+        }
+
+        .image-modal-source {
+            margin-top: 20px;
+            padding-top: 17px;
+            border-top: 1px solid rgba(212, 175, 55, 0.25);
+            color: #bdb7a6;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .image-modal-source strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #D4AF37;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .image-modal-error {
+            display: none;
+            margin-top: 15px;
+            color: #d6b878;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .image-modal-error.visible {
+            display: block;
+        }
+
+        /* =========================================================
+           FOOTER
         ========================================================= */
 
         footer {
@@ -588,16 +707,13 @@
             min-height: 142px;
             margin-top: 40px;
             padding: 30px 20px;
-
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-
             background: #4A5D5A;
             border-top: 2px solid #D4AF37;
             border-radius: 0;
-
             text-align: center;
             font-family: 'Montserrat', sans-serif;
         }
@@ -605,7 +721,6 @@
         footer h3 {
             margin: 0 0 8px;
             color: #D4AF37;
-
             font-family: 'Cinzel', serif;
             font-size: 22px;
             font-weight: 600;
@@ -615,7 +730,6 @@
         footer p {
             margin: 0;
             color: #ffffff;
-
             font-family: 'Montserrat', sans-serif;
             font-size: 14px;
             font-weight: 400;
@@ -673,7 +787,8 @@
                 margin-top: 20px;
             }
 
-            .explore-button {
+            .explore-buttons {
+                justify-content: center;
                 margin-top: 25px;
             }
         }
@@ -731,6 +846,17 @@
                 height: 420px;
             }
 
+            .explore-buttons {
+                gap: 9px;
+            }
+
+            .explore-button,
+            .image-button {
+                padding: 12px 15px;
+                font-size: 0.62rem;
+                letter-spacing: 1px;
+            }
+
             .modal {
                 padding: 10px;
             }
@@ -744,6 +870,22 @@
             .modal-help {
                 bottom: 15px;
                 font-size: 0.58rem;
+            }
+
+            .image-modal {
+                padding: 10px;
+            }
+
+            .image-modal-content {
+                padding: 55px 15px 20px;
+            }
+
+            .image-modal-photo {
+                max-height: 55vh;
+            }
+
+            .image-modal-source {
+                font-size: 0.75rem;
             }
 
             /* FOOTER EN CELULARES */
@@ -806,7 +948,7 @@
         <p>Potosí | Bolivia</p>
     </footer>
 
-    <!-- MODAL -->
+    <!-- MODAL 3D -->
     <div class="modal" id="modelModal">
         <div class="modal-content">
 
@@ -830,6 +972,43 @@
         </div>
     </div>
 
+    <!-- MODAL DE IMÁGENES -->
+    <div class="image-modal" id="imageModal">
+
+        <div class="image-modal-content">
+
+            <button
+                class="image-modal-close"
+                onclick="closeImageModal()"
+                aria-label="Cerrar imagen">
+                ×
+            </button>
+
+            <h2 class="image-modal-title" id="imageModalTitle">
+                Imagen del espacio
+            </h2>
+
+            <img
+                src=""
+                alt="Fotografía del espacio de la Casa Nacional de Moneda"
+                class="image-modal-photo"
+                id="imageModalPhoto"
+            >
+
+            <div class="image-modal-error" id="imageModalError">
+                No se pudo cargar la imagen. Revisa que el archivo exista
+                dentro de la carpeta img.
+            </div>
+
+            <div class="image-modal-source" id="imageModalSource">
+                <strong>Fuente de la imagen</strong>
+                Fuente propia
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- JAVASCRIPT 3D -->
     <script type="module">
         import * as THREE from "three";
@@ -842,6 +1021,8 @@
                 numero: "01",
                 titulo: "Sala de",
                 tituloSpan: "Macuquinas",
+                imagen: "img/1.jpeg",
+                fuenteImagen: "Fuente propia",
                 descripcion: "En este espacio se explica la elaboración de las antiguas monedas conocidas como macuquinas, acuñadas en Potosí durante la época colonial. La primera Casa de Moneda de Potosí inició la acuñación de estas piezas entre 1572 y 1575, utilizando la plata obtenida de la actividad minera de la región. Las macuquinas se caracterizaban por su forma irregular, ya que eran fabricadas mediante un proceso principalmente manual. La plata era preparada, laminada y posteriormente cortada y acuñada utilizando herramientas de la época. Por esta razón, sus bordes y formas no presentan la uniformidad de las monedas modernas. Estas monedas constituyen una parte fundamental de la historia monetaria de Potosí y permiten comprender la importancia que tuvo la producción de plata de la ciudad dentro de la economía colonial.",
                 modelo: "hombre.glb",
                 fuentes: [
@@ -860,6 +1041,8 @@
                 numero: "02",
                 titulo: "Sala",
                 tituloSpan: "Histórica",
+                imagen: "img/2.jpeg",
+                fuenteImagen: "Fuente propia",
                 descripcion: "Esta sala permite conocer la historia de la Casa Nacional de Moneda de Potosí, institución estrechamente relacionada con la actividad minera y la producción de monedas. La historia de la Casa está vinculada al desarrollo económico y social de Potosí, especialmente a la explotación de la plata y a la importancia que alcanzó la ciudad durante la época colonial. La actual Casa Nacional de Moneda fue construida entre 1759 y 1773, después de la primera Casa de Moneda de Potosí. En sus instalaciones se desarrollaron diferentes etapas de la producción monetaria y, con el paso del tiempo, la tecnología utilizada para acuñar monedas fue cambiando. Actualmente, el edificio funciona como museo, repositorio cultural y archivo histórico. Sus colecciones permiten acercarse a diferentes períodos de la historia de Potosí y de Bolivia, conservando objetos, documentos, obras de arte, piezas numismáticas y maquinaria relacionada con la acuñación.",
                 modelo: "sala.glb",
                 fuentes: [
@@ -878,6 +1061,8 @@
                 numero: "03",
                 titulo: "Sala de",
                 tituloSpan: "Fundición",
+                imagen: "img/3.jpeg",
+                fuenteImagen: "Fuente propia",
                 descripcion: "La fundición fue una etapa fundamental dentro del proceso relacionado con la producción de monedas. En ella, los metales eran sometidos a procesos de calentamiento para poder ser transformados y posteriormente utilizados en las diferentes etapas de elaboración de las piezas monetarias. En la Casa Nacional de Moneda, estos procesos estuvieron relacionados principalmente con la transformación de la plata proveniente de la actividad minera de Potosí. El tratamiento del metal requería diferentes conocimientos, herramientas y maquinaria, que fueron cambiando con el desarrollo de la tecnología. La producción monetaria también estuvo vinculada al trabajo de numerosas personas que participaban en las diferentes etapas del proceso. Por ello, este espacio permite comprender que detrás de cada moneda existía un complejo sistema de extracción, tratamiento y transformación de los metales. La Casa conserva maquinaria histórica relacionada con estos procesos, constituyendo una parte importante del patrimonio tecnológico y productivo de la antigua ceca potosina.",
                 modelo: "fundicion.glb",
                 fuentes: [
@@ -896,6 +1081,8 @@
                 numero: "04",
                 titulo: "La",
                 tituloSpan: "Pinacoteca",
+                imagen: "img/4.jpeg",
+                fuenteImagen: "Fuente propia",
                 descripcion: "La Pinacoteca de la Casa Nacional de Moneda conserva una importante colección de pintura relacionada con la historia artística de Potosí y del periodo colonial. Estas obras forman parte del patrimonio artístico que se ha reunido y conservado dentro de este repositorio cultural. Entre las colecciones destacan obras de reconocidos artistas vinculados con la tradición pictórica potosina, entre ellos Melchor Pérez de Holguín, Luis Niño y Gaspar Miguel de Berrío. También se conservan obras relacionadas con otros períodos de la historia del arte boliviano. La pintura desarrollada en Potosí refleja el encuentro de diferentes tradiciones culturales y religiosas durante el periodo colonial. Por medio de estas obras es posible conocer aspectos de la sociedad, la religión y las expresiones artísticas de diferentes épocas. Actualmente, la pinacoteca constituye una de las colecciones artísticas más importantes que resguarda la Casa Nacional de Moneda y forma parte de su patrimonio cultural.",
                 modelo: "cuadro.glb",
                 fuentes: [
@@ -914,6 +1101,8 @@
                 numero: "05",
                 titulo: "El",
                 tituloSpan: "Reloj",
+                imagen: "img/5.jpeg",
+                fuenteImagen: "Fuente propia",
                 descripcion: "El reloj forma parte de los elementos históricos y arquitectónicos que se encuentran vinculados a la Casa Nacional de Moneda. Dentro de un edificio que durante siglos estuvo relacionado con la producción monetaria, la administración y diferentes actividades económicas de Potosí, estos elementos también forman parte de la memoria material del lugar. La Casa Nacional de Moneda no conserva únicamente monedas y maquinaria. Su patrimonio incluye diferentes objetos, espacios y elementos que permiten comprender la evolución histórica del edificio y las actividades que se desarrollaron en su interior. Este modelo representa uno de esos elementos y permite incorporarlo a la visita virtual para observar parte del patrimonio material asociado a la Casa Nacional de Moneda.",
                 modelo: "reloj.glb",
                 fuentes: [
@@ -932,6 +1121,8 @@
                 numero: "06",
                 titulo: "La Catedral de",
                 tituloSpan: "Potosí",
+                imagen: "img/6.jpeg",
+                fuenteImagen: "Fuente propia",
                 descripcion: "La Catedral de Potosí forma parte del conjunto histórico y arquitectónico de la ciudad. Su presencia permite relacionar la Casa Nacional de Moneda con el entorno urbano de la antigua Villa Imperial de Potosí, una ciudad que alcanzó gran importancia durante el periodo colonial debido a la actividad minera y a la producción de plata. La Casa Nacional de Moneda se encontraba integrada dentro de este espacio urbano, junto con edificios religiosos, administrativos y otros lugares relacionados con la vida económica y social de la ciudad. La representación tridimensional de la Catedral permite observar uno de los elementos arquitectónicos que forman parte del paisaje histórico de Potosí y ayuda a comprender la relación entre la Casa Nacional de Moneda y el patrimonio arquitectónico de su entorno.",
                 modelo: "catedral.glb",
                 fuentes: [
@@ -972,9 +1163,17 @@
                         ${fuentesHTML}
                     </div>
 
-                    <button class="explore-button" onclick="openModal(${index})">
-                        EXPLORAR EN GRANDE <span class="arrow">↗</span>
-                    </button>
+                    <div class="explore-buttons">
+
+                        <button class="explore-button" onclick="openModal(${index})">
+                            EXPLORAR EN GRANDE <span class="arrow">↗</span>
+                        </button>
+
+                        <button class="image-button" onclick="openImageModal(${index})">
+                            VER IMAGEN <span class="arrow">▧</span>
+                        </button>
+
+                    </div>
                 </div>
 
                 <div class="space-visual">
@@ -1376,17 +1575,115 @@
             }
         }
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") {
-                closeModal();
-            }
+        // =====================================================
+        // MODAL PARA VISUALIZAR LAS FOTOGRAFÍAS
+        // =====================================================
+
+        window.openImageModal = function(index) {
+
+            const espacio = espacios[index];
+
+            if (!espacio) return;
+
+            const modal = document.getElementById("imageModal");
+            const title = document.getElementById("imageModalTitle");
+            const photo = document.getElementById("imageModalPhoto");
+            const source = document.getElementById("imageModalSource");
+            const error = document.getElementById("imageModalError");
+
+            title.textContent = espacio.titulo + " " + espacio.tituloSpan;
+
+            error.classList.remove("visible");
+            photo.style.display = "block";
+
+            photo.src = espacio.imagen;
+            photo.alt = "Fotografía de " + espacio.titulo + " " + espacio.tituloSpan;
+
+            source.innerHTML = `
+                <strong>Fuente de la imagen</strong>
+                ${espacio.fuenteImagen || "Fuente propia"}
+            `;
+
+            modal.classList.add("open");
+            document.body.classList.add("modal-open");
+        };
+
+
+        // =====================================================
+        // CERRAR MODAL DE IMÁGENES
+        // =====================================================
+
+        window.closeImageModal = function() {
+
+            const modal = document.getElementById("imageModal");
+            const photo = document.getElementById("imageModalPhoto");
+
+            modal.classList.remove("open");
+            document.body.classList.remove("modal-open");
+
+            photo.src = "";
+        };
+
+
+        // =====================================================
+        // CONTROL DE ERROR AL CARGAR UNA FOTOGRAFÍA
+        // =====================================================
+
+        document.getElementById("imageModalPhoto").addEventListener("error", function() {
+
+            this.style.display = "none";
+
+            document.getElementById("imageModalError")
+                .classList.add("visible");
+
         });
+
+
+        // =====================================================
+        // CERRAR MODALES CON LA TECLA ESCAPE
+        // =====================================================
+
+        document.addEventListener("keydown", (event) => {
+
+            if (event.key === "Escape") {
+
+                const imageModal = document.getElementById("imageModal");
+                const modelModal = document.getElementById("modelModal");
+
+                if (imageModal.classList.contains("open")) {
+                    closeImageModal();
+                } else if (modelModal.classList.contains("open")) {
+                    closeModal();
+                }
+
+            }
+
+        });
+
+
+        // =====================================================
+        // CERRAR MODAL 3D AL PRESIONAR FUERA DEL CONTENIDO
+        // =====================================================
 
         document.getElementById("modelModal").addEventListener("click", (event) => {
             if (event.target.id === "modelModal") {
                 closeModal();
             }
         });
+
+
+        // =====================================================
+        // CERRAR MODAL DE IMÁGENES AL PRESIONAR FUERA
+        // =====================================================
+
+        document.getElementById("imageModal").addEventListener("click", (event) => {
+
+            if (event.target.id === "imageModal") {
+                closeImageModal();
+            }
+
+        });
+
     </script>
 
 </body>
